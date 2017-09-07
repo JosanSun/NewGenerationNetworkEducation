@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pattern xsi:noNamespaceSchemaLocation="PKnowledge.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<pname>绑定模式</pname>
+	<pproblem>数据表示的一种数据组织形式</pproblem>
+	<psolution>数据的一个别名</psolution>
+	<pcharacteries>
+		<index>1</index>
+		<content>变量的一个别名，对该别名的操作等同对该变量的操作</content>
+		<index>2</index>
+		<content>一旦绑定一个变量，就不能再作为另一个变量的别名</content>
+		<index>3</index>
+		<content>可以绑定任意类型的数据（包括类），但不能绑定数组</content>
+	</pcharacteries>
+	<preference>
+		<index>1</index>
+		<content>常引用</content>
+		<index>2</index>
+		<content>变量引用</content>
+		<index>3</index>
+		<content>类引用</content>
+	</preference>
+</pattern>

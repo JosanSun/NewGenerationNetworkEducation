@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pattern xsi:noNamespaceSchemaLocation="PKnowledge.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<pname>指向模式</pname>
+	<pproblem>数据表示中的一种数据组织方式</pproblem>
+	<psolution>一种指向数据存储位置的数据类型</psolution>
+	<pcharacteries>
+		<index>1</index>
+		<content>指向数据的存储位置</content>
+		<index>2</index>
+		<content>可以指向任意类型的数据（包括类），也可以指向函数</content>
+		<index>3</index>
+		<content>形成的新的指针类型也可作为新的数据元素构成别的模式</content>
+	</pcharacteries>
+	<preference>
+		<index>1</index>
+		<content>指针</content>
+		<index>2</index>
+		<content>数组指针</content>
+		<index>3</index>
+		<content>指针数组</content>
+	</preference>
+</pattern>

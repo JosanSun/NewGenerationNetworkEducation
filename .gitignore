@@ -1,0 +1,15 @@
+## ignore the vs temp folders
+**/.vs
+**/Debug
+**/Release
+
+## ignore the vs temp files
+*.user
+*.opendb
+*.sln
+*.db
+*.filters
+*.vcxproj
+*.doc
+*.docx
+*.pdf
