@@ -50,8 +50,14 @@
      <height>161</height>
     </rect>
    </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::NoContextMenu</enum>
+   </property>
    <property name="title">
     <string>笔记本</string>
+   </property>
+   <property name="checkable">
+    <bool>false</bool>
    </property>
    <widget class="QTextEdit" name="textEdit">
     <property name="geometry">
@@ -61,6 +67,9 @@
       <width>681</width>
       <height>131</height>
      </rect>
+    </property>
+    <property name="readOnly">
+     <bool>false</bool>
     </property>
    </widget>
   </widget>

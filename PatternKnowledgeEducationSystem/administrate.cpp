@@ -47,6 +47,7 @@ void administrate::openDatabase(){
 
 //初始化用户管理界面
 void administrate::init(){
+    //初始化各个显示标签的信息以及标签属性
 	ui.usernameLabel->setText(QString::fromStdString(myUser.getName()));
 	ui.usernameLineEdit->setText(QString::fromStdString(myUser.getName()));
 	ui.usernameLineEdit->setReadOnly(true);
@@ -60,6 +61,8 @@ void administrate::init(){
 	ui.educationComboBox->setDisabled(true);
 
 	openDatabase();
+
+
 	if (!havePathTab){//如果当前没有用户路径记录表 则new一个
 		pathWidget = new QWidget();
 		pathTableView = new QTableView(pathWidget);
@@ -127,19 +130,24 @@ void administrate::modifyInformationSlot(){
 	ui.educationComboBox->setDisabled(false);
 }
 
-//保存用户信息槽
+//保存用户信息槽  //BUG  保存完之后，还需要将各个标签设置为只读属性。
 void administrate::saveInformationSlot(){
+    //获取用户修改的信息，以便来更新myUser信息和数据库中的用户信息
 	int _sid = myUser.getSid();
 	QString _username = ui.usernameLineEdit->text();
-	QString _password = ui.usernameLineEdit->text();
+    QString _password = ui.passwordLineEdit->text();
 	QString _sex = ui.sexComboBox->currentText();
 	int _age = ui.ageLineEdit->text().toInt();
 	QString _education = ui.educationComboBox->currentText();
+
+    //更新全局的myUser信息
 	myUser.setName(_username.toStdString());
 	myUser.setPassword(_password.toStdString());
 	myUser.setAge(_age);
 	myUser.setSex(_sex.toStdString());
 	myUser.setEducation(_education.toStdString());
+
+    //更新数据库中的用户信息
 	openDatabase();
 	QSqlQuery query;
 	query.prepare("update student set name=:name,password=:password,sex=:sex,age=:age,education=:education where sid=:sid");
@@ -152,5 +160,6 @@ void administrate::saveInformationSlot(){
 	query.exec();
 	this->db.close();
 	QMessageBox::information(this, QStringLiteral("恭喜"), QStringLiteral("您的信息已修改并保存成功！"));
-	init();
+    //必须等QMessageBox关闭，才能执行init()
+    init();
 }

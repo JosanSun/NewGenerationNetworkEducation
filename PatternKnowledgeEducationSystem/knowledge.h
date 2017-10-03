@@ -26,7 +26,7 @@ protected:
 	virtual void mousePressEvent(QMouseEvent *event);
 	virtual void mouseMoveEvent(QMouseEvent *event);
 
-	private slots:
+private slots:
 	//根据用户学习轨迹变换节点颜色
 	void trackLearning();
 
@@ -38,11 +38,12 @@ private:
 	void openDatabase();
 
 	void paintEvent(QPaintEvent *);
-	//根据节点在图上画圆
+
+    //根据节点在图上画圆
 	void drawCircles(vector<Node> nodes, QColor color);
 
-	//在两个圆之间连线
-	void drawLine(QPoint *startPoint, QPoint *endPoint, int r, bool isTracked);
+//	//在两个圆之间连线
+//	void drawLine(QPoint *startPoint, QPoint *endPoint, int r, bool isTracked);
 
 	//画平面
 	void drawPanel(QPoint *basePoint, QString label, QColor color);

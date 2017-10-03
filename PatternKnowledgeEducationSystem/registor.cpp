@@ -1,12 +1,14 @@
 #include "registor.h"
-#include "qmessagebox.h"
+#include <qmessagebox.h>
 
 registor::registor(QWidget *parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
-	QObject::connect(ui.registerButton, SIGNAL(clicked()), this, SLOT(registerSlot()));//点击注册用户
-	QObject::connect(ui.cancelButton, SIGNAL(clicked()), this, SLOT(close()));//关闭注册界面
+    QObject::connect(ui.registerButton, SIGNAL(clicked()),
+                     this, SLOT(registerSlot()));//点击注册用户
+    QObject::connect(ui.cancelButton, SIGNAL(clicked()),
+                     this, SLOT(close()));//关闭注册界面
 }
 
 registor::~registor()
@@ -18,7 +20,8 @@ registor::~registor()
 void registor::registerSlot(){
 	QString _username = ui.usernameLineEdit->text();
 	if (_username.isEmpty()){
-		QMessageBox::information(this, QStringLiteral("错误！"), QStringLiteral("请输入合法的用户名！"));
+        QMessageBox::information(this, QStringLiteral("错误！"),
+                                 QStringLiteral("请输入合法的用户名！"));
 		return;
 	}
 	this->db = QSqlDatabase::addDatabase("QMYSQL");

@@ -29,19 +29,16 @@ private:
 	QTableView *pkTableView;
 	usecase *usecaseWindow;
 	test *testWindow;
-	
 	bool haveDomainTab;
 	void openDatabase();
-	
+    void init();
 	void openXml(QString);
 	
 
 signals:
-	
-	
 
 private slots:
-	void init();
+
 	void timeUpdateSlot();
 	void showDomainKnowledgesSlot(QString);
 	void openUsecaseSlot(QString);
@@ -49,9 +46,9 @@ private slots:
 	void changeCaseSlot();
 	void goToDiscussionSlot();
 	void goToTestSlot();
-	void updateCurrentKidSlot();
 	void updateBehaviorTableSlot();
-	void testSlot();
+    //void updateCurrentKidSlot();
+    //void testSlot();
 };
 
 #endif // TEACH_H

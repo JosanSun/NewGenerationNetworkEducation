@@ -72,9 +72,10 @@ void test::init(){
 	ft.setPointSize(20);
 	ft.setFamily(QStringLiteral("楷体"));
 	initLabel->setFont(ft);
-	QPalette pa;
+    QPalette pa;
 	pa.setColor(QPalette::WindowText, Qt::red);
-	initLabel->setPalette(pa);
+    //初始化开始测试按钮
+    initLabel->setPalette(pa);
 	startButton = new QPushButton(ui.scrollArea);
 	startButton->setGeometry(280, 180, 110, 30);
 	startButton->setText(QStringLiteral("开始测试"));
@@ -156,6 +157,7 @@ void test::startTestSlot(){
 		numRows = query.at() + 1;
 	}
 	while (query.next()){
+        //题目标题
 		int questionId = query.value(1).toInt();
 		QHBoxLayout *contentLayout = new QHBoxLayout;
 		hlayout_vec.push_back(contentLayout);
@@ -166,7 +168,7 @@ void test::startTestSlot(){
 		questionLabel->setStyleSheet("QLabel{background:yellow}");
 		contentLayout->addWidget(questionLabel);
 		contentLayout->addStretch();
-		
+        //选项a
 		QHBoxLayout *aLayout = new QHBoxLayout;
 		hlayout_vec.push_back(aLayout);
 		QRadioButton *aRadioButton = new QRadioButton;
@@ -174,7 +176,7 @@ void test::startTestSlot(){
 		aRadioButton->setText(query.value(4).toString());
 		aLayout->addWidget(aRadioButton);
 		aLayout->addStretch();
-
+        //选项b
 		QHBoxLayout *bLayout = new QHBoxLayout;
 		hlayout_vec.push_back(bLayout);
 		QRadioButton *bRadioButton = new QRadioButton;
@@ -182,7 +184,7 @@ void test::startTestSlot(){
 		bRadioButton->setText(query.value(5).toString());
 		bLayout->addWidget(bRadioButton);
 		bLayout->addStretch();
-
+        //选项c
 		QHBoxLayout *cLayout = new QHBoxLayout;
 		hlayout_vec.push_back(cLayout);
 		QRadioButton *cRadioButton = new QRadioButton;
@@ -190,7 +192,7 @@ void test::startTestSlot(){
 		cRadioButton->setText(query.value(6).toString());
 		cLayout->addWidget(cRadioButton);
 		cLayout->addStretch();
-
+        //选项d
 		QHBoxLayout *dLayout = new QHBoxLayout;
 		hlayout_vec.push_back(dLayout);
 		QRadioButton *dRadioButton = new QRadioButton;
@@ -198,7 +200,7 @@ void test::startTestSlot(){
 		dRadioButton->setText(query.value(7).toString());
 		dLayout->addWidget(dRadioButton);
 		dLayout->addStretch();
-
+        //整理全部布局
 		QButtonGroup *choiceGroup = new QButtonGroup;
 		buttongroup_vec.push_back(choiceGroup);
 		choiceGroup->addButton(aRadioButton);
@@ -237,6 +239,7 @@ void test::submitTestSlot(){
 	case QMessageBox::Cancel:
 		return;
 	}
+
 	int score = 0;
 	map<int, QButtonGroup*>::const_iterator it = test_map.begin();
 	openDatabase();
@@ -266,6 +269,7 @@ void test::submitTestSlot(){
 		query.exec();
 		while (query.next()){
 			if (query.value(0).toString() == _answer){
+                //加分
 				score += query.value(1).toInt();
 			}
 		}		
@@ -334,6 +338,7 @@ void test::submitTestSlot(){
 
 	this->db.close();
 	QMessageBox::information(this, QStringLiteral("恭喜"), QStringLiteral("您已经提交成功！"));
+    //释放空间
 	if (firstLayout != NULL && firstTitleLabel != NULL){
 		delete firstLayout;
 		firstLayout = NULL;
@@ -372,6 +377,7 @@ void test::submitTestSlot(){
 		delete allLayout;
 		allLayout = NULL;
 	}
+
 	allLayout = new QVBoxLayout;	
 	QWidget *w = new QWidget;
 	QLabel *endLabel = new QLabel(w);
@@ -393,9 +399,6 @@ void test::submitTestSlot(){
 		else{
 			connect(againButton, SIGNAL(clicked()), this, SLOT(nextKnowledgeSlot()));
 		}
-		
-		
-		
 	}
 	endLabel->setGeometry(100, 100, 500, 50);	
 	allLayout->addWidget(w);

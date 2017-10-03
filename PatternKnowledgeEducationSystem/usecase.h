@@ -27,6 +27,8 @@ private:
 private slots:
 	void updateTimeSlot();
 	void goToTestWindowSlot();
+    void on_testButton_clicked();
+    void on_pushButton_clicked();
 };
 
 #endif // USECASE_H

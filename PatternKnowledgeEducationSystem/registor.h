@@ -6,7 +6,7 @@
 #include <QWidget>
 #include "ui_registor.h"
 #include <QtSql>
-#include "qsqldatabase.h"
+#include <qsqldatabase.h>
 
 class registor : public QWidget
 {

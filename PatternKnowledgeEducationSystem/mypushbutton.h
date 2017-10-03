@@ -19,7 +19,7 @@ public:
 	void mouseReleaseEvent(QMouseEvent *e);
 
 signals:
-	void clicked(QString);
+    void clicked(QString);
 	
 };
 

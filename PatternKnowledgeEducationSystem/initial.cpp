@@ -189,6 +189,7 @@ void initial::goToTeachWindowSlot(){
 		case QMessageBox::Ok:
 			break;
 		case QMessageBox::Cancel:
+            //20171002存在一个bug  未能正常调用goToKnowledgeWindowSlot();   它直接显示之前学的知识
 			QMessageBox::information(this, QStringLiteral("提示"), QStringLiteral("请您在知识地图上选择要开始学习的知识"));
 			goToKnowledgeWindowSlot();
 			break;
