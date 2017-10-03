@@ -3,6 +3,8 @@
 **/Debug
 **/Release
 
+**build**
+
 ## ignore the vs temp files
 *.user
 *.opendb
