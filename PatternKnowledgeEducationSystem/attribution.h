@@ -1,5 +1,4 @@
 /*------- 知识库查看部分属性显示 --------*/
-
 #ifndef ATTRIBUTION_H
 #define ATTRIBUTION_H
 

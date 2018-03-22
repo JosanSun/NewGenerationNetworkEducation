@@ -1,0 +1,16 @@
+# Change Log
+# All notable changes to this project will be documented in this file.
+
+## [2.0] 2018-03-22
+### Changed
+- 将相对路径改为资源文件
+- 将QT4的信号槽连接，改为QT5版本的信号与槽的连接。
+- 修改登录界面，去掉多余元素。
+
+## [1.1] 2017-03-19    [cannot download]
+### Added
+- 上传到Github保存
+ 
+## [1.0] 2017-05-20    [cannot download]
+### Added  
+- 加入下一代网络教学系统的整体框架。 

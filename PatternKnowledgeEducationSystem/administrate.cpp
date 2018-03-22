@@ -14,12 +14,12 @@ administrate::administrate(QWidget *parent)
 	havePathTab = 0;
 	haveBehaviorTab = 0;
 
-	init();
+    init();
 
-	connect(timer, SIGNAL(timeout()), this, SLOT(updateTimeSlot()));//更新系统时间
-	connect(ui.modifyButton, SIGNAL(clicked()), this, SLOT(modifyInformationSlot()));//修改个人信息
-	connect(ui.saveButton, SIGNAL(clicked()), this, SLOT(saveInformationSlot()));//保存个人信息
-	connect(ui.quitButton, SIGNAL(clicked()), this, SLOT(close()));//关闭用户管理
+    connect(timer, &QTimer::timeout, this, &administrate::updateTimeSlot);//更新系统时间
+    connect(ui.modifyButton, &QPushButton::clicked, this, &administrate::modifyInformationSlot);//修改个人信息
+    connect(ui.saveButton, &QPushButton::clicked, this, &administrate::saveInformationSlot);//保存个人信息
+    connect(ui.quitButton, &QPushButton::clicked, this, &administrate::close);//关闭用户管理
 	timer->start(1000);
 }
 
@@ -29,24 +29,28 @@ administrate::~administrate()
 }
 
 //打开数据库
-void administrate::openDatabase(){
+void administrate::openDatabase()
+{
 	this->db = QSqlDatabase::addDatabase("QMYSQL");
 	this->db.setHostName("localhost");
 	this->db.setUserName("root");
 	this->db.setPassword("1234");
 	this->db.setDatabaseName("knowledge");
 	bool ok = db.open();
-	if (!ok){
+    if (!ok)
+    {
 		qDebug() << "Failed to connect database login!";
 	}
-	else{
+    else
+    {
 		qDebug() << "Success!";
 	}
 }
 
 
 //初始化用户管理界面
-void administrate::init(){
+void administrate::init()
+{
     //初始化各个显示标签的信息以及标签属性
 	ui.usernameLabel->setText(QString::fromStdString(myUser.getName()));
 	ui.usernameLineEdit->setText(QString::fromStdString(myUser.getName()));
@@ -63,7 +67,8 @@ void administrate::init(){
 	openDatabase();
 
 
-	if (!havePathTab){//如果当前没有用户路径记录表 则new一个
+    if (!havePathTab)
+    {//如果当前没有用户路径记录表 则new一个
 		pathWidget = new QWidget();
 		pathTableView = new QTableView(pathWidget);
 		pathTableView->setGeometry(8, 8, 521, 271);
@@ -87,7 +92,8 @@ void administrate::init(){
 	pathTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 	pathTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-	if (!haveBehaviorTab){//如果当前没有用户学习记录表 则new一个
+    if (!haveBehaviorTab)
+    {//如果当前没有用户学习记录表 则new一个
 		behaviorWidget = new QWidget();
 		behaviorTableView = new QTableView(behaviorWidget);
 		behaviorTableView->setGeometry(8, 8, 521, 271);
@@ -116,13 +122,15 @@ void administrate::init(){
 }
 
 //更新系统时间槽
-void administrate::updateTimeSlot(){
+void administrate::updateTimeSlot()
+{
 	QDateTime time = QDateTime::currentDateTime();
 	ui.currentTimeLabel->setText(time.toString("yyyy-MM-dd \nhh:mm:ss dddd"));
 }
 
 //修改用户信息槽
-void administrate::modifyInformationSlot(){
+void administrate::modifyInformationSlot()
+{
 	ui.usernameLineEdit->setReadOnly(false);
 	ui.passwordLineEdit->setReadOnly(false);
 	ui.sexComboBox->setDisabled(false);
@@ -131,7 +139,8 @@ void administrate::modifyInformationSlot(){
 }
 
 //保存用户信息槽  //BUG  保存完之后，还需要将各个标签设置为只读属性。
-void administrate::saveInformationSlot(){
+void administrate::saveInformationSlot()
+{
     //获取用户修改的信息，以便来更新myUser信息和数据库中的用户信息
 	int _sid = myUser.getSid();
 	QString _username = ui.usernameLineEdit->text();

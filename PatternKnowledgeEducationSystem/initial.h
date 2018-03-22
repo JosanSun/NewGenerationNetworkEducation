@@ -1,5 +1,4 @@
 /*========= 初始化模块 ========*/
-
 #ifndef INITIAL_H
 #define INITIAL_H
 
@@ -37,7 +36,6 @@ private:
 	void showFirstKnowledge();
 
 private slots:
-	
 	void timerUpDateSlot();
 	void goToKnowledgeWindowSlot();
 	void goToTeachWindowSlot();

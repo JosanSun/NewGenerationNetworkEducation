@@ -1,8 +1,6 @@
 /*   ======= 自定义按钮 =========== 
      ======= 这个类也不用管 =======
 */
-
-
 #ifndef MYPUSHBUTTON_H
 #define MYPUSHBUTTON_H
 
@@ -19,8 +17,7 @@ public:
 	void mouseReleaseEvent(QMouseEvent *e);
 
 signals:
-    void clicked(QString);
-	
+    void clicked(QString);	
 };
 
 #endif // MYPUSHBUTTON_H

@@ -3,9 +3,11 @@
 
 int main(int argc, char *argv[])
 {
-	QApplication a(argc, argv);
-	login w;
-	w.setWindowTitle(QStringLiteral("在线网络教学系统"));
-	w.show();
-	return a.exec();
+    QApplication app(argc, argv);
+
+    login loginSystem;
+    loginSystem.setWindowTitle(tr("在线网络教学系统"));
+    loginSystem.show();
+
+    return app.exec();
 }

@@ -30,7 +30,7 @@ private:
 	void openDatabase();
 	void init();
 
-	private slots:
+private slots:
 	void updateTimeSlot();
 	void modifyInformationSlot();
 	void saveInformationSlot();

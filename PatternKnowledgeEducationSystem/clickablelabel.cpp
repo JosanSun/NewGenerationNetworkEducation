@@ -6,12 +6,15 @@ clickablelabel::clickablelabel(QWidget *parent)
 	this->setText("clickableLabel");
 }
 
-void clickablelabel::mousePressEvent(QMouseEvent *e){
+void clickablelabel::mousePressEvent(QMouseEvent * /* e */)
+{
 	myLabelPressed = 1;
 }
 
-void clickablelabel::mouseReleaseEvent(QMouseEvent *e){
-	if (myLabelPressed){
+void clickablelabel::mouseReleaseEvent(QMouseEvent * /* e */)
+{
+    if (myLabelPressed)
+    {
 		emit clicked();
 		myLabelPressed = 0;
 	}

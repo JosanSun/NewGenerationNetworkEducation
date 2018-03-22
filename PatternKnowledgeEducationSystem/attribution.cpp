@@ -16,7 +16,8 @@ attribution::~attribution()
 }
 
 //初始化属性界面
-void attribution::init(){
+void attribution::init()
+{
 	ui.tabWidget->setTabText(0, QStringLiteral("属性信息"));
 	ui.tabWidget->setTabText(1, QStringLiteral("特征信息"));
 	openDB();
@@ -25,7 +26,8 @@ void attribution::init(){
 	sqlStr += attribute;
 	sqlStr += "'";
 	query.exec(sqlStr);
-	while (query.next()){
+    while (query.next())
+    {
 		ui.idLineEdit->setText(query.value(0).toString());
 		ui.titleLineEdit->setText(attribute);
 		ui.domainLineEdit->setText(query.value(2).toString());
@@ -34,11 +36,14 @@ void attribution::init(){
 		openXml(_patternFile);
 	}
 	query.exec("select pors,kids from about join pk on about.kid=pk.pid where pk.title='" + attribute + "'");
-	while (query.next()){
-		if (query.value(0).toString() == "0"){
+    while (query.next())
+    {
+        if (query.value(0).toString() == "0")
+        {
 			ui.qianLineEdit->setText(query.value(1).toString());
 		}
-		else{
+        else
+        {
 			ui.houLineEdit->setText(query.value(1).toString());
 		}
 	}
@@ -49,88 +54,102 @@ void attribution::init(){
 }
 
 //打开数据库
-void attribution::openDB(){
+void attribution::openDB()
+{
 	this->db = QSqlDatabase::addDatabase("QMYSQL");
 	this->db.setHostName("localhost");
 	this->db.setUserName("root");
 	this->db.setPassword("1234");
 	this->db.setDatabaseName("knowledge");
 	bool ok = db.open();
-	if (!ok){
+    if (!ok)
+    {
 		qDebug() << "Failed to connect database login!";
 	}
-	else{
+    else
+    {
 		qDebug() << "Success!";
 	}
 }
 
 //读模式知识的特征xml文档
-void attribution::openXml(QString filename){
+void attribution::openXml(QString filename)
+{
 	QDomDocument doc;
 	QFile xmlFile(filename);
-	if (!xmlFile.open(QIODevice::ReadOnly)){
+    if (!xmlFile.open(QIODevice::ReadOnly))
+    {
 		qDebug() << "Failed to open xml file!";
 	}
-	if (!doc.setContent(&xmlFile)){
+    if (!doc.setContent(&xmlFile))
+    {
 		xmlFile.close();
 		qDebug() << "Failed!";
 	}
 	xmlFile.close();
 	QDomElement root = doc.documentElement();
 	QDomNode node = root.firstChild();
-	while (!node.isNull()){
+    while (!node.isNull())
+    {
 		QDomElement e = node.toElement();
-		if (!e.isNull()){
-			if (e.tagName() == "pname"){
+        if (!e.isNull())
+        {
+            if (e.tagName() == "pname")
+            {
 				ui.patternLabel->setText(e.text());
 				
 			}
-			else if (e.tagName() == "pproblem"){
+            else if (e.tagName() == "pproblem")
+            {
 				ui.problemLabel->setText(e.text());
 				
 			}
-			else if (e.tagName() == "psolution"){
+            else if (e.tagName() == "psolution")
+            {
 				ui.solutionLabel->setText(e.text());
 				
 			}
-			else if (e.tagName() == "pcharacteries"){
+            else if (e.tagName() == "pcharacteries")
+            {
+                QDomNode cnode = e.firstChild();
+                QDomElement ce = cnode.toElement();
+                if (!ce.isNull())
+                {
+                    ui.feature1Label->setText(ce.text());
 
-				
-				QDomNode cnode = e.firstChild();
-				
-					QDomElement ce = cnode.toElement();
-					if (!ce.isNull()){
-						ui.feature1Label->setText(ce.text());
-						
-					}
-					cnode = cnode.nextSibling();
-					ce = cnode.toElement();
-					if (!ce.isNull()){
-						ui.feature2Label->setText(ce.text());
+                }
+                cnode = cnode.nextSibling();
+                ce = cnode.toElement();
+                if (!ce.isNull())
+                {
+                    ui.feature2Label->setText(ce.text());
 
-					}
-					cnode = cnode.nextSibling();
-					ce = cnode.toElement();
-					if (!ce.isNull()){
-						ui.feature3Label->setText(ce.text());
+                }
+                cnode = cnode.nextSibling();
+                ce = cnode.toElement();
+                if (!ce.isNull())
+                {
+                    ui.feature3Label->setText(ce.text());
 
-					}
-					
+                }
 			}
-			else if (e.tagName() == "preference"){
-				QString str = "";
-				QDomNode pnode = e.firstChild();
-				while (!pnode.isNull()){
-					QDomElement pe = pnode.toElement();
-					if (!pe.isNull()){
-						str += pe.text();
-						
-					}
-					pnode = pnode.nextSibling();
-				}
-				ui.exampleLabel->setText(str);
-			}
-		}
+            else if (e.tagName() == "preference")
+            {
+                QString str = "";
+                QDomNode pnode = e.firstChild();
+                while (!pnode.isNull())
+                {
+                    QDomElement pe = pnode.toElement();
+                    if (!pe.isNull())
+                    {
+                        str += pe.text();
+
+                    }
+                    pnode = pnode.nextSibling();
+                }
+                ui.exampleLabel->setText(str);
+            }
+        }
 		node = node.nextSibling();
 	}
 

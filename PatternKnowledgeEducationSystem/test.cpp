@@ -20,8 +20,8 @@ test::test(QWidget *parent)
 	init();
 	ui.currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
 	QTimer *timer = new QTimer(this);
-	connect(timer, SIGNAL(timeout()), this, SLOT(timeUpdateSlot()));//更新系统时间
-	connect(ui.submitButton, SIGNAL(clicked()), this, SLOT(submitTestSlot()));//提交测试
+    connect(timer, &QTimer::timeout, this, &test::timeUpdateSlot);//更新系统时间
+    connect(ui.submitButton, &QPushButton::clicked, this, &test::submitTestSlot);//提交测试
 	timer->start(1000);
 }
 
@@ -31,24 +31,29 @@ test::~test()
 }
 
 //初始化测试界面
-void test::init(){
+void test::init()
+{
 	ui.usernameLabel->setText(QString::fromStdString(myUser.getName()));
 	ui.submitButton->setDisabled(true);
 	openDatabase();
 	QSqlQuery query;
 	_first = currentKid.left(1);//根据当前知识节点查询数据库获得该知识节点的所需测试时间
-	if (_first == "B"){
+    if (_first == "B")
+    {
 		query.exec("select title,domain from bk where bid='" + currentKid + "'");
 	}
-	else{
+    else
+    {
 		query.exec("select title,domain from pk where pid='" + currentKid + "'");
 	}
-	while (query.next()){
+    while (query.next())
+    {
 		ui.currentPointNameLabel->setText(query.value(0).toString());
 		currentDomain = query.value(1).toString();
 	}
 	query.exec("select * from test where kid='" + currentKid + "'");
-	while (query.next()){
+    while (query.next())
+    {
 		currentTid = query.value(1).toString();
 		QPalette pa;
 		pa.setColor(QPalette::WindowText, Qt::red);
@@ -81,35 +86,41 @@ void test::init(){
 	startButton->setText(QStringLiteral("开始测试"));
 	ft.setPointSize(12);
 	startButton->setFont(ft);
-	connect(startButton, SIGNAL(clicked()), this, SLOT(startTestSlot()));//点击开始测试按钮进入测试
+    connect(startButton, &QPushButton::clicked, this, &test::startTestSlot);//点击开始测试按钮进入测试
 }
 
-void test::openDatabase(){
+void test::openDatabase()
+{
 	this->db = QSqlDatabase::addDatabase("QMYSQL");
 	this->db.setHostName("localhost");
 	this->db.setUserName("root");
 	this->db.setPassword("1234");
 	this->db.setDatabaseName("knowledge");
 	bool ok = this->db.open();
-	if (!ok){
+    if (!ok)
+    {
 		qDebug() << "Failed to connect database login!";
 	}
-	else{
+    else
+    {
 		qDebug() << "Success!";
 	}
 }
 
 //显示系统时间
-void test::timeUpdateSlot(){
+void test::timeUpdateSlot()
+{
 	QDateTime time = QDateTime::currentDateTime();
 	ui.currentTimeLabel->setText(time.toString("yyyy-MM-dd \nhh:mm:ss dddd"));
 }
 
 //更新当前测试剩余时间
-void test::restTimeUpdateSlot(){
+void test::restTimeUpdateSlot()
+{
 	int alreadyHour = QDateTime::currentDateTime().time().hour() - startTestTime.time().hour();
 	int alreadyMinute = QDateTime::currentDateTime().time().minute() - startTestTime.time().minute();
-	if (alreadyMinute < 0){
+    if (alreadyMinute < 0)
+    {
 		alreadyMinute += 60;
 		alreadyHour -= 1;
 	}
@@ -120,18 +131,21 @@ void test::restTimeUpdateSlot(){
 }
 
 //动态显示测试界面
-void test::startTestSlot(){
-	if (initLabel != NULL){
+void test::startTestSlot()
+{
+    if (initLabel != NULL)
+    {
 		delete initLabel;
 	}
-	if (startButton != NULL){
+    if (startButton != NULL)
+    {
 		delete startButton;
 	}
 	QTimer *timer = new QTimer;
-	connect(timer, SIGNAL(timeout()), this, SLOT(restTimeUpdateSlot()));
+    connect(timer, &QTimer::timeout, this, &test::restTimeUpdateSlot);
 	timer->start(1000);
 	startTestTime = QDateTime::currentDateTime();
-	QDateTime start = QDateTime::currentDateTime();
+    //QDateTime start = QDateTime::currentDateTime();
 	ui.submitButton->setDisabled(false);
 	//ui.scrollArea->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
 	//ui.scrollArea->setWidgetResizable(true);
@@ -148,15 +162,18 @@ void test::startTestSlot(){
 	QSqlQuery query;
 	query.exec("select * from testcase where tid='" + currentTid + "'");
 	QSqlDatabase defaultDB = QSqlDatabase::database();
-	if (defaultDB.driver()->hasFeature(QSqlDriver::QuerySize)) {
+    if (defaultDB.driver()->hasFeature(QSqlDriver::QuerySize))
+    {
 		numRows = query.size();
 	}
-	else{
+    else
+    {
 		// this can be very slow
 		query.last();
 		numRows = query.at() + 1;
 	}
-	while (query.next()){
+    while (query.next())
+    {
         //题目标题
 		int questionId = query.value(1).toInt();
 		QHBoxLayout *contentLayout = new QHBoxLayout;
@@ -225,7 +242,8 @@ void test::startTestSlot(){
 
 
 //提交测试结果
-void test::submitTestSlot(){
+void test::submitTestSlot()
+{
 	QMessageBox msgBox;
 	msgBox.setText(QStringLiteral("提示"));
 	msgBox.setInformativeText(QStringLiteral("您确定要提交试卷吗？"));
@@ -243,7 +261,8 @@ void test::submitTestSlot(){
 	int score = 0;
 	map<int, QButtonGroup*>::const_iterator it = test_map.begin();
 	openDatabase();
-	while (it != test_map.end()){
+    while (it != test_map.end())
+    {
 		int i = (it->second)->checkedId();
 		QString _answer;
 		switch (i)
@@ -267,7 +286,8 @@ void test::submitTestSlot(){
 		query.bindValue(":tid", currentTid);
 		query.bindValue(":qid", it->first);
 		query.exec();
-		while (query.next()){
+        while (query.next())
+        {
 			if (query.value(0).toString() == _answer){
                 //加分
 				score += query.value(1).toInt();
@@ -289,12 +309,14 @@ void test::submitTestSlot(){
 	query.bindValue(":sid", myUser.getSid());
 	query.bindValue(":kid", currentKid);
 	query.exec();
-	while (query.next()){
+    while (query.next())
+    {
 		query.last();
 		 beginTime = query.value(0).toString();
 		qDebug() << score;
 	}
-	if (score >= limitScore){
+    if (score >= limitScore)
+    {
 		pass = true;
 		//更新学习行为记录表中当前用户的最后一条学习记录，修改通过情况
 		query.prepare("update behavior set pass=1 where sid=:sid and kid=:kid and begin=:begin");
@@ -309,7 +331,8 @@ void test::submitTestSlot(){
 		query.exec();
 		
 	}
-	else{
+    else
+    {
 		pass = false;
 		//更新学习行为记录表中当前用户的最后一条学习记录，修改通过情况
 		query.prepare("update behavior set pass=0 where sid=:sid and kid=:kid and begin=:begin");
@@ -317,7 +340,8 @@ void test::submitTestSlot(){
 		query.bindValue(":kid", currentKid);
 		query.bindValue(":begin", beginTime);
 		query.exec();
-		if (_first == "P"){
+        if (_first == "P")
+        {
 			//更新推荐路径表
 			query.prepare("update recpath set state=1 where sid=:sid and kid=:kid");
 			query.bindValue(":sid", myUser.getSid());
@@ -339,41 +363,51 @@ void test::submitTestSlot(){
 	this->db.close();
 	QMessageBox::information(this, QStringLiteral("恭喜"), QStringLiteral("您已经提交成功！"));
     //释放空间
-	if (firstLayout != NULL && firstTitleLabel != NULL){
+    if (firstLayout != NULL && firstTitleLabel != NULL)
+    {
 		delete firstLayout;
 		firstLayout = NULL;
 		delete firstTitleLabel;
 		firstTitleLabel = NULL;
 	}
 	for (vector<QHBoxLayout*>::iterator it = hlayout_vec.begin(); 
-		it != hlayout_vec.end(); ++it){
-		if ((*it) != NULL){
+        it != hlayout_vec.end(); ++it)
+    {
+        if ((*it) != NULL)
+        {
 			delete *it;
 			(*it) = NULL;
 		}
 	}
 	for (vector<QLabel*>::iterator it = label_vec.begin();
-		it != label_vec.end(); ++it){
-		if ((*it) != NULL){
+        it != label_vec.end(); ++it)
+    {
+        if ((*it) != NULL)
+        {
 			delete *it;
 			(*it) = NULL;
 		}
 	}
 	for (vector<QRadioButton*>::iterator it = radiobutton_vec.begin();
-		it != radiobutton_vec.end(); ++it){
-		if ((*it) != NULL){
+        it != radiobutton_vec.end(); ++it)
+    {
+        if ((*it) != NULL)
+        {
 			delete *it;
 			(*it) = NULL;
 		}
 	}
 	for (vector<QButtonGroup*>::iterator it = buttongroup_vec.begin();
-		it != buttongroup_vec.end(); ++it){
-		if ((*it) != NULL){
+        it != buttongroup_vec.end(); ++it)
+    {
+        if ((*it) != NULL)
+        {
 			delete *it;
 			(*it) = NULL;
 		}
 	}
-	if (allLayout != NULL){
+    if (allLayout != NULL)
+    {
 		delete allLayout;
 		allLayout = NULL;
 	}
@@ -381,23 +415,27 @@ void test::submitTestSlot(){
 	allLayout = new QVBoxLayout;	
 	QWidget *w = new QWidget;
 	QLabel *endLabel = new QLabel(w);
-	if (pass){//如果通过测试
+    if (pass)
+    {//如果通过测试
 		endLabel->setText(QStringLiteral("本次考试已经结束，您的分数为： ") + QString::number(score) + QStringLiteral(" ,恭喜您已通过测试，您要继续学习吗？"));
 		QPushButton *nextButton = new QPushButton(w);
 		nextButton->setText(QStringLiteral("下一知识点"));
 		nextButton->setGeometry(280, 180, 110, 30);
-		connect(nextButton, SIGNAL(clicked()), this, SLOT(nextKnowledgeSlot()));
+        connect(nextButton, &QPushButton::clicked, this, &test::nextKnowledgeSlot);
 	}
-	else{//没有通过测试
+    else
+    {//没有通过测试
 		endLabel->setText(QStringLiteral("本次考试已经结束，您的分数为： ") + QString::number(score) + QStringLiteral(" ,您没有通过测试，请重新学习"));
 		QPushButton *againButton = new QPushButton(w);
 		againButton->setText(QStringLiteral("返回教学模块"));
 		againButton->setGeometry(280, 180, 110, 30);
-		if (_first == "B"){
-			connect(againButton, SIGNAL(clicked()), this, SLOT(againKnowledgeSlot()));
+        if (_first == "B")
+        {
+            connect(againButton, &QPushButton::clicked, this, &test::againKnowledgeSlot);
 		}
-		else{
-			connect(againButton, SIGNAL(clicked()), this, SLOT(nextKnowledgeSlot()));
+        else
+        {
+            connect(againButton, &QPushButton::clicked, this, &test::nextKnowledgeSlot);
 		}
 	}
 	endLabel->setGeometry(100, 100, 500, 50);	
@@ -406,19 +444,22 @@ void test::submitTestSlot(){
 }
 
 //下一个知识节点
-void test::nextKnowledgeSlot(){
+void test::nextKnowledgeSlot()
+{
 	beforeKid = currentKid;
 	openDatabase();
 	QSqlQuery query;
 	query.prepare("select kid from recpath where sid=:sid and state=0 order by orders");
 	query.bindValue(":sid", myUser.getSid());
 	query.exec();
-	while (query.next()){
+    while (query.next())
+    {
 		currentKid = query.value(0).toString();
 		qDebug() << currentKid;
 		break;
 	}
-	if (_first=="P"){
+    if (_first=="P")
+    {
 		query.prepare("update recpath set state=0 where sid=:sid and kid=:kid");
 		query.bindValue(":sid", myUser.getSid());
 		query.bindValue(":kid", beforeKid);
@@ -441,6 +482,7 @@ void test::nextKnowledgeSlot(){
 }
 
 //重新学习当前知识点
-void test::againKnowledgeSlot(){
+void test::againKnowledgeSlot()
+{
 	this->close();
 }

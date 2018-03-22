@@ -15,7 +15,8 @@ Node::Node(QPoint c, QString a, int r) :center(c), attribute(a), radius(r)
 	isModelKnowledge = false;
 }
 
-Node::~Node(){
+Node::~Node()
+{
 
 }
 
@@ -85,6 +86,7 @@ void Node::addChild(int childId)
 	children.push_back(childId);
 }
 
-void Node::addParent(int parent){
+void Node::addParent(int parent)
+{
 	parents.push_back(parent);
 }

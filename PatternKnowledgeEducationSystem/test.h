@@ -1,5 +1,4 @@
 /*========= 测试模块 ==========*/
-
 #ifndef TEST_H
 #define TEST_H
 
@@ -43,7 +42,6 @@ private:
 	map<int, QButtonGroup*> test_map;
 	void init();
 	void openDatabase();
-
 
 private slots:
 	void timeUpdateSlot();

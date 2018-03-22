@@ -1,5 +1,4 @@
 /*======== 全局用户类 ======*/
-
 #ifndef USER_H
 #define USER_H
 

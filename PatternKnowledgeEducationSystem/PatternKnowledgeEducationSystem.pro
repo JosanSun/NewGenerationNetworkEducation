@@ -70,3 +70,6 @@ FORMS    += \
 # CONFIG += qaxcontainer  为了使dynamicCall等  ActiveQt\qaxwidget.h 下的相关文件有效
 
 CONFIG += C++11 qaxcontainer
+
+RESOURCES += \
+    educationsystem.qrc

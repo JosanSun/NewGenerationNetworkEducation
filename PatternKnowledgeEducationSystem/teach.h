@@ -1,5 +1,4 @@
 /*========== 教学模块 ==========*/
-
 #ifndef TEACH_H
 #define TEACH_H
 
@@ -11,7 +10,6 @@
 #include "test.h"
 //20170828  改动
 #include <QTableView>
-
 
 class teach : public QWidget
 {
@@ -33,12 +31,8 @@ private:
 	void openDatabase();
     void init();
 	void openXml(QString);
-	
-
-signals:
 
 private slots:
-
 	void timeUpdateSlot();
 	void showDomainKnowledgesSlot(QString);
 	void openUsecaseSlot(QString);

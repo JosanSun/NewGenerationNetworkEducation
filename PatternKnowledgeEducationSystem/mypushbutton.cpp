@@ -6,12 +6,15 @@ myPushButton::myPushButton(QWidget *parent)
 	this->setText("myPushButton");
 }
 
-void myPushButton::mousePressEvent(QMouseEvent *e){
+void myPushButton::mousePressEvent(QMouseEvent * /* e */)
+{
 	myLabelPressed = 1;
 }
 
-void myPushButton::mouseReleaseEvent(QMouseEvent *e){
-	if (myLabelPressed){
+void myPushButton::mouseReleaseEvent(QMouseEvent * /* e */)
+{
+    if (myLabelPressed)
+    {
 		emit clicked(this->text());
 		myLabelPressed = 0;
 	}

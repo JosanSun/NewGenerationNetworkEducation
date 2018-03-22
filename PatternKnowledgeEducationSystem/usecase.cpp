@@ -28,8 +28,8 @@ usecase::usecase(QWidget *parent)
 	ui.usernameLabel->setText(QString::fromStdString(myUser.getName()));
 	init();
 	
-	connect(timer, SIGNAL(timeout()), this, SLOT(updateTimeSlot()));
-    connect(ui.testButton, SIGNAL(clicked()), this, SLOT(goToTestWindowSlot()));//进入测试模块
+    connect(timer, &QTimer::timeout, this, &usecase::updateTimeSlot);
+    connect(ui.testButton, &QPushButton::clicked, this, &usecase::goToTestWindowSlot);//进入测试模块
 
 
     timer->start(1000);
@@ -40,7 +40,8 @@ usecase::~usecase()
 
 }
 
-void usecase::openDatabase(){
+void usecase::openDatabase()
+{
 
 	this->db = QSqlDatabase::addDatabase("QMYSQL");
 	this->db.setHostName("localhost");
@@ -48,43 +49,51 @@ void usecase::openDatabase(){
 	this->db.setPassword("1234");
 	this->db.setDatabaseName("knowledge");
 	bool ok = db.open();
-	if (!ok){
+    if (!ok)
+    {
 		qDebug() << "Failed to connect database login!";
 	}
-	else{
+    else
+    {
 		qDebug() << "Success!";
 	}
 }
 
 //初始化案例播放界面
-void usecase::init(){
+void usecase::init()
+{
 	QString casename = currentCid;
 	openDatabase();
 	QSqlQuery query;
 	QString path;
 	query.exec("select * from teach where kid='" + currentKid + "' and cid='" + currentCid + "'");
-	while (query.next()){
+    while (query.next())
+    {
 		path = query.value(2).toString();
 	}
 	this->db.close();
     //BUG:这是一个坑点，这样取后缀，必须确保只能4个字节的文件名
 	QString _form = casename.remove(0, 5);
-	if (_form == "txt"){
+    if (_form == "txt")
+    {
 		QFile _caseFile(path);
 		if (!_caseFile.open(QIODevice::ReadOnly | QIODevice::Text))
 			return;
 		QTextStream out(&_caseFile);
-		while (out.atEnd() == 0){
+        while (out.atEnd() == 0)
+        {
 			ui.textBrowser->setText(out.readAll());
 		}
     }
-	else if (_form == "html"){
+    else if (_form == "html")
+    {
         path.replace(0, 1, "file:///D:/mycode/Github/NewGenerationNetworkEducation");
 		qDebug() << path;
 		QUrl url(path);		
 		ui.textBrowser->setSource(url);
 	}
-	else if (_form == "swf"){
+    else if (_form == "swf")
+    {
         //path.replace(19, 1, "\\");
         //NOTE:如何改为绝对路径呢？
         qDebug()<<path;   //../knowledge/usecase/U008.swf输出是这个
@@ -111,14 +120,16 @@ void usecase::init(){
     //qDebug()<<"This can be run    ";
 }
 
-void usecase::updateTimeSlot(){
+void usecase::updateTimeSlot()
+{
 	QDateTime time = QDateTime::currentDateTime();
 	ui.currentTimeLabel->setText(time.toString("yyyy-MM-dd \nhh:mm:ss dddd"));
 	note = ui.textEdit->toPlainText();
 }
 
 //进入测试模块
-void usecase::goToTestWindowSlot(){
+void usecase::goToTestWindowSlot()
+{
     qDebug()<<"This can be run    ";
 }
 
@@ -138,14 +149,13 @@ void usecase::on_testButton_clicked()
     query.exec();
     this->db.close();
 
-
     qDebug()<<"This can be run    ";
     testWindow = new test();
     testWindow->setWindowTitle(QStringLiteral("在线网络教学系统客户端"));
     testWindow->setWindowModality(Qt::ApplicationModal);
     testWindow->show();
     testWindow->setAttribute(Qt::WA_DeleteOnClose);
-    connect(testWindow, SIGNAL(destroyed()), this, SLOT(close()));
+    connect(testWindow, &test::destroyed, this, &usecase::close);
 
     this->close();
 }

@@ -1,7 +1,7 @@
 /*======= 知识库查看模块 ========*/
-
 #ifndef KNOWLEDGE_H
 #define KNOWLEDGE_H
+
 #include <QPainter>
 #include <vector>
 #include "node.h"
@@ -70,9 +70,7 @@ private:
 	void getLearningTrack(vector<QString>&); //ymm
 
 	vector<Node> nodesInPic;
-
 	map<QString, int> nodesAttributesMap;
-
 };
 
 #endif // KNOWLEDGE_H
