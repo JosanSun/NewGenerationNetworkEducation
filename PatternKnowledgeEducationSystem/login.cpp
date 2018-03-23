@@ -14,6 +14,9 @@ login::login(QWidget *parent)
     setTabOrder(ui.usernameLineEdit, ui.passwordLineEdit);
     setTabOrder(ui.passwordLineEdit, ui.loginButton);
     setTabOrder(ui.loginButton, ui.registerButton);
+
+    setWindowTitle(tr("在线网络教学系统"));
+
     QPixmap pic;
     pic.load(":/images/online.png");
     ui.picLabel->setPixmap(pic);
