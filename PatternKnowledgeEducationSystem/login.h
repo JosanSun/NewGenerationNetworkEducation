@@ -2,14 +2,17 @@
 #ifndef LOGIN_H
 #define LOGIN_H
 
-#include <QtWidgets/QMainWindow>
+#include <QWidget>
+#include <QLabel>
+#include <QPushButton>
+#include <QTimer>
 #include "ui_login.h"
 #include <QtSql>
 #include "qsqldatabase.h"
 #include "registor.h"
 #include "initial.h"
 
-class login : public QMainWindow
+class login : public QWidget
 {
 	Q_OBJECT
 
@@ -18,12 +21,13 @@ public:
 	~login();
 
 private:
-	Ui::loginClass ui;
+    Ui::login ui;
 	QSqlDatabase db;
 	registor *regWindow;
 	initial *initWindow;
 
 private slots:
+    //void initbar();
 	void loginSlot();
 	void registorSlot();
 };

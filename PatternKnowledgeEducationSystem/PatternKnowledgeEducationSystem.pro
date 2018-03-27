@@ -61,11 +61,11 @@ FORMS    += \
     attribution.ui \
     initial.ui \
     knowledge.ui \
-    login.ui \
     registor.ui \
     teach.ui \
     test.ui \
-    usecase.ui
+    usecase.ui \
+    login.ui
 
 # CONFIG += qaxcontainer  为了使dynamicCall等  ActiveQt\qaxwidget.h 下的相关文件有效
 
