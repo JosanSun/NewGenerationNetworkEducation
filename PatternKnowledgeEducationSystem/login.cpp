@@ -7,21 +7,48 @@
 user myUser;
 
 login::login(QWidget *parent)
-    : QMainWindow(parent)
+    :  QWidget(parent)
 {
     ui.setupUi(this);
 
-    setTabOrder(ui.usernameLineEdit, ui.passwordLineEdit);
-    setTabOrder(ui.passwordLineEdit, ui.loginButton);
-    setTabOrder(ui.loginButton, ui.registerButton);
-    QPixmap pic;
-    pic.load(":/images/online.png");
-    ui.picLabel->setPixmap(pic);
-    ui.picLabel->setScaledContents(true);
-    QObject::connect(ui.loginButton, &QPushButton::clicked, this, &login::loginSlot);//点击登录按钮登录
-    QObject::connect(ui.passwordLineEdit, &QLineEdit::returnPressed, this, &login::loginSlot);//回车键后登录
-    QObject::connect(ui.registerButton, &QPushButton::clicked, this, &login::registorSlot);//注册
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//无边框且最小化任务栏还原
+    //setAttribute(Qt::WA_TranslucentBackground);//窗口背景透明
+    //setAttribute(Qt::WA_DeleteOnClose);
+    QPixmap pixmap = QPixmap(":/images/bj.png").scaled(this->size());
+    QPalette palette(this->palette());
+    palette.setBrush(QPalette::Background, QBrush(pixmap));
+    this->setPalette(palette);//设置窗口背景图
 
+    QPixmap minPix=style()->standardPixmap(QStyle::SP_TitleBarMinButton);
+    QPixmap closePix=style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
+    ui.minibtn->setIcon(minPix);
+    ui.closebtn->setIcon(closePix);//获取并设置最小化、关闭按钮图标
+    ui.minibtn->setStyleSheet("background-color:transparent;");
+    ui.closebtn->setStyleSheet("background-color:transparent;");//最小化、关闭按钮无边框且透明
+
+    //ui.findpwdbtn->setStyleSheet("color:rgb(38 , 133 , 227);background-color:transparent;");
+   // ui.registerbtn->setStyleSheet("color:rgb(38 , 133 , 227);background-color:transparent;");
+  //  ui.loginbtn->setStyleSheet("color:white;background-color:rgb(14 , 150 , 254);border-radius:5px;");//设置其他按钮样式
+
+    ui.usernamebox->setEditable(true);
+    QLineEdit* lineEdit = ui.usernamebox->lineEdit();
+    lineEdit->setPlaceholderText(QStringLiteral("用户名"));
+    ui.passwordtext->setPlaceholderText(QStringLiteral("密码"));//用户名和密码的暗注释
+
+    setTabOrder(ui.usernamebox,ui.passwordtext);
+    setTabOrder(ui.passwordtext, ui.loginbtn);
+    setTabOrder(ui.loginbtn, ui.registerbtn);//Tab键顺序
+
+    QPixmap pic;
+    pic.load(":/images/icon.png");
+    ui.piclabel->setPixmap(pic);
+    ui.piclabel->setScaledContents(true);//设置头像图
+
+    QObject::connect(ui.loginbtn, &QPushButton::clicked, this, &login::loginSlot);//点击登录按钮登录
+    QObject::connect(ui.passwordtext, &QLineEdit::returnPressed, this, &login::loginSlot);//回车键后登录
+    QObject::connect(ui.registerbtn, &QPushButton::clicked, this, &login::registorSlot);//注册
+    QObject::connect(ui.closebtn, &QPushButton::clicked, this, &QWidget::close);//点击关闭
+    QObject::connect(ui.minibtn, &QPushButton::clicked, this, &QWidget::showMinimized);//点击最小化
 }
 
 login::~login()
@@ -49,8 +76,8 @@ void login::loginSlot()
     }
 
 
-    QString _username = ui.usernameLineEdit->text();
-    QString _password = ui.passwordLineEdit->text();
+    QString _username = ui.usernamebox->currentText();
+    QString _password = ui.passwordtext->text();
     QSqlQuery query;
     query.prepare("select * from student where name=:name");
     query.bindValue(":name", _username);
@@ -77,15 +104,15 @@ void login::loginSlot()
             else
             {
                 QMessageBox::information(this, QStringLiteral("错误！"), QStringLiteral("密码错误！"));
-                ui.passwordLineEdit->clear();
+                ui.passwordtext->clear();
             }
         }
     }
     else
     {//结果集为空
         QMessageBox::information(this, QStringLiteral("错误！"), QStringLiteral("您还不是系统用户！请您先注册！"));
-        ui.usernameLineEdit->clear();
-        ui.passwordLineEdit->clear();
+        ui.usernamebox->clear();
+        ui.passwordtext->clear();
         //调用registorSlot()槽函数
         registorSlot();
     }
