@@ -3,12 +3,9 @@
 #define LOGIN_H
 
 #include <QWidget>
-#include <QLabel>
-#include <QPushButton>
-#include <QTimer>
+#include <QSqlDatabase>
+
 #include "ui_login.h"
-#include <QtSql>
-#include "qsqldatabase.h"
 #include "registor.h"
 #include "initial.h"
 

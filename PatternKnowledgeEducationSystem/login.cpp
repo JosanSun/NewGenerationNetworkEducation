@@ -1,8 +1,12 @@
-#include "login.h"
-#include "qpixmap.h"
-#include "user.h"
+#include <QPixmap>
 #include <QDebug>
-#include "qmessagebox.h"
+#include <QMessageBox>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QPalette>
+
+#include "user.h"
+#include "login.h"
 
 user myUser;
 
@@ -11,7 +15,7 @@ login::login(QWidget *parent)
 {
     ui.setupUi(this);
 
-
+    this->setFixedSize(432, 330);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//无边框且最小化任务栏还原
     //setAttribute(Qt::WA_TranslucentBackground);//窗口背景透明
     //setAttribute(Qt::WA_DeleteOnClose);
@@ -22,34 +26,36 @@ login::login(QWidget *parent)
 
     QPixmap minPix=style()->standardPixmap(QStyle::SP_TitleBarMinButton);
     QPixmap closePix=style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
-    ui.minibtn->setIcon(minPix);
-    ui.closebtn->setIcon(closePix);//获取并设置最小化、关闭按钮图标
-    ui.minibtn->setStyleSheet("background-color:transparent;");
-    ui.closebtn->setStyleSheet("background-color:transparent;");//最小化、关闭按钮无边框且透明
+    ui.buttonMin->setIcon(minPix);
+    ui.buttonClose->setIcon(closePix);//获取并设置最小化、关闭按钮图标
+    ui.buttonMin->setStyleSheet("background-color:transparent;");
+    ui.buttonClose->setStyleSheet("background-color:transparent;");//最小化、关闭按钮无边框且透明
 
-    //ui.findpwdbtn->setStyleSheet("color:rgb(38 , 133 , 227);background-color:transparent;");
-   // ui.registerbtn->setStyleSheet("color:rgb(38 , 133 , 227);background-color:transparent;");
-  //  ui.loginbtn->setStyleSheet("color:white;background-color:rgb(14 , 150 , 254);border-radius:5px;");//设置其他按钮样式
+    // ui.buttonFindBackPassword->setStyleSheet("color:rgb(38 , 133 , 227);background-color:transparent;");
+    // ui.buttonRegister->setStyleSheet("color:rgb(38 , 133 , 227);background-color:transparent;");
+    // ui.buttonLogin->setStyleSheet("color:white;background-color:rgb(14 , 150 , 254);border-radius:5px;");//设置其他按钮样式
 
     ui.usernamebox->setEditable(true);
     QLineEdit* lineEdit = ui.usernamebox->lineEdit();
     lineEdit->setPlaceholderText(QStringLiteral("用户名"));
     ui.passwordtext->setPlaceholderText(QStringLiteral("密码"));//用户名和密码的暗注释
 
+    // 设置焦点
+    ui.usernamebox->setFocus();
     setTabOrder(ui.usernamebox,ui.passwordtext);
-    setTabOrder(ui.passwordtext, ui.loginbtn);
-    setTabOrder(ui.loginbtn, ui.registerbtn);//Tab键顺序
+    setTabOrder(ui.passwordtext, ui.buttonLogin);
+    setTabOrder(ui.buttonLogin, ui.buttonRegister);//Tab键顺序
 
     QPixmap pic;
     pic.load(":/images/icon.png");
     ui.piclabel->setPixmap(pic);
     ui.piclabel->setScaledContents(true);//设置头像图
 
-    QObject::connect(ui.loginbtn, &QPushButton::clicked, this, &login::loginSlot);//点击登录按钮登录
+    QObject::connect(ui.buttonLogin, &QPushButton::clicked, this, &login::loginSlot);//点击登录按钮登录
     QObject::connect(ui.passwordtext, &QLineEdit::returnPressed, this, &login::loginSlot);//回车键后登录
-    QObject::connect(ui.registerbtn, &QPushButton::clicked, this, &login::registorSlot);//注册
-    QObject::connect(ui.closebtn, &QPushButton::clicked, this, &QWidget::close);//点击关闭
-    QObject::connect(ui.minibtn, &QPushButton::clicked, this, &QWidget::showMinimized);//点击最小化
+    QObject::connect(ui.buttonRegister, &QPushButton::clicked, this, &login::registorSlot);//注册
+    QObject::connect(ui.buttonClose, &QPushButton::clicked, this, &QWidget::close);//点击关闭
+    QObject::connect(ui.buttonMin, &QPushButton::clicked, this, &QWidget::showMinimized);//点击最小化
 }
 
 login::~login()
