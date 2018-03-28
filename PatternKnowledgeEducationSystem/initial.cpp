@@ -42,6 +42,7 @@ void initial::openDatabase()
     if (!ok)
     {
 		qDebug() << "Failed to connect database login!";
+        QMessageBox::critical(this, tr("严重错误"), tr("系统数据库初始化失败！"));
 	}
     else
     {

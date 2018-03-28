@@ -191,7 +191,10 @@ QLineEdit#passwordtext:hover
          <bool>false</bool>
         </property>
         <property name="echoMode">
-         <enum>QLineEdit::Normal</enum>
+         <enum>QLineEdit::Password</enum>
+        </property>
+        <property name="placeholderText">
+         <string>密码</string>
         </property>
        </widget>
       </item>
@@ -282,6 +285,9 @@ QComboBox::drop-down
     background:transparent;
     padding-right:5px;
 }</string>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
         </property>
         <property name="frame">
          <bool>false</bool>
@@ -383,6 +389,17 @@ QPushButton#buttonLogin:pressed
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>usernamebox</tabstop>
+  <tabstop>passwordtext</tabstop>
+  <tabstop>storepassword</tabstop>
+  <tabstop>autoregister</tabstop>
+  <tabstop>buttonLogin</tabstop>
+  <tabstop>buttonRegister</tabstop>
+  <tabstop>buttonFindBackPassword</tabstop>
+  <tabstop>buttonMin</tabstop>
+  <tabstop>buttonClose</tabstop>
+ </tabstops>
  <resources>
   <include location="educationsystem.qrc"/>
  </resources>

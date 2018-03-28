@@ -3,9 +3,10 @@
 #define REGISTOR_H
 
 #include <QWidget>
-#include "ui_registor.h"
-#include <QtSql>
-#include <qsqldatabase.h>
+
+namespace Ui {
+class registor;
+}
 
 class registor : public QWidget
 {
@@ -15,12 +16,36 @@ public:
 	registor(QWidget *parent = 0);
 	~registor();
 
+    //get and set Functions
+    QString getUserName();
+    QString getSex();
+    QString getPassword();
+    QString getDoublePassword();
+    QString getAge();
+    QString getEducation();
+
+    void resetUserName();
+    void resetSex();
+    void resetPassword();
+    void resetDoublePassword();
+    void resetAge();
+    void resetEducation();
+    void resetAll();
+
+signals:
+    void registerUser();
+    void closeSignal();
+
+protected:
+    void closeEvent(QCloseEvent* ev);
+
 private:
-	Ui::registor ui;
-	QSqlDatabase db;
+    Ui::registor* ui;
 
 private slots:
-	void registerSlot();
+    //void sendRegisterSignal();
+    //void cancel();
+    void on_registerButton_clicked();
 };
 
 #endif // REGISTOR_H

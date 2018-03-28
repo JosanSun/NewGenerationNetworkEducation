@@ -3,6 +3,7 @@
 **/Debug
 **/Release
 
+## ignore the build files
 **build**
 
 ## ignore the vs temp files
@@ -16,3 +17,6 @@
 *.docx
 *.pdf
 *.xlsx
+
+## ignore the scriptFiles folders
+**scriptFiles**

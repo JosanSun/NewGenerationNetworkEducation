@@ -1,6 +1,10 @@
 # Change Log
 # All notable changes to this project will be documented in this file.
 
+## [2.0.1] 2018-03-28
+### Changed
+- 更新类似QQ的登录界面
+
 ## [2.0] 2018-03-22
 ### Changed
 - 将相对路径改为资源文件

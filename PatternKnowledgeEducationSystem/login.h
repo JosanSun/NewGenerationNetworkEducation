@@ -5,9 +5,12 @@
 #include <QWidget>
 #include <QSqlDatabase>
 
-#include "ui_login.h"
 #include "registor.h"
 #include "initial.h"
+
+namespace Ui {
+class login;
+}
 
 class login : public QWidget
 {
@@ -18,7 +21,7 @@ public:
 	~login();
 
 private:
-    Ui::login ui;
+    Ui::login* ui;
 	QSqlDatabase db;
 	registor *regWindow;
 	initial *initWindow;
@@ -27,6 +30,8 @@ private slots:
     //void initbar();
 	void loginSlot();
 	void registorSlot();
+private:
+    void openDatabase();
 };
 
 #endif // LOGIN_H
