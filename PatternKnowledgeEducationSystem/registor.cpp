@@ -12,7 +12,7 @@ registor::registor(QWidget *parent)
 
 registor::~registor()
 {
-
+    delete ui;
 }
 
 QString registor::getUserName()

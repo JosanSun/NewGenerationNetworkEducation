@@ -1,9 +1,14 @@
 # Change Log
 # All notable changes to this project will be documented in this file.
 
-## [2.0.1] 2018-03-28
+## [2.1] 2018-03-28
 ### Changed
 - 更新类似QQ的登录界面
+### Fixed
+- 修正注册界面数据库重复打开问题registor.cpp
+- 调整login, 以及registor ui文件的布局方式
+
+
 
 ## [2.0] 2018-03-22
 ### Changed
