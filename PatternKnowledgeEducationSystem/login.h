@@ -25,13 +25,24 @@ private:
 	QSqlDatabase db;
 	registor *regWindow;
 	initial *initWindow;
+    //mouse moving
+    bool        mMove;
+    QPoint      mPos;
+
+protected:
+    //mouse func
+    virtual void mousePressEvent(QMouseEvent *event);
+    virtual void mouseMoveEvent(QMouseEvent *event);
+    virtual void mouseReleaseEvent(QMouseEvent *event);
 
 private slots:
     //void initbar();
 	void loginSlot();
 	void registorSlot();
+
 private:
     void openDatabase();
+
 };
 
 #endif // LOGIN_H
