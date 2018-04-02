@@ -38,9 +38,17 @@ signals:
 
 protected:
     void closeEvent(QCloseEvent* ev);
+    //mouse func
+    virtual void mousePressEvent(QMouseEvent *event);
+    virtual void mouseMoveEvent(QMouseEvent *event);
+    virtual void mouseReleaseEvent(QMouseEvent *event);
+
 
 private:
     Ui::registor* ui;
+    //mouse moving
+    bool        mMove;
+    QPoint      mPos;
 
 private slots:
     //void sendRegisterSignal();

@@ -16,6 +16,8 @@ login::login(QWidget *parent)
 {
     ui->setupUi(this);
 
+    mMove=false;//mouse moving
+
     this->setFixedSize(432, 330);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//无边框且最小化任务栏还原
     //setAttribute(Qt::WA_TranslucentBackground);//窗口背景透明
@@ -29,12 +31,6 @@ login::login(QWidget *parent)
     QPixmap closePix=style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
     ui->buttonMin->setIcon(minPix);
     ui->buttonClose->setIcon(closePix);//获取并设置最小化、关闭按钮图标
-    ui->buttonMin->setStyleSheet("background-color:transparent;");
-    ui->buttonClose->setStyleSheet("background-color:transparent;");//最小化、关闭按钮无边框且透明
-
-    // ui->buttonFindBackPassword->setStyleSheet("color:rgb(38 , 133 , 227);background-color:transparent;");
-    // ui->buttonRegister->setStyleSheet("color:rgb(38 , 133 , 227);background-color:transparent;");
-    // ui->buttonLogin->setStyleSheet("color:white;background-color:rgb(14 , 150 , 254);border-radius:5px;");//设置其他按钮样式
 
     // ui->usernamebox->setEditable(true);    // 见ui设置
     QLineEdit* lineEdit = ui->usernamebox->lineEdit();
@@ -68,6 +64,36 @@ login::~login()
 {
     db.close();
 }
+
+//重写鼠标函数实现窗口自由移动
+void login::mousePressEvent(QMouseEvent *event)
+{
+    mMove = true;
+    //记录下鼠标相对于窗口的位置
+    //event->globalPos()鼠标按下时，鼠标相对于整个屏幕位置
+    //pos() this->pos()鼠标按下时，窗口相对于整个屏幕位置
+    mPos = event->globalPos() - pos();
+    return QWidget::mousePressEvent(event);
+}
+
+void login::mouseMoveEvent(QMouseEvent *event)
+{
+    //(event->buttons() && Qt::LeftButton)按下是左键
+    //通过事件event->globalPos()知道鼠标坐标，鼠标坐标减去鼠标相对于窗口位置，就是窗口在整个屏幕的坐标
+    if (mMove && (event->buttons() && Qt::LeftButton)
+        && (event->globalPos()-mPos).manhattanLength() > QApplication::startDragDistance())
+    {
+        move(event->globalPos()-mPos);
+        mPos = event->globalPos() - pos();
+    }
+    return QWidget::mouseMoveEvent(event);
+}
+
+void login::mouseReleaseEvent(QMouseEvent *event)
+{
+    mMove = false;
+}
+//mouse END
 
 void login::openDatabase()
 {
