@@ -3,12 +3,13 @@
 #define TEST_H
 
 #include <QWidget>
-#include "ui_test.h"
 #include <QtSql>
 #include <map>
 #include <vector>
-#include "qradiobutton.h"
-#include "qscrollarea.h"
+#include <QRadioButton>
+#include <QScrollArea>
+
+#include "ui_test.h"
 using namespace std;
 
 class test : public QWidget

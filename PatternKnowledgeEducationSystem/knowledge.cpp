@@ -3,14 +3,14 @@
 #include <QDebug>
 #include <vector>
 #include <QMouseEvent>
-#include "node.h"
+#include "helper/node.h"
 #include "qstring.h"
 #include <iostream>
 #include "qsqlquery.h"
 #include "qrect.h"
 #include "qpainterpath.h"
 #include "qpolygon.h"
-#include "user.h"
+#include "helper/user.h"
 
 
 using namespace std;

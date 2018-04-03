@@ -3,9 +3,10 @@
 #define ATTRIBUTION_H
 
 #include <QWidget>
-#include "ui_attribution.h"
 #include <QtSql>
-#include "qsqldatabase.h"
+#include <QSqlDatabase>
+
+#include "ui_attribution.h"
 
 class attribution : public QWidget
 {

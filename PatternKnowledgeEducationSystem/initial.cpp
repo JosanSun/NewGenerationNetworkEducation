@@ -1,29 +1,29 @@
+#include <QTimer>
+#include <QMessageBox>
+#include <QPixmap>
+#include <QDateTime>
+
 #include "initial.h"
-#include "qpixmap.h"
-#include "qdatetime.h"
-#include "qtimer.h"
-#include "user.h"
-#include "qmessagebox.h"
+#include "helper/user.h"
 
 extern user myUser;
 QString currentKid;
 
 initial::initial(QWidget *parent)
-	: QWidget(parent)
+    : QWidget(parent), timer(new QTimer(this))
 {
 	ui.setupUi(this);
-	ui.usernameLabel->setText(QString::fromStdString(myUser.getName()));
-	ui.currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
-	QTimer *timer = new QTimer(this);
+    timer->start(1000);
+    QTimer *timer = new QTimer(this);
 	
 	init();
-	connect(timer, SIGNAL(timeout()), this, SLOT(timerUpDateSlot()));
-    connect(knowledgeClickLabel, &clickablelabel::clicked, this, &initial::goToKnowledgeWindowSlot);//进入知识库查看模块
-    connect(teachClickLabel, &clickablelabel::clicked, this, &initial::goToTeachWindowSlot);//进入教学模块
-    connect(testClickLabel, &clickablelabel::clicked, this, &initial::goToTeachWindowSlot);//进入测试模块
-    connect(userClickLabel, &clickablelabel::clicked, this, &initial::goToTestWindowSlot);//进入用户管理模块
+    connect(timer, &QTimer::timeout, this, &initial::timerUpDateSlot);
+    connect(ui.knowledgeClickLabel, &clickablelabel::clicked, this, &initial::goToKnowledgeWindowSlot);//进入知识库查看模块
+    connect(ui.teachClickLabel, &clickablelabel::clicked, this, &initial::goToTeachWindowSlot);//进入教学模块
+    connect(ui.testClickLabel, &clickablelabel::clicked, this, &initial::goToTeachWindowSlot);//进入测试模块
+    connect(ui.userClickLabel, &clickablelabel::clicked, this, &initial::goToTestWindowSlot);//进入用户管理模块
     connect(ui.quitButton, &QPushButton::clicked, this, &initial::close);//关闭系统
-	timer->start(1000);
+
 }
 
 initial::~initial()
@@ -53,27 +53,8 @@ void initial::openDatabase()
 //初始化四个图片label、当前用户以及用户上次学习到的知识点
 void initial::init()
 {
-	QPixmap pic;
-	knowledgeClickLabel = new clickablelabel(ui.groupBox_2);
-	knowledgeClickLabel->setGeometry(100, 50, 100, 100);
-    pic.load(":/images/1.png");
-	knowledgeClickLabel->setPixmap(pic);
-	knowledgeClickLabel->setScaledContents(true);
-	teachClickLabel = new clickablelabel(ui.groupBox_2);
-	teachClickLabel->setGeometry(320, 50, 100, 100);
-    pic.load(":/images/2.png");
-	teachClickLabel->setPixmap(pic);
-	teachClickLabel->setScaledContents(true);
-	testClickLabel = new clickablelabel(ui.groupBox_2);
-	testClickLabel->setGeometry(100, 250, 100, 100);
-    pic.load(":/images/3.png");
-	testClickLabel->setPixmap(pic);
-	testClickLabel->setScaledContents(true);
-	userClickLabel = new clickablelabel(ui.groupBox_2);
-	userClickLabel->setGeometry(320, 250, 100, 100);
-    pic.load(":/images/4.png");
-	userClickLabel->setPixmap(pic);
-	userClickLabel->setScaledContents(true);
+    ui.usernameLabel->setText(QString::fromStdString(myUser.getName()));
+    ui.currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
 
 	openDatabase();
 
@@ -115,7 +96,7 @@ void initial::init()
 	}
     else
     {//用户没有历史学习数据
-		ui.lastPointnameLabel->setText(QStringLiteral("无"));
+        ui.lastPointnameLabel->setText(tr("无"));
 	}
 	this->db.close();
 }
@@ -146,7 +127,7 @@ void initial::timerUpDateSlot()
 void initial::goToKnowledgeWindowSlot()
 {
 	knowWindow = new knowledge();
-	knowWindow->setWindowTitle(QStringLiteral("在线网络教学系统客户端"));
+    knowWindow->setWindowTitle(tr("在线网络教学系统客户端"));
 	knowWindow->setWindowModality(Qt::ApplicationModal);
 	knowWindow->show();
 	knowWindow->setAttribute(Qt::WA_DeleteOnClose);
@@ -156,11 +137,11 @@ void initial::goToKnowledgeWindowSlot()
 void initial::goToTeachWindowSlot()
 {
 	QString _lastPoint = ui.lastPointnameLabel->text();
-    if (_lastPoint == QStringLiteral("无"))
+    if (_lastPoint == tr("无"))
     {//用户无历史学习数据
 		QMessageBox msgBox;
-		msgBox.setText(QStringLiteral("提示"));
-		msgBox.setInformativeText(QStringLiteral("您是新用户，系统已为您推荐学习路线，是否开始学习？"));
+        msgBox.setText(tr("提示"));
+        msgBox.setInformativeText(tr("您是新用户，系统已为您推荐学习路线，是否开始学习？"));
 		msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 		msgBox.setDefaultButton(QMessageBox::Ok);
 		int ret = msgBox.exec();
@@ -202,8 +183,8 @@ void initial::goToTeachWindowSlot()
 		this->db.close();
 
 		QMessageBox msgBox;
-		msgBox.setText(QStringLiteral("提示"));
-		msgBox.setInformativeText(QStringLiteral("检测到您有历史学习记录，要从上次记录处开始学习吗？"));
+        msgBox.setText(tr("提示"));
+        msgBox.setInformativeText(tr("检测到您有历史学习记录，要从上次记录处开始学习吗？"));
 		msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 		msgBox.setDefaultButton(QMessageBox::Ok);
 		int ret = msgBox.exec();
@@ -213,13 +194,13 @@ void initial::goToTeachWindowSlot()
 			break;
 		case QMessageBox::Cancel:
             //20171002存在一个bug  未能正常调用goToKnowledgeWindowSlot();   它直接显示之前学的知识
-			QMessageBox::information(this, QStringLiteral("提示"), QStringLiteral("请您在知识地图上选择要开始学习的知识"));
+            QMessageBox::information(this, tr("提示"), tr("请您在知识地图上选择要开始学习的知识"));
 			goToKnowledgeWindowSlot();
 			break;
 		}
 	}
 	teachWindow = new teach();
-	teachWindow->setWindowTitle(QStringLiteral("在线网络教学系统客户端"));
+    teachWindow->setWindowTitle(tr("在线网络教学系统客户端"));
 	teachWindow->setWindowModality(Qt::ApplicationModal);
 	teachWindow->show();
 	teachWindow->setAttribute(Qt::WA_DeleteOnClose);
@@ -230,7 +211,7 @@ void initial::goToTeachWindowSlot()
 void initial::goToTestWindowSlot()
 {
 	testWindow = new test();
-	testWindow->setWindowTitle(QStringLiteral("在线网络教学系统客户端"));
+    testWindow->setWindowTitle(tr("在线网络教学系统客户端"));
 	testWindow->setWindowModality(Qt::ApplicationModal);
 	testWindow->show();
 	testWindow->setAttribute(Qt::WA_DeleteOnClose);
@@ -241,7 +222,7 @@ void initial::goToTestWindowSlot()
 void initial::goToUserWindowSlot()
 {
 	adminWindow = new administrate();
-	adminWindow->setWindowTitle(QStringLiteral("在线网络教学系统客户端"));
+    adminWindow->setWindowTitle(tr("在线网络教学系统客户端"));
 	adminWindow->setWindowModality(Qt::ApplicationModal);
 	adminWindow->show();
 	adminWindow->setAttribute(Qt::WA_DeleteOnClose);

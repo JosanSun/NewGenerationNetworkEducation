@@ -3,13 +3,13 @@
 #define TEACH_H
 
 #include <QWidget>
-#include "ui_teach.h"
 #include <QtSql>
-#include "qsqldatabase.h"
+#include <QSqlDatabase>
+#include <QTableView>
+
+#include "ui_teach.h"
 #include "usecase.h"
 #include "test.h"
-//20170828  改动
-#include <QTableView>
 
 class teach : public QWidget
 {

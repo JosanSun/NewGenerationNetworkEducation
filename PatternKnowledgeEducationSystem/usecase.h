@@ -3,9 +3,10 @@
 #define USECASE_H
 
 #include <QWidget>
-#include "ui_usecase.h"
 #include <QtSql>
-#include "qsqldatabase.h"
+#include <QSqlDatabase>
+
+#include "ui_usecase.h"
 #include "test.h"
 
 class usecase : public QWidget

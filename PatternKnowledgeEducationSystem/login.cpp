@@ -5,7 +5,7 @@
 #include <QPushButton>
 #include <QPalette>
 
-#include "user.h"
+#include "helper/user.h"
 #include "login.h"
 #include "ui_login.h"
 
@@ -89,7 +89,7 @@ void login::mouseMoveEvent(QMouseEvent *event)
     return QWidget::mouseMoveEvent(event);
 }
 
-void login::mouseReleaseEvent(QMouseEvent *event)
+void login::mouseReleaseEvent(QMouseEvent* /* event */)
 {
     mMove = false;
 }

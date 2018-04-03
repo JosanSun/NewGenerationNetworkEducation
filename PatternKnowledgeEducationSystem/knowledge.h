@@ -4,12 +4,12 @@
 
 #include <QPainter>
 #include <vector>
-#include "node.h"
-#include "qstring.h"
 #include <QWidget>
 #include <QtSql>
-#include "ui_knowledge.h"
 #include <map>
+
+#include "helper/node.h"
+#include "ui_knowledge.h"
 #include "attribution.h"
 
 using namespace std;

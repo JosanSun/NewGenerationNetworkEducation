@@ -14,7 +14,7 @@ registor::registor(QWidget *parent)
 {
     ui->setupUi(this);
 
-    mMove=false;//mouse moving
+    mMove = false;//mouse moving
 
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//无边框且最小化任务栏还原
 
@@ -67,7 +67,7 @@ void registor::mouseMoveEvent(QMouseEvent *event)
     return QWidget::mouseMoveEvent(event);
 }
 
-void registor::mouseReleaseEvent(QMouseEvent *event)
+void registor::mouseReleaseEvent(QMouseEvent * /* event */)
 {
     mMove = false;
 }

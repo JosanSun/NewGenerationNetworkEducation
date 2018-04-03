@@ -1,11 +1,11 @@
 #include "teach.h"
 #include "qdatetime.h"
 #include "qtimer.h"
-#include "user.h"
+#include "helper/user.h"
 #include "qfile.h"
 #include "qtextstream.h"
 #include "qtableview.h"
-#include "mypushbutton.h"
+#include "helper/mypushbutton.h"
 #include <QtXml>
 #include <QDomDocument>
 #include "qdesktopservices.h"

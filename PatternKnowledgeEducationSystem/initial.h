@@ -3,12 +3,13 @@
 #define INITIAL_H
 
 #include <QWidget>
-#include "ui_initial.h"
-#include "clickablelabel.h"
 #include <QtSql>
+#include <QSqlDatabase>
+
+#include "ui_initial.h"
+#include "helper/clickablelabel.h"
 #include "knowledge.h"
 #include "teach.h"
-#include "qsqldatabase.h"
 #include "test.h"
 #include "administrate.h"
 
@@ -23,14 +24,11 @@ public:
 private:
 	Ui::initial ui;
 	QSqlDatabase db;
-	clickablelabel *knowledgeClickLabel;
-	clickablelabel *teachClickLabel;
-	clickablelabel *testClickLabel;
-	clickablelabel *userClickLabel;
-	knowledge *knowWindow;
-	teach *teachWindow;
-	test *testWindow;
-	administrate *adminWindow;
+    QTimer* timer = nullptr;
+    knowledge* knowWindow = nullptr;
+    teach* teachWindow = nullptr;
+    test* testWindow = nullptr;
+    administrate* adminWindow = nullptr;
 	void openDatabase();
 	void init();
 	void showFirstKnowledge();

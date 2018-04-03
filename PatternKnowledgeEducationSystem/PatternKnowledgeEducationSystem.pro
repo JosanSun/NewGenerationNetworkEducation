@@ -26,35 +26,35 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
     administrate.cpp \
     attribution.cpp \
-    clickablelabel.cpp \
-    cogmodel.cpp \
+    helper/clickablelabel.cpp \
+    helper/cogmodel.cpp \
     initial.cpp \
     knowledge.cpp \
     login.cpp \
-    mypushbutton.cpp \
-    node.cpp \
+    helper/mypushbutton.cpp \
+    helper/node.cpp \
     registor.cpp \
     teach.cpp \
     test.cpp \
     usecase.cpp \
-    user.cpp
+    helper/user.cpp
 
 HEADERS  += \
     administrate.h \
     attribution.h \
-    clickablelabel.h \
-    cogmodel.h \
+    helper/clickablelabel.h \
+    helper/myheaders.h \
+    helper/cogmodel.h \
     initial.h \
     knowledge.h \
     login.h \
-    mypushbutton.h \
-    node.h \
+    helper/mypushbutton.h \
+    helper/node.h \
     registor.h \
-    resource.h \
     teach.h \
     test.h \
     usecase.h \
-    user.h
+    helper/user.h
 
 FORMS    += \
     administrate.ui \
