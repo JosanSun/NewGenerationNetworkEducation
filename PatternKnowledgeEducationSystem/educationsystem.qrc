@@ -8,5 +8,6 @@
         <file>images/icon.png</file>
         <file>images/bj.png</file>
         <file>images/zc.png</file>
+        <file>images/downarrow.png</file>
     </qresource>
 </RCC>
