@@ -16,18 +16,18 @@ extern user myUser;
 QString note;
 
 usecase::usecase(QWidget *parent)
-	: QWidget(parent)
+    : QWidget(parent)
 {
-	ui.setupUi(this);
+    ui.setupUi(this);
     ui.textEdit->setReadOnly(false);
     //qDebug()<<"This is runing";
     QString str = "开始测试";
     ui.textEdit->setText(str);
-	ui.currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
+    ui.currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
     QTimer *timer = new QTimer(this);
-	ui.usernameLabel->setText(QString::fromStdString(myUser.getName()));
-	init();
-	
+    ui.usernameLabel->setText(QString::fromStdString(myUser.getName()));
+    init();
+
     connect(timer, &QTimer::timeout, this, &usecase::updateTimeSlot);
     connect(ui.testButton, &QPushButton::clicked, this, &usecase::goToTestWindowSlot);//进入测试模块
 
@@ -43,62 +43,62 @@ usecase::~usecase()
 void usecase::openDatabase()
 {
 
-	this->db = QSqlDatabase::addDatabase("QMYSQL");
-	this->db.setHostName("localhost");
-	this->db.setUserName("root");
-	this->db.setPassword("1234");
-	this->db.setDatabaseName("knowledge");
-	bool ok = db.open();
+    this->db = QSqlDatabase::addDatabase("QMYSQL");
+    this->db.setHostName("localhost");
+    this->db.setUserName("root");
+    this->db.setPassword("1234");
+    this->db.setDatabaseName("knowledge");
+    bool ok = db.open();
     if (!ok)
     {
-		qDebug() << "Failed to connect database login!";
-	}
+        qDebug() << "Failed to connect database login!";
+    }
     else
     {
-		qDebug() << "Success!";
-	}
+        qDebug() << "Success!";
+    }
 }
 
 //初始化案例播放界面
 void usecase::init()
 {
-	QString casename = currentCid;
-	openDatabase();
-	QSqlQuery query;
-	QString path;
-	query.exec("select * from teach where kid='" + currentKid + "' and cid='" + currentCid + "'");
+    QString casename = currentCid;
+    openDatabase();
+    QSqlQuery query;
+    QString path;
+    query.exec("select * from teach where kid='" + currentKid + "' and cid='" + currentCid + "'");
     while (query.next())
     {
-		path = query.value(2).toString();
-	}
-	this->db.close();
+        path = query.value(2).toString();
+    }
+    this->db.close();
     //BUG:这是一个坑点，这样取后缀，必须确保只能4个字节的文件名
-	QString _form = casename.remove(0, 5);
+    QString _form = casename.remove(0, 5);
     if (_form == "txt")
     {
-		QFile _caseFile(path);
-		if (!_caseFile.open(QIODevice::ReadOnly | QIODevice::Text))
-			return;
-		QTextStream out(&_caseFile);
+        QFile _caseFile(path);
+        if (!_caseFile.open(QIODevice::ReadOnly | QIODevice::Text))
+            return;
+        QTextStream out(&_caseFile);
         while (out.atEnd() == 0)
         {
-			ui.textBrowser->setText(out.readAll());
-		}
+            ui.textBrowser->setText(out.readAll());
+        }
     }
     else if (_form == "html")
     {
         path.replace(0, 1, "file:///D:/mycode/Github/NewGenerationNetworkEducation");
-		qDebug() << path;
-		QUrl url(path);		
-		ui.textBrowser->setSource(url);
-	}
+        qDebug() << path;
+        QUrl url(path);
+        ui.textBrowser->setSource(url);
+    }
     else if (_form == "swf")
     {
         //path.replace(19, 1, "\\");
         //NOTE:如何改为绝对路径呢？
         qDebug()<<path;   //../knowledge/usecase/U008.swf输出是这个
         path.replace(0, 2, "D:/mycode/Github/NewGenerationNetworkEducation");
-		qDebug() << path;
+        qDebug() << path;
 
         //BUG:这个会不停的运行，然后占据着  使得不能触发按钮点击事件
         //
@@ -108,23 +108,23 @@ void usecase::init()
         flash->dynamicCall("LoadMovie(long,string)", 0, path);
         flash->show();
         flash->setAttribute(Qt::WA_DeleteOnClose);
-		/*QTime t;
-		t.start();
-		while (t.elapsed()<5000)
-		{
-			QApplication::processEvents();
-		}
-		flash->close();*/
-	}
+        /*QTime t;
+        t.start();
+        while (t.elapsed()<5000)
+        {
+            QApplication::processEvents();
+        }
+        flash->close();*/
+    }
 
     //qDebug()<<"This can be run    ";
 }
 
 void usecase::updateTimeSlot()
 {
-	QDateTime time = QDateTime::currentDateTime();
-	ui.currentTimeLabel->setText(time.toString("yyyy-MM-dd \nhh:mm:ss dddd"));
-	note = ui.textEdit->toPlainText();
+    QDateTime time = QDateTime::currentDateTime();
+    ui.currentTimeLabel->setText(time.toString("yyyy-MM-dd \nhh:mm:ss dddd"));
+    note = ui.textEdit->toPlainText();
 }
 
 //进入测试模块
