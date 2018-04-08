@@ -8,16 +8,16 @@
 
 class myPushButton : public QPushButton
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit myPushButton(QWidget *parent);
-	int myLabelPressed;
-	void mousePressEvent(QMouseEvent *e);
-	void mouseReleaseEvent(QMouseEvent *e);
+    explicit myPushButton(QWidget *parent);
+    int myLabelPressed;
+    void mousePressEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
 
 signals:
-    void clicked(QString);	
+    void clicked(QString);
 };
 
 #endif // MYPUSHBUTTON_H

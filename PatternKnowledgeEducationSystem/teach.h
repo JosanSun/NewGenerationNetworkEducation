@@ -13,34 +13,34 @@
 
 class teach : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	teach(QWidget *parent = 0);
-	~teach();
+    teach(QWidget *parent = 0);
+    ~teach();
 
 private:
-	Ui::teach ui;
-	QSqlDatabase db;
-	QWidget *domainKnowWidget;
-	QTableView *bkTableView;
-	QTableView *pkTableView;
-	usecase *usecaseWindow;
-	test *testWindow;
-	bool haveDomainTab;
-	void openDatabase();
+    Ui::teach ui;
+    QSqlDatabase db;
+    QWidget *domainKnowWidget;
+    QTableView *bkTableView;
+    QTableView *pkTableView;
+    usecase *usecaseWindow;
+    test *testWindow;
+    bool haveDomainTab;
+    void openDatabase();
     void init();
-	void openXml(QString);
+    void openXml(QString);
 
 private slots:
-	void timeUpdateSlot();
-	void showDomainKnowledgesSlot(QString);
-	void openUsecaseSlot(QString);
-	void playAgainSlot();
-	void changeCaseSlot();
-	void goToDiscussionSlot();
-	void goToTestSlot();
-	void updateBehaviorTableSlot();
+    void timeUpdateSlot();
+    void showDomainKnowledgesSlot(QString);
+    void openUsecaseSlot(QString);
+    void playAgainSlot();
+    void changeCaseSlot();
+    void goToDiscussionSlot();
+    void goToTestSlot();
+    void updateBehaviorTableSlot();
     //void updateCurrentKidSlot();
     //void testSlot();
 };

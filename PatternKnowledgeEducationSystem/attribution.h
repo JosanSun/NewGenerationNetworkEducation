@@ -10,18 +10,18 @@
 
 class attribution : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	attribution(QWidget *parent = 0);
-	~attribution();
+    attribution(QWidget *parent = 0);
+    ~attribution();
 
 private:
-	Ui::attribution ui;
-	QSqlDatabase db;
-	void init();
-	void openDB();
-	void openXml(QString);
+    Ui::attribution ui;
+    QSqlDatabase db;
+    void init();
+    void openDB();
+    void openXml(QString);
 };
 
 #endif // ATTRIBUTION_H

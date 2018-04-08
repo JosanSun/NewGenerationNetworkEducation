@@ -15,23 +15,23 @@
 
 class initial : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	initial(QWidget *parent = 0);
-	~initial();
+    initial(QWidget *parent = 0);
+    ~initial();
 
 private:
-	Ui::initial ui;
-	QSqlDatabase db;
+    Ui::initial ui;
+    QSqlDatabase db;
     QTimer* timer = nullptr;
     knowledge* knowWindow = nullptr;
     teach* teachWindow = nullptr;
     test* testWindow = nullptr;
     administrate* adminWindow = nullptr;
-	void openDatabase();
-	void init();
-	void showFirstKnowledge();
+    void openDatabase();
+    void init();
+    void showFirstKnowledge();
 
     //mouse moving
     bool        mMove;
@@ -44,12 +44,12 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent *event);
 
 private slots:
-	void timerUpDateSlot();
-	void goToKnowledgeWindowSlot();
-	void goToTeachWindowSlot();
-	void goToTestWindowSlot();
-	void goToUserWindowSlot();
-	void updateCurrentKidSlot();
+    void timerUpDateSlot();
+    void goToKnowledgeWindowSlot();
+    void goToTeachWindowSlot();
+    void goToTestWindowSlot();
+    void goToUserWindowSlot();
+    void updateCurrentKidSlot();
 };
 
 #endif // INITIAL_H

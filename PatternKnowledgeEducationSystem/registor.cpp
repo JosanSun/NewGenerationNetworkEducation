@@ -59,7 +59,7 @@ void registor::mouseMoveEvent(QMouseEvent *event)
     //(event->buttons() && Qt::LeftButton)按下是左键
     //通过事件event->globalPos()知道鼠标坐标，鼠标坐标减去鼠标相对于窗口位置，就是窗口在整个屏幕的坐标
     if (mMove && (event->buttons() && Qt::LeftButton)
-        && (event->globalPos()-mPos).manhattanLength() > QApplication::startDragDistance())
+            && (event->globalPos()-mPos).manhattanLength() > QApplication::startDragDistance())
     {
         move(event->globalPos()-mPos);
         mPos = event->globalPos() - pos();

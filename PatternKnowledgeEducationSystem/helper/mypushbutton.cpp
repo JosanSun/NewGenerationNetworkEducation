@@ -1,21 +1,21 @@
 #include "mypushbutton.h"
 
 myPushButton::myPushButton(QWidget *parent)
-	: QPushButton(parent)
+    : QPushButton(parent)
 {
-	this->setText("myPushButton");
+    this->setText("myPushButton");
 }
 
 void myPushButton::mousePressEvent(QMouseEvent * /* e */)
 {
-	myLabelPressed = 1;
+    myLabelPressed = 1;
 }
 
 void myPushButton::mouseReleaseEvent(QMouseEvent * /* e */)
 {
     if (myLabelPressed)
     {
-		emit clicked(this->text());
-		myLabelPressed = 0;
-	}
+        emit clicked(this->text());
+        myLabelPressed = 0;
+    }
 }

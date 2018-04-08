@@ -8,16 +8,16 @@
 
 class clickablelabel : public QLabel
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	clickablelabel(QWidget *parent = 0);
-	int myLabelPressed;
-	void mousePressEvent(QMouseEvent *e);
-	void mouseReleaseEvent(QMouseEvent *e);
+    clickablelabel(QWidget *parent = 0);
+    int myLabelPressed;
+    void mousePressEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
 
 signals:
-	void clicked();
+    void clicked();
 };
 
 #endif // CLICKABLELABEL_H

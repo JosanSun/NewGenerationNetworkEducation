@@ -11,22 +11,22 @@
 
 class usecase : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	usecase(QWidget *parent = 0);
-	~usecase();
+    usecase(QWidget *parent = 0);
+    ~usecase();
 
 private:
-	Ui::usecase ui;
-	test *testWindow;
-	QSqlDatabase db;	
-	void openDatabase();
-	void init();
+    Ui::usecase ui;
+    test *testWindow;
+    QSqlDatabase db;
+    void openDatabase();
+    void init();
 
 private slots:
-	void updateTimeSlot();
-	void goToTestWindowSlot();
+    void updateTimeSlot();
+    void goToTestWindowSlot();
     void on_testButton_clicked();
     void on_pushButton_clicked();
 };

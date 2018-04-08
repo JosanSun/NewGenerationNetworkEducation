@@ -10,11 +10,11 @@ class registor;
 
 class registor : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	registor(QWidget *parent = 0);
-	~registor();
+    registor(QWidget *parent = 0);
+    ~registor();
 
     //get and set Functions
     QString getUserName();

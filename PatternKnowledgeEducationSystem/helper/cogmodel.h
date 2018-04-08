@@ -8,22 +8,22 @@ using namespace std;
 class cogmodel
 {
 public:
-	cogmodel();
-	~cogmodel();
-	void setCogform(string);
-	void setStrategy(string);
-	void setCogstyle(string);
-	void setCogstructure(string);
-	string getCogform();
-	string getStrategy();
-	string getCogstyle();
-	string getCogstructure();
+    cogmodel();
+    ~cogmodel();
+    void setCogform(string);
+    void setStrategy(string);
+    void setCogstyle(string);
+    void setCogstructure(string);
+    string getCogform();
+    string getStrategy();
+    string getCogstyle();
+    string getCogstructure();
 
 private:
-	string cogform;
-	string strategy;
-	string cogstyle;
-	string cogstructure;
+    string cogform;
+    string strategy;
+    string cogstyle;
+    string cogstructure;
 };
 
 #endif

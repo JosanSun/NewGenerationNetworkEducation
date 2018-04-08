@@ -12,28 +12,28 @@
 
 class administrate : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	administrate(QWidget *parent = 0);
-	~administrate();
+    administrate(QWidget *parent = 0);
+    ~administrate();
 
 private:
-	Ui::administrate ui;
-	QSqlDatabase db;
-	bool havePathTab;
-	bool haveBehaviorTab;
-	QWidget *pathWidget;
-	QWidget *behaviorWidget;
-	QTableView *pathTableView;
-	QTableView *behaviorTableView;
-	void openDatabase();
-	void init();
+    Ui::administrate ui;
+    QSqlDatabase db;
+    bool havePathTab;
+    bool haveBehaviorTab;
+    QWidget *pathWidget;
+    QWidget *behaviorWidget;
+    QTableView *pathTableView;
+    QTableView *behaviorTableView;
+    void openDatabase();
+    void init();
 
 private slots:
-	void updateTimeSlot();
-	void modifyInformationSlot();
-	void saveInformationSlot();
+    void updateTimeSlot();
+    void modifyInformationSlot();
+    void saveInformationSlot();
 };
 
 #endif // ADMINISTRATE_H

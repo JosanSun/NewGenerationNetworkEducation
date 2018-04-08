@@ -41,15 +41,15 @@ login::login(QWidget *parent)
     // 设置焦点以及tab顺序
     ui->usernamebox->setFocus();
     // 20180328 -- 以后关于setTabOrder的处理统一到UI上搞定
-//    setTabOrder(ui->usernamebox,ui->passwordtext);
-//    setTabOrder(ui->passwordtext, ui->buttonLogin);
-//    setTabOrder(ui->buttonLogin, ui->buttonRegister);//Tab键顺序
+    //    setTabOrder(ui->usernamebox,ui->passwordtext);
+    //    setTabOrder(ui->passwordtext, ui->buttonLogin);
+    //    setTabOrder(ui->buttonLogin, ui->buttonRegister);//Tab键顺序
 
     // 20180328 -- 关于label设定图标的，统一用UI设计，图片统一用资源文件，这样设计图标位置更方便。
-//    QPixmap pic;
-//    pic.load(":/images/icon.png");
-//    ui->piclabel->setPixmap(pic);
-//    ui->piclabel->setScaledContents(true);//设置头像图
+    //    QPixmap pic;
+    //    pic.load(":/images/icon.png");
+    //    ui->piclabel->setPixmap(pic);
+    //    ui->piclabel->setScaledContents(true);//设置头像图
 
     QObject::connect(ui->buttonLogin, &QPushButton::clicked, this, &login::loginSlot);          // 点击登录按钮登录
     QObject::connect(ui->passwordtext, &QLineEdit::returnPressed, this, &login::loginSlot);     // 回车键后登录
@@ -81,7 +81,7 @@ void login::mouseMoveEvent(QMouseEvent *event)
     //(event->buttons() && Qt::LeftButton)按下是左键
     //通过事件event->globalPos()知道鼠标坐标，鼠标坐标减去鼠标相对于窗口位置，就是窗口在整个屏幕的坐标
     if (mMove && (event->buttons() && Qt::LeftButton)
-        && (event->globalPos()-mPos).manhattanLength() > QApplication::startDragDistance())
+            && (event->globalPos()-mPos).manhattanLength() > QApplication::startDragDistance())
     {
         move(event->globalPos()-mPos);
         mPos = event->globalPos() - pos();
@@ -237,9 +237,9 @@ void login::registorSlot()
     });
     connect(regWindow, &registor::closeSignal,
             [=]()
-            {
-                this->show();
-            });
+    {
+        this->show();
+    });
 
     regWindow->show();
 }

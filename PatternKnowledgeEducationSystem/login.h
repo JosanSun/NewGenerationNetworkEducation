@@ -14,17 +14,17 @@ class login;
 
 class login : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	login(QWidget *parent = 0);
-	~login();
+    login(QWidget *parent = 0);
+    ~login();
 
 private:
     Ui::login* ui;
-	QSqlDatabase db;
-	registor *regWindow;
-	initial *initWindow;
+    QSqlDatabase db;
+    registor *regWindow;
+    initial *initWindow;
     //mouse moving
     bool        mMove;
     QPoint      mPos;
@@ -37,8 +37,8 @@ protected:
 
 private slots:
     //void initbar();
-	void loginSlot();
-	void registorSlot();
+    void loginSlot();
+    void registorSlot();
 
 private:
     void openDatabase();
