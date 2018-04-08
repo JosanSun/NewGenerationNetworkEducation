@@ -18,5 +18,8 @@
 *.pdf
 *.xlsx
 
+## ignore the auto save files
+*.autosave
+
 ## ignore the scriptFiles folders
 **scriptFiles**
