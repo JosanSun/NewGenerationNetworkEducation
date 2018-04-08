@@ -12,9 +12,27 @@ QString currentKid;
 initial::initial(QWidget *parent)
     : QWidget(parent), timer(new QTimer(this))
 {
-	ui.setupUi(this);
+    ui.setupUi(this);
+
+    mMove=false;//mouse moving
+
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//无边框且最小化任务栏还原
+
+    QPalette palette(this->palette());
+    palette.setColor(QPalette::Background, Qt::white);
+    this->setPalette(palette);//设置窗口背景颜色：白
+
+    QPixmap minPix=style()->standardPixmap(QStyle::SP_TitleBarMinButton);
+    QPixmap closePix=style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
+    ui.buttonMin->setIcon(minPix);
+    ui.buttonClose->setIcon(closePix);//获取并设置最
+    QObject::connect(ui.buttonClose, &QPushButton::clicked, this, &initial::close);              // 点击关闭
+    QObject::connect(ui.buttonMin, &QPushButton::clicked, this, &initial::showMinimized);        // 点击最小化小化、关闭按钮图标
+
+	ui.usernameLabel->setText(QString::fromStdString(myUser.getName()));
+	ui.currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
+	QTimer *timer = new QTimer(this);
     timer->start(1000);
-    QTimer *timer = new QTimer(this);
 	
 	init();
     connect(timer, &QTimer::timeout, this, &initial::timerUpDateSlot);
@@ -30,6 +48,36 @@ initial::~initial()
 {
 
 }
+
+//重写鼠标函数实现窗口自由移动
+void initial::mousePressEvent(QMouseEvent *event)
+{
+    mMove = true;
+    //记录下鼠标相对于窗口的位置
+    //event->globalPos()鼠标按下时，鼠标相对于整个屏幕位置
+    //pos() this->pos()鼠标按下时，窗口相对于整个屏幕位置
+    mPos = event->globalPos() - pos();
+    return QWidget::mousePressEvent(event);
+}
+
+void initial::mouseMoveEvent(QMouseEvent *event)
+{
+    //(event->buttons() && Qt::LeftButton)按下是左键
+    //通过事件event->globalPos()知道鼠标坐标，鼠标坐标减去鼠标相对于窗口位置，就是窗口在整个屏幕的坐标
+    if (mMove && (event->buttons() && Qt::LeftButton)
+        && (event->globalPos()-mPos).manhattanLength() > QApplication::startDragDistance())
+    {
+        move(event->globalPos()-mPos);
+        mPos = event->globalPos() - pos();
+    }
+    return QWidget::mouseMoveEvent(event);
+}
+
+void initial::mouseReleaseEvent(QMouseEvent *event)
+{
+    mMove = false;
+}
+//mouse END
 
 void initial::openDatabase()
 {
@@ -120,7 +168,7 @@ void initial::showFirstKnowledge()
 void initial::timerUpDateSlot()
 {
 	QDateTime time = QDateTime::currentDateTime();
-	ui.currentTimeLabel->setText(time.toString("yyyy-MM-dd \nhh:mm:ss dddd"));
+    ui.currentTimeLabel->setText(time.toString("yyyy-MM-dd \nhh:mm:ss \ndddd"));
 }
 
 //知识可视化显示模块
