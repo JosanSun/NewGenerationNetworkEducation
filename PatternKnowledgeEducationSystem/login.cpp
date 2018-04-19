@@ -5,9 +5,10 @@
 #include <QPushButton>
 #include <QPalette>
 
-#include "helper/user.h"
 #include "login.h"
 #include "ui_login.h"
+#include "helper/user.h"
+
 
 user myUser;
 
@@ -15,9 +16,26 @@ login::login(QWidget *parent)
     :  QWidget(parent), ui(new Ui::login)
 {
     ui->setupUi(this);
+    initUI();
 
     mMove=false;//mouse moving
 
+    connect(ui->buttonLogin, &QPushButton::clicked, this, &login::loginSlot);          // 点击登录按钮登录
+    connect(ui->passwordtext, &QLineEdit::returnPressed, this, &login::loginSlot);     // 回车键后登录
+    connect(ui->buttonRegister, &QPushButton::clicked, this, &login::registorSlot);    // 注册
+    connect(ui->buttonClose, &QPushButton::clicked, this, &login::close);              // 点击关闭
+    connect(ui->buttonMin, &QPushButton::clicked, this, &login::showMinimized);        // 点击最小化
+
+    openDatabase();
+}
+
+login::~login()
+{
+    delete ui;
+}
+
+void login::initUI()
+{
     this->setFixedSize(432, 330);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//无边框且最小化任务栏还原
     //setAttribute(Qt::WA_TranslucentBackground);//窗口背景透明
@@ -50,19 +68,6 @@ login::login(QWidget *parent)
     //    pic.load(":/images/icon.png");
     //    ui->piclabel->setPixmap(pic);
     //    ui->piclabel->setScaledContents(true);//设置头像图
-
-    QObject::connect(ui->buttonLogin, &QPushButton::clicked, this, &login::loginSlot);          // 点击登录按钮登录
-    QObject::connect(ui->passwordtext, &QLineEdit::returnPressed, this, &login::loginSlot);     // 回车键后登录
-    QObject::connect(ui->buttonRegister, &QPushButton::clicked, this, &login::registorSlot);    // 注册
-    QObject::connect(ui->buttonClose, &QPushButton::clicked, this, &login::close);              // 点击关闭
-    QObject::connect(ui->buttonMin, &QPushButton::clicked, this, &login::showMinimized);        // 点击最小化
-
-    openDatabase();
-}
-
-login::~login()
-{
-    db.close();
 }
 
 //重写鼠标函数实现窗口自由移动
@@ -147,10 +152,13 @@ void login::loginSlot()
                 //对全局myUser进行部分初始化
                 myUser.setName(_username.toStdString());
                 myUser.setPassword(_password.toStdString());
+                QString connectName = db.connectionName();
+                db = QSqlDatabase();
+                db.removeDatabase(connectName);
+                db.close();
                 initWindow = new initial();
-                initWindow->setWindowTitle(tr("在线网络教学系统客户端"));
+                // initWindow->setCurrentUserId(query.value(0).toString());   // 这个用来解决全局变量的设定
                 initWindow->show();
-                initWindow->setAttribute(Qt::WA_DeleteOnClose);
                 //关闭登录窗口
                 this->close();
             }
@@ -180,9 +188,6 @@ void login::registorSlot()
 {
     hide();
     regWindow = new registor();
-    regWindow->setWindowTitle(tr("在线网络教学系统客户端"));
-    regWindow->setWindowModality(Qt::ApplicationModal);
-    regWindow->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(regWindow, &registor::registerUser,
             [=]()

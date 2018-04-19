@@ -19,16 +19,6 @@ class login : public QWidget
 public:
     login(QWidget *parent = 0);
     ~login();
-
-private:
-    Ui::login* ui;
-    QSqlDatabase db;
-    registor *regWindow;
-    initial *initWindow;
-    //mouse moving
-    bool        mMove;
-    QPoint      mPos;
-
 protected:
     //mouse func
     virtual void mousePressEvent(QMouseEvent *event);
@@ -42,7 +32,16 @@ private slots:
 
 private:
     void openDatabase();
+    void initUI();
 
+private:
+    Ui::login* ui;
+    QSqlDatabase db;
+    registor *regWindow;
+    initial *initWindow;
+    //mouse moving
+    bool        mMove;
+    QPoint      mPos;
 };
 
 #endif // LOGIN_H

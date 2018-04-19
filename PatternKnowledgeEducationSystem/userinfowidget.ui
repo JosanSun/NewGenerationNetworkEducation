@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>administrate</class>
- <widget class="QWidget" name="administrate">
+ <class>UserInfoWidget</class>
+ <widget class="QWidget" name="UserInfoWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>administrate</string>
+   <string>UserInfoWidge</string>
   </property>
   <widget class="QGroupBox" name="groupBox_4">
    <property name="geometry">

@@ -1,8 +1,20 @@
 # Change Log
 # All notable changes to this project will be documented in this file.
 
+## [2.0.3] 2018-04-19
+### Added
+- 增加项目编码手册。
+### Fixed
+- 将adminstrate.h/.cpp/.ui分别改为userinfowidget.h/.cpp/.ui, 使得函数所要表达的意思更加准确.
+- 修复了initial界面显示用户信息的跳转问题.
+- 修复部分数据库重复打开BUG. 主要包括initial和userinfowidget文件之间的数据库关联。
+BUG信息介绍：
+// 这个是由于removeDatabase的时候，可能存在某些query还在运行。
+QSqlDatabasePrivate::removeDatabase: connection 'qt_sql_default_connection' is still in use, all queries will cease to work.
+// addDatabase则是由于之前的数据没有断开连接导致的，一般需要通过连接名来断开数据库的连接。
+QSqlDatabasePrivate::addDatabase: duplicate connection name 'qt_sql_default_connection', old connection removed.
 
-## [2.0.2] 2018-4-8
+## [2.0.2] 2018-04-08
 ### Changed 
 - 登录、注册、主界面UI修改
 - 更新所有文件的对齐

@@ -24,7 +24,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-    administrate.cpp \
     attribution.cpp \
     helper/clickablelabel.cpp \
     helper/cogmodel.cpp \
@@ -37,10 +36,10 @@ SOURCES += main.cpp\
     teach.cpp \
     test.cpp \
     usecase.cpp \
-    helper/user.cpp
+    helper/user.cpp \
+    userinfowidget.cpp
 
 HEADERS  += \
-    administrate.h \
     attribution.h \
     helper/clickablelabel.h \
     helper/myheaders.h \
@@ -54,10 +53,10 @@ HEADERS  += \
     teach.h \
     test.h \
     usecase.h \
-    helper/user.h
+    helper/user.h \
+    userinfowidget.h
 
 FORMS    += \
-    administrate.ui \
     attribution.ui \
     initial.ui \
     knowledge.ui \
@@ -65,7 +64,8 @@ FORMS    += \
     teach.ui \
     test.ui \
     usecase.ui \
-    login.ui
+    login.ui \
+    userinfowidget.ui
 
 # CONFIG += qaxcontainer  为了使dynamicCall等  ActiveQt\qaxwidget.h 下的相关文件有效
 

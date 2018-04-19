@@ -43,17 +43,19 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
 
+private slots:
+    //void sendRegisterSignal();
+    //void cancel();
+    void on_registerButton_clicked();
+
+private:
+    void initUI();
 
 private:
     Ui::registor* ui;
     //mouse moving
     bool        mMove;
     QPoint      mPos;
-
-private slots:
-    //void sendRegisterSignal();
-    //void cancel();
-    void on_registerButton_clicked();
 };
 
 #endif // REGISTOR_H

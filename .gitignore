@@ -13,8 +13,6 @@
 *.db
 *.filters
 *.vcxproj
-*.doc
-*.docx
 *.pdf
 *.xlsx
 

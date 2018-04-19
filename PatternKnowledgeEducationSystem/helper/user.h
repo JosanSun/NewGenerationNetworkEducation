@@ -11,6 +11,7 @@ class user
 public:
     user();
     ~user();
+
     void setSid(int);
     void setName(string);
     void setPassword(string);
@@ -18,6 +19,7 @@ public:
     void setAge(int);
     void setEducation(string);
     void setModel(cogmodel&);
+
     int getSid();
     string getName();
     string getPassword();

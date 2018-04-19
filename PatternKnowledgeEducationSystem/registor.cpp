@@ -13,10 +13,27 @@ registor::registor(QWidget *parent)
     : QWidget(parent), ui(new Ui::registor)
 {
     ui->setupUi(this);
+    initUI();
 
     mMove = false;//mouse moving
 
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//无边框且最小化任务栏还原
+    //connect(ui->cancelButton, &QPushButton::clicked, this, &registor::close);                    // 关闭注册界面
+
+    connect(ui->buttonClose, &QPushButton::clicked, this, &registor::close);              // 点击关闭
+    connect(ui->buttonMin, &QPushButton::clicked, this, &registor::showMinimized);        // 点击最小化
+}
+
+registor::~registor()
+{
+    delete ui;
+}
+
+void registor::initUI()
+{
+    setWindowTitle(tr("在线网络教学系统客户端"));
+    setWindowModality(Qt::ApplicationModal);
+    setAttribute(Qt::WA_DeleteOnClose);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//无边框且最小化任务栏还原
 
     QPalette palette(this->palette());
     palette.setColor(QPalette::Background, Qt::white);
@@ -31,16 +48,6 @@ registor::registor(QWidget *parent)
     le->setPlaceholderText(tr("性别"));
     QLineEdit* lele = ui->educationComboBox->lineEdit();
     lele->setPlaceholderText(tr("教育程度"));//ComboBox暗注释
-
-    //connect(ui->cancelButton, &QPushButton::clicked, this, &registor::close);                    // 关闭注册界面
-
-    QObject::connect(ui->buttonClose, &QPushButton::clicked, this, &registor::close);              // 点击关闭
-    QObject::connect(ui->buttonMin, &QPushButton::clicked, this, &registor::showMinimized);        // 点击最小化
-}
-
-registor::~registor()
-{
-    delete ui;
 }
 
 //重写鼠标函数实现窗口自由移动
