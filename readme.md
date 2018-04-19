@@ -3,13 +3,13 @@
 新一代网络教育系统是基于建构主义理论，提出模式知识学习法，旨在评估学生认知能力的网络教学系统。  
 
 ## 运行界面  
-![网络教学登录界面](https://github.com/JosanSun/NewGenerationNetworkEducation/blob/master/running-pics/loginInterface.png "登录界面")
+![网络教学登录界面](https://github.com/JosanSun/NewGenerationNetworkEducation/blob/master/running-pics/loginInterface.png "登录界面")  
 网络教学登录界面
 
-![网络教学主控制界面](https://github.com/JosanSun/NewGenerationNetworkEducation/blob/master/running-pics/mainFrame.png  "主控制界面")
+![网络教学主控制界面](https://github.com/JosanSun/NewGenerationNetworkEducation/blob/master/running-pics/mainFrame.png  "主控制界面")  
 网络教学主控制界面
 
-![支持显示知识和模式知识的二层知识显示平面](https://github.com/JosanSun/NewGenerationNetworkEducation/blob/master/running-pics/knowledge.png   "知识平面")
+![支持显示知识和模式知识的二层知识显示平面](https://github.com/JosanSun/NewGenerationNetworkEducation/blob/master/running-pics/knowledgeInterface.png   "知识平面")  
 支持显示知识和模式知识的二层知识显示平面
 
 总计：15个h文件   15个cpp文件  9个UI表单文件 
