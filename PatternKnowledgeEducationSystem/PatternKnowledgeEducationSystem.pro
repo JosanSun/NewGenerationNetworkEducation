@@ -73,3 +73,8 @@ CONFIG += C++11 qaxcontainer
 
 RESOURCES += \
     educationsystem.qrc
+
+RC_FILE = education.rc
+
+DISTFILES += \
+    education.rc

@@ -36,6 +36,8 @@ login::~login()
 
 void login::initUI()
 {
+    setWindowIcon(QIcon(":/images/icon.png"));
+
     this->setFixedSize(432, 330);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//无边框且最小化任务栏还原
     //setAttribute(Qt::WA_TranslucentBackground);//窗口背景透明

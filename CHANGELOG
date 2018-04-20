@@ -2,6 +2,8 @@
 # All notable changes to this project will be documented in this file.
 
 ## [2.0.4] 2018-04-20
+### Added
+- 增加应用程序图标设置, 以及可执行程序图标设置功能
 ### Fixed
 - 解决了teach,test部分的重复打开数据库问题
 - 将teach部分的信号与槽连接方式改为QT5方式
