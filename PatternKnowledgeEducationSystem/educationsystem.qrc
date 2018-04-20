@@ -9,5 +9,6 @@
         <file>images/bj.png</file>
         <file>images/zc.png</file>
         <file>images/downarrow.png</file>
+        <file>images/myapp.ico</file>
     </qresource>
 </RCC>

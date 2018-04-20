@@ -3,7 +3,7 @@
 
 // 用于测试输出
 #include <QDebug>
-#ifndef MYDEBUG
+#ifdef MYDEBUG
 #define qcout qDebug()
 #else
 #define qcout qDebug() << "[" << __FILE__ << ":" << __LINE__ << "]"

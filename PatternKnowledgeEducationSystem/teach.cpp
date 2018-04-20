@@ -11,6 +11,7 @@
 #include "teach.h"
 #include "helper/user.h"
 #include "helper/mypushbutton.h"
+#include "helper/myheaders.h"
 
 extern user myUser;
 extern QString currentKid;
@@ -52,11 +53,11 @@ void teach::openDatabase()
     bool ok = db.open();
     if (!ok)
     {
-        qDebug() << "Failed to connect database login!";
+        qcout << "Failed to connect database login!";
     }
     else
     {
-        qDebug() << "Success!";
+        qcout << "Success!";
     }
 }
 
@@ -86,20 +87,23 @@ void teach::init()
 
     QSqlQuery query(db);
     QString _first = currentKid.left(1);//根据系统当前知识点查询数据库
-    qDebug() << currentKid;
+    qcout << currentKid;
     if (_first == "B")
-    {//当前知识点是基本知识节点
+    {
+        //当前知识点是基本知识节点
         query.exec("select * from bk where bid='" + currentKid + "'");
         while (query.next())
         {
             ui.pointnameLabel->setText(query.value(1).toString());
             //显示当前知识的description信息
             QString _descFileName = query.value(3).toString();
+            _descFileName.replace(0, 1, "../PatternKnowledgeEducationSystem");
+            // qcout << _descFileName;
             QFile _descFile(_descFileName);
             if (!_descFile.open(QIODevice::ReadOnly | QIODevice::Text))
                 return;
             QTextStream out(&_descFile);
-            while (out.atEnd() == 0)
+            while (!out.atEnd())
             {
                 //知识点描述窗口
                 ui.descriptionTextBrowser->setText(out.readAll());
@@ -302,7 +306,9 @@ void teach::init()
         {
             ui.pointnameLabel->setText(query.value(1).toString());
             QString _patternFile = query.value(3).toString();
-            //成功打开xml文件
+            _patternFile.replace(0, 1, "../PatternKnowledgeEducationSystem");
+            qcout << _patternFile;
+            // 成功打开xml文件
             openXml(_patternFile);
             //显示当前知识的领域信息
             QString _domain = query.value(2).toString();
@@ -497,12 +503,12 @@ void teach::openXml(QString filename)
     QFile xmlFile(filename);
     if (!xmlFile.open(QIODevice::ReadOnly))
     {
-        qDebug() << "Failed to open xml file!";
+        qcout << "Failed to open xml file!";
     }
     if (!doc.setContent(&xmlFile))
     {
         xmlFile.close();
-        qDebug() << "Failed!";
+        qcout << "Failed!";
     }
     xmlFile.close();
     QDomElement root = doc.documentElement();
@@ -564,9 +570,9 @@ void teach::showDomainKnowledgesSlot(QString domain)
     if (haveDomainTab)
     {
         //之前，已经存在领域tab,则更新领域tab
-        qDebug() << haveDomainTab;
+        qcout << haveDomainTab;
         QSqlQueryModel *model = new QSqlQueryModel;
-        qDebug() << domain;
+        qcout << domain;
         model->setQuery("select bid,title,domain from bk where domain like '%" + domain
                         + "%' union all select pid,title,domain from pk where domain like '%" + domain + "%'");
         model->setHeaderData(0, Qt::Horizontal, tr("编号"));
@@ -577,8 +583,8 @@ void teach::showDomainKnowledgesSlot(QString domain)
     else
     {
         //如果没有，则新建一个窗口用来保存领域知识tab
-        qDebug() << haveDomainTab;
-        qDebug() << domain;
+        qcout << haveDomainTab;
+        qcout << domain;
         haveDomainTab = true;
         domainKnowWidget = new QWidget();
         bkTableView = new QTableView(domainKnowWidget);
@@ -620,7 +626,7 @@ void teach::openUsecaseSlot(QString casename)
         }
         path.replace(0, 1, "file:///E:/MyCode/qt/NewGenerationNetworkEducation/"
                            "PatternKnowledgeEducationSystem");//此处可根据本地文件夹名称更改
-        // qDebug() << path;
+        // qcout << path;
         // path这种绝对路径可以打开file:///E:/MyCode/qt/NewGenerationNetworkEducation/PatternKnowledgeEducationSystem/knowledge/usecase/U002.ppsx
         // 如何更改为相对路径呢？
         QDesktopServices::openUrl(QUrl(path, QUrl::TolerantMode));
