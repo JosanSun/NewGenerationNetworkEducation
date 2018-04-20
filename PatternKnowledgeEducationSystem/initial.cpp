@@ -14,20 +14,17 @@ initial::initial(QWidget *parent)
     : QWidget(parent), ui(new Ui::initial), timer(new QTimer(this))
 {
     ui->setupUi(this);
-
     initUI();
-    openDatabase();
     init();
     // 点击最小化小化、关闭按钮图标
-    connect(ui->buttonClose, &QPushButton::clicked, this, &initial::close);              // 点击关闭
-    connect(ui->buttonMin, &QPushButton::clicked, this, &initial::showMinimized);
-    connect(timer, &QTimer::timeout, this, &initial::timerUpDateSlot);
-    connect(ui->knowledgeClickLabel, &clickablelabel::clicked, this, &initial::goToKnowledgeWindowSlot);//进入知识库查看模块
-    connect(ui->teachClickLabel, &clickablelabel::clicked, this, &initial::goToTeachWindowSlot);//进入教学模块
-    connect(ui->testClickLabel, &clickablelabel::clicked, this, &initial::goToTeachWindowSlot);//进入测试模块
-    connect(ui->userClickLabel, &clickablelabel::clicked, this, &initial::goToUserWindowSlot);//进入用户管理模块
-    connect(ui->quitButton, &QPushButton::clicked, this, &initial::close);//关闭系统
-
+    connect(ui->buttonClose, &QPushButton::clicked, this, &initial::close);                                 // 点击关闭
+    connect(ui->buttonMin, &QPushButton::clicked, this, &initial::showMinimized);                           // 点击最小化
+    connect(timer, &QTimer::timeout, this, &initial::timerUpDateSlot);                                      // 更新系统时间
+    connect(ui->knowledgeClickLabel, &clickablelabel::clicked, this, &initial::goToKnowledgeWindowSlot);    // 进入知识库查看模块
+    connect(ui->teachClickLabel, &clickablelabel::clicked, this, &initial::goToTeachWindowSlot);            // 进入教学模块
+    connect(ui->testClickLabel, &clickablelabel::clicked, this, &initial::goToTestWindowSlot);              // 进入测试模块
+    connect(ui->userClickLabel, &clickablelabel::clicked, this, &initial::goToUserWindowSlot);              // 进入用户管理模块
+    connect(ui->quitButton, &QPushButton::clicked, this, &initial::close);                                  // 关闭系统
 }
 
 initial::~initial()
@@ -53,16 +50,18 @@ void initial::initUI()
     QPixmap closePix=style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
     ui->buttonMin->setIcon(minPix);
     ui->buttonClose->setIcon(closePix);//获取并设置
+
+    ui->usernameLabel->setText(QString::fromStdString(myUser.getName()));
+    ui->currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss \ndddd"));
 }
 
 //初始化当前用户以及用户上次学习到的知识点
 void initial::init()
 {
+    openDatabase();
+
     mMove=false;//mouse moving
     timer->start(1000);
-
-    ui->usernameLabel->setText(QString::fromStdString(myUser.getName()));
-    ui->currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
 
     QSqlQuery query;
     query.exec("select * from student where name='" + QString::fromStdString(myUser.getName()) + "'");
@@ -83,6 +82,7 @@ void initial::init()
         QString _kid = query.value(1).toString();
         currentKid = _kid;
         QString _first = _kid.left(1);
+        // 如果知识是显性知识
         if (_first == "B")
         {
             query.exec("select title from bk where bid='" + _kid + "'");
@@ -91,6 +91,7 @@ void initial::init()
                 ui->lastPointnameLabel->setText(query.value(0).toString());
             }
         }
+        // 如果知识是隐性知识
         else if (_first == "P")
         {
             query.exec("select title from pk where pid='" + _kid + "'");
@@ -101,10 +102,10 @@ void initial::init()
         }
     }
     else
-    {//用户没有历史学习数据
+    {
+        //用户没有历史学习数据
         ui->lastPointnameLabel->setText(tr("无"));
     }
-    this->db.close();
 }
 
 
@@ -156,8 +157,6 @@ void initial::openDatabase()
         qDebug() << "Success!";
     }
 }
-
-
 
 void initial::showFirstKnowledge()
 {
@@ -236,11 +235,10 @@ void initial::goToTeachWindowSlot()
                 }
             }
         }
-        this->db.close();
 
         QMessageBox msgBox;
-        msgBox.setText(tr("提示"));
-        msgBox.setInformativeText(tr("检测到您有历史学习记录，要从上次记录处开始学习吗？"));
+        msgBox.setWindowTitle(tr("提示"));
+        msgBox.setText(tr("检测到您有历史学习记录，要从上次记录处开始学习吗？"));
         msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Ok);
         int ret = msgBox.exec();
@@ -256,10 +254,7 @@ void initial::goToTeachWindowSlot()
         }
     }
     teachWindow = new teach();
-    teachWindow->setWindowTitle(tr("在线网络教学系统客户端"));
-    teachWindow->setWindowModality(Qt::ApplicationModal);
     teachWindow->show();
-    teachWindow->setAttribute(Qt::WA_DeleteOnClose);
     connect(teachWindow, &teach::destroyed, this, &initial::updateCurrentKidSlot);
 }
 
@@ -267,10 +262,7 @@ void initial::goToTeachWindowSlot()
 void initial::goToTestWindowSlot()
 {
     testWindow = new test();
-    testWindow->setWindowTitle(tr("在线网络教学系统客户端"));
-    testWindow->setWindowModality(Qt::ApplicationModal);
     testWindow->show();
-    testWindow->setAttribute(Qt::WA_DeleteOnClose);
     connect(testWindow, &test::destroyed, this, &initial::updateCurrentKidSlot);
 }
 
@@ -284,8 +276,6 @@ void initial::goToUserWindowSlot()
 //当前知识点测试通过后再次进入教学模块更新当前知识点
 void initial::updateCurrentKidSlot()
 {
-    openDatabase();
-
     QSqlQuery query;
     QString _first = currentKid.left(1);
     if (_first == "B")
@@ -304,7 +294,6 @@ void initial::updateCurrentKidSlot()
             ui->lastPointnameLabel->setText(query.value(0).toString());
         }
     }
-    this->db.close();
 }
 
 

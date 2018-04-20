@@ -1,4 +1,4 @@
-#include "attribution.h"
+#include "helper/attribution.h"
 #include <QDomDocument>
 
 extern QString attribute;

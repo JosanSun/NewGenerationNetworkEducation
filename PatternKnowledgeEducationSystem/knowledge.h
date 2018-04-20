@@ -10,7 +10,7 @@
 
 #include "helper/node.h"
 #include "ui_knowledge.h"
-#include "attribution.h"
+#include "helper/attribution.h"
 
 using namespace std;
 

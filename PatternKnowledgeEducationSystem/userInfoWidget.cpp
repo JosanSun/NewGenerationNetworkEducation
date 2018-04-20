@@ -15,11 +15,10 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
     initUI();
     init();
 
-    connect(timer, &QTimer::timeout, this, &UserInfoWidget::updateTimeSlot);//更新系统时间
-    connect(ui->modifyButton, &QPushButton::clicked, this, &UserInfoWidget::modifyInformationSlot);//修改个人信息
-    connect(ui->saveButton, &QPushButton::clicked, this, &UserInfoWidget::saveInformationSlot);//保存个人信息
-    connect(ui->quitButton, &QPushButton::clicked, this, &UserInfoWidget::close);//关闭用户管理
-
+    connect(timer, &QTimer::timeout, this, &UserInfoWidget::updateTimeSlot);                        // 更新系统时间
+    connect(ui->modifyButton, &QPushButton::clicked, this, &UserInfoWidget::modifyInformationSlot); // 修改个人信息
+    connect(ui->saveButton, &QPushButton::clicked, this, &UserInfoWidget::saveInformationSlot);     // 保存个人信息
+    connect(ui->quitButton, &QPushButton::clicked, this, &UserInfoWidget::close);                   // 关闭用户管理
 }
 
 UserInfoWidget::~UserInfoWidget()

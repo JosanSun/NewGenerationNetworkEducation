@@ -19,19 +19,6 @@ public:
     teach(QWidget *parent = 0);
     ~teach();
 
-private:
-    Ui::teach ui;
-    QSqlDatabase db;
-    QWidget *domainKnowWidget;
-    QTableView *bkTableView;
-    QTableView *pkTableView;
-    usecase *usecaseWindow;
-    test *testWindow;
-    bool haveDomainTab;
-    void openDatabase();
-    void init();
-    void openXml(QString);
-
 private slots:
     void timeUpdateSlot();
     void showDomainKnowledgesSlot(QString);
@@ -43,6 +30,23 @@ private slots:
     void updateBehaviorTableSlot();
     //void updateCurrentKidSlot();
     //void testSlot();
+
+private:
+    void openDatabase();
+    void initUI();
+    void init();
+    void openXml(QString);
+
+private:
+    Ui::teach ui;
+    QTimer* timer = nullptr;
+    QSqlDatabase db;
+    QWidget *domainKnowWidget;
+    QTableView *bkTableView;
+    QTableView *pkTableView;
+    usecase *usecaseWindow;
+    test *testWindow;
+    bool haveDomainTab;
 };
 
 #endif // TEACH_H

@@ -8,6 +8,7 @@
 #include <vector>
 #include <QRadioButton>
 #include <QScrollArea>
+#include <QTimer>
 
 #include "ui_test.h"
 using namespace std;
@@ -20,15 +21,30 @@ public:
     test(QWidget *parent = 0);
     ~test();
 
+private slots:
+    void timeUpdateSlot();
+    void restTimeUpdateSlot();
+    void startTestSlot();
+    void submitTestSlot();
+    void nextKnowledgeSlot();
+    void againKnowledgeSlot();
+
+private:
+    void initUI();
+    void init();
+    void openDatabase();
+
 private:
     Ui::test ui;
+    // timer1用于更新系统当前时间
+    QTimer* timer1 = nullptr;
+    QTimer* timer2 = nullptr;
     bool pass;
     QString _first;
     QString beforeKid;
     QString currentTid;
     QString currentDomain;
     QSqlDatabase db;
-
     QLabel *initLabel;
     QPushButton *startButton;
     QVBoxLayout *allLayout;
@@ -41,16 +57,6 @@ private:
     QDateTime startTestTime;
     int limitScore;
     map<int, QButtonGroup*> test_map;
-    void init();
-    void openDatabase();
-
-private slots:
-    void timeUpdateSlot();
-    void restTimeUpdateSlot();
-    void startTestSlot();
-    void submitTestSlot();
-    void nextKnowledgeSlot();
-    void againKnowledgeSlot();
 };
 
 #endif // TEST_H

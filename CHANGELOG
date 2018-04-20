@@ -1,6 +1,19 @@
 # Change Log
 # All notable changes to this project will be documented in this file.
 
+## [2.0.4] 2018-04-20
+### Fixed
+- 解决了teach,test部分的重复打开数据库问题
+- 将teach部分的信号与槽连接方式改为QT5方式
+### BUG
+- openUsecaseSlot中打开文件仍然采用的是绝对路径，需要继续修改。
+### ToDoList
+- 将所有的ui, 统一改为指针
+- 将所有的类名统一改为大写的方式
+- 将头文件统一改为标准写法
+- 优化userinfowidget的界面
+- 修改knowledge部分。以及usecase部分
+
 ## [2.0.3] 2018-04-19
 ### Added
 - 增加项目编码手册。
@@ -25,8 +38,6 @@ QSqlDatabasePrivate::addDatabase: duplicate connection name 'qt_sql_default_conn
 ### Fixed
 - 修正注册界面数据库重复打开问题registor.cpp
 - 调整login, 以及registor ui文件的布局方式
-
-
 
 ## [2.0] 2018-03-22
 ### Changed

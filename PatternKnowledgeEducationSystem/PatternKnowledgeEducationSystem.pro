@@ -24,7 +24,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-    attribution.cpp \
+    helper/attribution.cpp \
     helper/clickablelabel.cpp \
     helper/cogmodel.cpp \
     initial.cpp \
@@ -40,7 +40,7 @@ SOURCES += main.cpp\
     userinfowidget.cpp
 
 HEADERS  += \
-    attribution.h \
+    helper/attribution.h \
     helper/clickablelabel.h \
     helper/myheaders.h \
     helper/cogmodel.h \
@@ -57,7 +57,7 @@ HEADERS  += \
     userinfowidget.h
 
 FORMS    += \
-    attribution.ui \
+    helper/attribution.ui \
     initial.ui \
     knowledge.ui \
     registor.ui \
