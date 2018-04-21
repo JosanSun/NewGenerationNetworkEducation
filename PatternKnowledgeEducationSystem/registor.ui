@@ -29,7 +29,12 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>registor</string>
+   <string>在线网络教学系统客户端</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normalon>:/images/icon.png</normalon>
+   </iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -566,7 +571,7 @@ QComboBox::dowm-arrow
         <bool>true</bool>
        </property>
        <property name="currentText">
-        <string/>
+        <string>男</string>
        </property>
        <item>
         <property name="text">
@@ -657,7 +662,7 @@ QComboBox::drop-down
         <bool>true</bool>
        </property>
        <property name="currentText">
-        <string/>
+        <string>小学</string>
        </property>
        <item>
         <property name="text">
@@ -797,6 +802,17 @@ QPushButton#registorButton:pressed
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>usernameLineEdit</tabstop>
+  <tabstop>passwordLineEdit</tabstop>
+  <tabstop>doublePasswordLineEdit</tabstop>
+  <tabstop>ageLineEdit</tabstop>
+  <tabstop>sexComboBox</tabstop>
+  <tabstop>educationComboBox</tabstop>
+  <tabstop>registorButton</tabstop>
+  <tabstop>buttonMin</tabstop>
+  <tabstop>buttonClose</tabstop>
+ </tabstops>
  <resources>
   <include location="educationsystem.qrc"/>
  </resources>

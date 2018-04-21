@@ -16,6 +16,7 @@ initial::initial(QWidget *parent)
     ui->setupUi(this);
     initUI();
     init();
+
     // 点击最小化小化、关闭按钮图标
     connect(ui->buttonClose, &QPushButton::clicked, this, &initial::close);                                 // 点击关闭
     connect(ui->buttonMin, &QPushButton::clicked, this, &initial::showMinimized);                           // 点击最小化
@@ -182,11 +183,8 @@ void initial::timerUpDateSlot()
 //知识可视化显示模块
 void initial::goToKnowledgeWindowSlot()
 {
-    knowWindow = new knowledge();
-    knowWindow->setWindowTitle(tr("在线网络教学系统客户端"));
-    knowWindow->setWindowModality(Qt::ApplicationModal);
+    knowWindow = new knowledge();  
     knowWindow->show();
-    knowWindow->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 //教学模块

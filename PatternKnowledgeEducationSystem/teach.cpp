@@ -23,7 +23,6 @@ teach::teach(QWidget *parent)
 {
     ui.setupUi(this);
     initUI();
-    openDatabase();
     init();
 
     connect(timer, &QTimer::timeout, this, &teach::timeUpdateSlot);                         //更新系统时间
@@ -32,7 +31,6 @@ teach::teach(QWidget *parent)
     connect(ui.discussionButton, &QPushButton::clicked, this, &teach::goToDiscussionSlot);  //进入讨论区
     connect(ui.beginTestButton, &QPushButton::clicked, this, &teach::goToTestSlot);         //进入测试模块
     connect(ui.quitButton, &QPushButton::clicked, this, &teach::close);                     //关闭系统
-
 }
 
 teach::~teach()
@@ -70,7 +68,6 @@ void teach::timeUpdateSlot()
 
 void teach::initUI()
 {
-    setWindowTitle(tr("在线网络教学系统客户端"));
     setWindowModality(Qt::ApplicationModal);
     setAttribute(Qt::WA_DeleteOnClose);
 
@@ -85,6 +82,7 @@ void teach::init()
     currentCid = "";
     timer->start(1000);
 
+    openDatabase();
     QSqlQuery query(db);
     QString _first = currentKid.left(1);//根据系统当前知识点查询数据库
     qcout << currentKid;
@@ -320,7 +318,8 @@ void teach::init()
                 myPushButton *domainButton = new myPushButton(ui.groupBox_2);
                 domainButton->setGeometry(110 + 100 * (inx - 1), 230, 75, 20);
                 domainButton->setText(_domain.left(pos));
-                connect(domainButton, &myPushButton::clicked, this, &teach::showDomainKnowledgesSlot);
+                void (myPushButton::*pfn3)(QString) = myPushButton::clicked;
+                connect(domainButton, pfn3, this, &teach::showDomainKnowledgesSlot);
                 _domain = _domain.remove(0, pos + 1);
                 ++inx;
                 pos = _domain.indexOf(_sep);
@@ -328,7 +327,8 @@ void teach::init()
             myPushButton *domainButton = new myPushButton(ui.groupBox_2);
             domainButton->setGeometry(110 + 100 * (inx - 1), 230, 75, 20);
             domainButton->setText(_domain);
-            connect(domainButton, &myPushButton::clicked, this, &teach::showDomainKnowledgesSlot);
+            void (myPushButton::*pfn4)(QString) = myPushButton::clicked;
+            connect(domainButton, pfn4, this, &teach::showDomainKnowledgesSlot);
         }
 
 
@@ -340,7 +340,8 @@ void teach::init()
             myPushButton *usecaseButton = new myPushButton(ui.groupBox_2);
             usecaseButton->setGeometry(110 + 100 * (inx - 1), 270, 75, 20);
             usecaseButton->setText(query.value(1).toString());
-            connect(usecaseButton, &myPushButton::clicked, this, &teach::openUsecaseSlot);
+            void (myPushButton::*pfn5)(QString) = myPushButton::clicked;
+            connect(usecaseButton, pfn5, this, &teach::openUsecaseSlot);
             ++inx;
         }
 
@@ -567,6 +568,7 @@ void teach::openXml(QString filename)
 //显示领域相关知识节点信息
 void teach::showDomainKnowledgesSlot(QString domain)
 {
+    //ERROR: 这部分逻辑有问题
     if (haveDomainTab)
     {
         //之前，已经存在领域tab,则更新领域tab
@@ -617,7 +619,8 @@ void teach::openUsecaseSlot(QString casename)
     query.exec();
     QString _form = casename.remove(0, 5);
     if (_form == "ppt")
-    {//如果用户点击的案例为ppt类型，则直接显示该案例
+    {
+        //如果用户点击的案例为ppt类型，则直接显示该案例
         QString path;
         query.exec("select * from teach where kid='" + currentKid + "' and cid='" + currentCid + "'");
         while (query.next())
@@ -635,10 +638,7 @@ void teach::openUsecaseSlot(QString casename)
     else
     {//否则进入案例播放界面
         usecaseWindow = new usecase();
-        usecaseWindow->setWindowTitle(tr("在线网络教学系统客户端"));
-        usecaseWindow->setWindowModality(Qt::ApplicationModal);
         usecaseWindow->show();
-        usecaseWindow->setAttribute(Qt::WA_DeleteOnClose);
         connect(usecaseWindow, &usecase::destroyed, this, &teach::updateBehaviorTableSlot);
     }
 }

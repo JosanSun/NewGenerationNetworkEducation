@@ -11,7 +11,12 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>attribution</string>
+   <string>知识属性</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normalon>:/images/icon.png</normalon>
+   </iconset>
   </property>
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">

@@ -6,12 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>445</width>
+    <width>449</width>
     <height>344</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>registor</string>
+   <string>在线网络教学系统客户端</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="educationsystem.qrc">
+    <normaloff>:/images/icon.png</normaloff>:/images/icon.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <property name="spacing">

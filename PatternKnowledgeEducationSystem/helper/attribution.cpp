@@ -1,5 +1,7 @@
-#include "helper/attribution.h"
 #include <QDomDocument>
+
+#include "helper/attribution.h"
+#include "helper/myheaders.h"
 
 extern QString attribute;
 
@@ -7,20 +9,33 @@ attribution::attribution(QWidget *parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
+    initUI();
     init();
 }
 
 attribution::~attribution()
 {
+    QString connectName = db.connectionName();
+    db = QSqlDatabase();
+    db.removeDatabase(connectName);
+    db.close();
+}
 
+void attribution::initUI()
+{
+    setWindowModality(Qt::ApplicationModal);
+    setAttribute(Qt::WA_DeleteOnClose);
+
+    ui.tabWidget->setTabText(0, tr("属性信息"));
+    ui.tabWidget->setTabText(1, tr("特征信息"));
+    ui.houLineEdit->setText(tr("无"));
+    ui.tipsLabel->setText(tr("无"));
 }
 
 //初始化属性界面
 void attribution::init()
 {
-    ui.tabWidget->setTabText(0, QStringLiteral("属性信息"));
-    ui.tabWidget->setTabText(1, QStringLiteral("特征信息"));
-    openDB();
+    openDatabase();
     QSqlQuery query;
     QString sqlStr = "select * from pk where title='";
     sqlStr += attribute;
@@ -31,8 +46,11 @@ void attribution::init()
         ui.idLineEdit->setText(query.value(0).toString());
         ui.titleLineEdit->setText(attribute);
         ui.domainLineEdit->setText(query.value(2).toString());
-        ui.textEdit->setText(QStringLiteral("数据的简单堆叠形成堆叠模式"));
+        ui.textEdit->setText(tr("数据的简单堆叠形成堆叠模式"));
         QString _patternFile = query.value(3).toString();
+        _patternFile.replace(0, 1, "../PatternKnowledgeEducationSystem");
+        qcout << _patternFile;
+
         openXml(_patternFile);
     }
     query.exec("select pors,kids from about join pk on about.kid=pk.pid where pk.title='" + attribute + "'");
@@ -47,16 +65,12 @@ void attribution::init()
             ui.houLineEdit->setText(query.value(1).toString());
         }
     }
-
-    ui.houLineEdit->setText(QStringLiteral("无"));
-    ui.tipsLabel->setText(QStringLiteral("无"));
-    this->db.close();
 }
 
 //打开数据库
-void attribution::openDB()
+void attribution::openDatabase()
 {
-    this->db = QSqlDatabase::addDatabase("QMYSQL");
+    this->db = QSqlDatabase::addDatabase("QMYSQL", "attribution");
     this->db.setHostName("localhost");
     this->db.setUserName("root");
     this->db.setPassword("1234");
@@ -64,11 +78,11 @@ void attribution::openDB()
     bool ok = db.open();
     if (!ok)
     {
-        qDebug() << "Failed to connect database login!";
+        qcout << "Failed to connect database login!";
     }
     else
     {
-        qDebug() << "Success!";
+        qcout << "Success!";
     }
 }
 
@@ -79,12 +93,12 @@ void attribution::openXml(QString filename)
     QFile xmlFile(filename);
     if (!xmlFile.open(QIODevice::ReadOnly))
     {
-        qDebug() << "Failed to open xml file!";
+        qcout << "Failed to open xml file!";
     }
     if (!doc.setContent(&xmlFile))
     {
         xmlFile.close();
-        qDebug() << "Failed!";
+        qcout << "Failed!";
     }
     xmlFile.close();
     QDomElement root = doc.documentElement();

@@ -30,7 +30,6 @@ registor::~registor()
 
 void registor::initUI()
 {
-    setWindowTitle(tr("在线网络教学系统客户端"));
     setWindowModality(Qt::ApplicationModal);
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//无边框且最小化任务栏还原

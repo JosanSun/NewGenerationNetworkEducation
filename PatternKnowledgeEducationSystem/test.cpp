@@ -32,7 +32,6 @@ test::~test()
 
 void test::initUI()
 {
-    setWindowTitle(QStringLiteral("在线网络教学系统客户端"));
     setWindowModality(Qt::ApplicationModal);
     setAttribute(Qt::WA_DeleteOnClose);
 
