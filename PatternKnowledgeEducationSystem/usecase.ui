@@ -29,7 +29,11 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>usecase</string>
+   <string>在线网络教学系统客户端</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="educationsystem.qrc">
+    <normaloff>:/images/icon.png</normaloff>:/images/icon.png</iconset>
   </property>
   <widget class="QTextBrowser" name="textBrowser">
    <property name="geometry">
@@ -161,6 +165,8 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="educationsystem.qrc"/>
+ </resources>
  <connections/>
 </ui>

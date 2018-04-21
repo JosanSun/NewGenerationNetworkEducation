@@ -17,11 +17,14 @@ public:
     ~attribution();
 
 private:
+    void initUI();
+    void init();
+    void openDatabase();
+    void openXml(QString);
+
+private:
     Ui::attribution ui;
     QSqlDatabase db;
-    void init();
-    void openDB();
-    void openXml(QString);
 };
 
 #endif // ATTRIBUTION_H

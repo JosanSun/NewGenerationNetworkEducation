@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QtSql>
 #include <QSqlDatabase>
+#include <QTimer>
 
 #include "ui_usecase.h"
 #include "test.h"
@@ -17,18 +18,21 @@ public:
     usecase(QWidget *parent = 0);
     ~usecase();
 
-private:
-    Ui::usecase ui;
-    test *testWindow;
-    QSqlDatabase db;
-    void openDatabase();
-    void init();
-
 private slots:
     void updateTimeSlot();
     void goToTestWindowSlot();
     void on_testButton_clicked();
-    void on_pushButton_clicked();
+
+private:
+    void openDatabase();
+    void initUI();
+    void init();
+
+private:
+    Ui::usecase ui;
+    QTimer* timer;
+    test *testWindow;
+    QSqlDatabase db;
 };
 
 #endif // USECASE_H

@@ -1,17 +1,17 @@
-#include "knowledge.h"
 #include <cmath>
-#include <QDebug>
 #include <vector>
-#include <QMouseEvent>
-#include "helper/node.h"
-#include "qstring.h"
 #include <iostream>
-#include "qsqlquery.h"
-#include "qrect.h"
-#include "qpainterpath.h"
-#include "qpolygon.h"
-#include "helper/user.h"
+#include <QDebug>
+#include <QPolygon>
+#include <QMouseEvent>
+#include <QSqlQuery>
+#include <QPainterPath>
+#include <QRect>
 
+#include "knowledge.h"
+#include "helper/node.h"
+#include "helper/user.h"
+#include "helper/myheaders.h"
 
 using namespace std;
 static double pi = 3.14159;
@@ -22,26 +22,22 @@ knowledge::knowledge(QWidget *parent)
     : QWidget(parent)
 {
     ui.setupUi(this);
-    this->setMouseTracking(true);
-
-    //追踪学习路径
-    connect(ui.pushButton, SIGNAL(clicked()), this, SLOT(trackLearning()));
-    vector<QString> attributes = getAttributesFromDB();
-    vector<vector<int>> successors = getSuccessors(attributes);
-    vector<vector<int>> predecessors = getPredecessors(successors);
-    int r = 10;
-    generateNodes(attributes, successors, predecessors, r);
+    initUI();
+    init();
 }
 
 knowledge::~knowledge()
 {
-
+    QString connectName = db.connectionName();
+    db = QSqlDatabase();
+    db.removeDatabase(connectName);
+    db.close();
 }
 
 //打开数据库
 void knowledge::openDatabase()
 {
-    this->db = QSqlDatabase::addDatabase("QMYSQL");
+    this->db = QSqlDatabase::addDatabase("QMYSQL", "knowledge");
     this->db.setHostName("localhost");
     this->db.setUserName("root");
     this->db.setPassword("1234");
@@ -49,12 +45,32 @@ void knowledge::openDatabase()
     bool ok = db.open();
     if (!ok)
     {
-        qDebug() << "Failed to connect database login!";
+        qcout << "Failed to connect database login!";
     }
     else
     {
-        qDebug() << "Success!";
+        qcout << "Success!";
     }
+}
+
+void knowledge::initUI()
+{
+    setMouseTracking(true);
+    setWindowModality(Qt::ApplicationModal);
+    setAttribute(Qt::WA_DeleteOnClose);
+}
+
+void knowledge::init()
+{
+    openDatabase();
+
+    //追踪学习路径
+    connect(ui.pushButton, &QPushButton::clicked, this, &knowledge::trackLearning);
+    vector<QString> attributes = getAttributesFromDB();
+    vector<vector<int>> successors = getSuccessors(attributes);
+    vector<vector<int>> predecessors = getPredecessors(successors);
+    int r = 10;
+    generateNodes(attributes, successors, predecessors, r);
 }
 
 void knowledge::paintEvent(QPaintEvent *)
@@ -62,9 +78,9 @@ void knowledge::paintEvent(QPaintEvent *)
     //NOTE: 真正运行的是这个画图
     drawCircles(nodesInPic, Qt::blue);
     //显性知识层面
-    drawPanel(new QPoint(200, 300), QStringLiteral("基本知识层面"), Qt::black);
+    drawPanel(new QPoint(200, 300), tr("基本知识层面"), Qt::black);
     //隐性知识层面
-    drawPanel(new QPoint(200, 120), QStringLiteral("模式知识层面"), Qt::red);
+    drawPanel(new QPoint(200, 120), tr("模式知识层面"), Qt::red);
 }
 
 //画平面
@@ -246,8 +262,7 @@ void knowledge::mousePressEvent(QMouseEvent *event)
         QPoint point = QPoint(event->x(), event->y());
         attribute = getAttributeByPosition(point);
 
-        openDatabase();
-        QSqlQuery query;
+        QSqlQuery query(db);
         QString sqlStr = "select a.domain,a.begintime,a.score from path a join ";
         sqlStr += "(select bid as kid,title as title from bk as c union select pid as kid,title as title from pk as d) ";
         sqlStr += "as b on a.kid=b.kid where a.sid=";
@@ -255,22 +270,28 @@ void knowledge::mousePressEvent(QMouseEvent *event)
         sqlStr += " and b.title='";
         sqlStr += attribute;
         sqlStr += "'";
-        query.exec(sqlStr);
-        while (query.next())
+        if(query.exec(sqlStr))
         {
-            ui.pointNameLabel->setText(attribute);
-            qDebug() << query.value(1).toString();
-            QDateTime _dt = query.value(1).toDateTime();
-            ui.begintimeLabel->setText(_dt.toString("yyyy-MM-dd \nhh:mm:ss "));
-            ui.domainLabel->setText(query.value(0).toString());
-            ui.scoreLabel->setText(query.value(2).toString());
+            qcout << "exec success";
+            while (query.next())
+            {
+                qcout << "have the res";
+                ui.pointNameLabel->setText(attribute);
+                qcout << query.value(1).toString();
+                QDateTime _dt = query.value(1).toDateTime();
+                ui.begintimeLabel->setText(_dt.toString("yyyy-MM-dd \nhh:mm:ss "));
+                ui.domainLabel->setText(query.value(0).toString());
+                ui.scoreLabel->setText(query.value(2).toString());
+            }
+            qcout << "nothing";
+            attrWindow = new attribution();
+            attrWindow->show();
         }
-        attrWindow = new attribution();
-        attrWindow->setWindowTitle(QStringLiteral("知识属性"));
-        attrWindow->setWindowModality(Qt::ApplicationModal);
-        attrWindow->show();
-        attrWindow->setAttribute(Qt::WA_DeleteOnClose);
-        this->db.close();
+        else
+        {
+            QWidget::mousePressEvent(event);
+        }
+
     }
 }
 
@@ -311,15 +332,13 @@ QString knowledge::getAttributeByPosition(QPoint point)
 vector<QString> knowledge::getAttributesFromDB()
 {
     vector<QString> attributes;
-    openDatabase();
-    QSqlQuery query;
+    QSqlQuery query(db);
     query.exec("select title from bk union select title from pk");
     while(query.next())
     {
 
         attributes.push_back(query.value(0).toString());
     }
-    this->db.close();
     return attributes;
 }
 
@@ -327,8 +346,7 @@ vector<QString> knowledge::getAttributesFromDB()
 vector<vector<int>> knowledge::getSuccessors(vector<QString> &attributes)
 {
     vector<vector<int>> successors = vector<vector<int>>(attributes.size());
-    openDatabase();
-    QSqlQuery query;
+    QSqlQuery query(db);
     query.exec("select kids from about where pors=1");
     int inx=0;
     while(query.next())
@@ -371,7 +389,6 @@ vector<vector<int>> knowledge::getSuccessors(vector<QString> &attributes)
         successors[inx].push_back(num);
         ++inx;
     }
-    this->db.close();
     return successors;
 }
 
@@ -399,7 +416,7 @@ void knowledge::generateNodes(vector<QString> attributes, vector<vector<int>> su
         Node node;
         node.setAttribute(attributes[i]);
         node.setRadius(r);
-        if (attributes[i].indexOf(QStringLiteral("模式")) >= 0)
+        if (attributes[i].indexOf(tr("模式")) >= 0)
         {
             node.setIsModelKnowledge(true);
         }
@@ -453,10 +470,9 @@ void knowledge::setNodesCoordinate(QPoint basePoint)
 //获取用户学习轨迹
 void knowledge::getLearningTrack(vector<QString> &lt)
 {
-    qDebug() << "getlearningtrack!";
+    qcout << "getlearningtrack!";
     //vector<QString> learningTrack;
-    openDatabase();
-    QSqlQuery query;
+    QSqlQuery query(db);
     QString sqlStr = "select b.title from path a join ";
     sqlStr += "(select bid as kid,title as title from bk as c union select pid as kid,title as title from pk as d) ";
     sqlStr += "as b where a.kid=b.kid and a.sid=";
@@ -465,10 +481,10 @@ void knowledge::getLearningTrack(vector<QString> &lt)
     query.exec(sqlStr);
     while (query.next())
     {
-        qDebug() << query.value(0).toString();
+        qcout << query.value(0).toString();
         lt.push_back(query.value(0).toString());
     }
-    this->db.close();
+
 }
 
 
@@ -476,7 +492,7 @@ void knowledge::getLearningTrack(vector<QString> &lt)
 void knowledge::trackLearning()
 {
     getLearningTrack(learningTrack);
-    qDebug() << "tracklearning!";
+    qcout << "tracklearning!";
     //初始化
     for (int i = 0; i < static_cast<int>(nodesInPic.size()); i++)
     {

@@ -51,7 +51,6 @@ void UserInfoWidget::openDatabase()
 
 void UserInfoWidget::initUI()
 {
-    setWindowTitle(tr("在线网络教学系统客户端"));
     setWindowModality(Qt::ApplicationModal);
     setAttribute(Qt::WA_DeleteOnClose);
 

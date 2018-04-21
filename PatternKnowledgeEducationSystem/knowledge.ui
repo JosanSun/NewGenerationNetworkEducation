@@ -11,7 +11,12 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>knowledge</string>
+   <string>在线网络教学系统客户端</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normalon>:/images/icon.png</normalon>
+   </iconset>
   </property>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">

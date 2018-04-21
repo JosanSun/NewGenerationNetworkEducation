@@ -9,8 +9,8 @@
 #include <map>
 
 #include "helper/node.h"
-#include "ui_knowledge.h"
 #include "helper/attribution.h"
+#include "ui_knowledge.h"
 
 using namespace std;
 
@@ -31,12 +31,9 @@ private slots:
     void trackLearning();
 
 private:
-    Ui::knowledge ui;
-    QSqlDatabase db;
-    attribution *attrWindow;
-    vector<QString> learningTrack;
+    void initUI();
+    void init();
     void openDatabase();
-
     void paintEvent(QPaintEvent *);
 
     //根据节点在图上画圆
@@ -69,6 +66,11 @@ private:
     //获取用户学习轨迹
     void getLearningTrack(vector<QString>&); //ymm
 
+private:
+    Ui::knowledge ui;
+    QSqlDatabase db;
+    attribution *attrWindow;
+    vector<QString> learningTrack;
     vector<Node> nodesInPic;
     map<QString, int> nodesAttributesMap;
 };

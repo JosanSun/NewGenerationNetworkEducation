@@ -36,8 +36,6 @@ login::~login()
 
 void login::initUI()
 {
-    setWindowIcon(QIcon(":/images/icon.png"));
-
     this->setFixedSize(432, 330);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//无边框且最小化任务栏还原
     //setAttribute(Qt::WA_TranslucentBackground);//窗口背景透明
@@ -55,21 +53,9 @@ void login::initUI()
     // ui->usernamebox->setEditable(true);    // 见ui设置
     QLineEdit* lineEdit = ui->usernamebox->lineEdit();
     lineEdit->setPlaceholderText(tr("用户名"));
-    // 20180328 -- 关于placeholderText提示符的设置，以后统一在ui完成。 QLineEdit
-    // ui->passwordtext->setPlaceholderText(tr("密码"));//用户名和密码的暗注释
 
     // 设置焦点以及tab顺序
     ui->usernamebox->setFocus();
-    // 20180328 -- 以后关于setTabOrder的处理统一到UI上搞定
-    //    setTabOrder(ui->usernamebox,ui->passwordtext);
-    //    setTabOrder(ui->passwordtext, ui->buttonLogin);
-    //    setTabOrder(ui->buttonLogin, ui->buttonRegister);//Tab键顺序
-
-    // 20180328 -- 关于label设定图标的，统一用UI设计，图片统一用资源文件，这样设计图标位置更方便。
-    //    QPixmap pic;
-    //    pic.load(":/images/icon.png");
-    //    ui->piclabel->setPixmap(pic);
-    //    ui->piclabel->setScaledContents(true);//设置头像图
 }
 
 //重写鼠标函数实现窗口自由移动
@@ -120,7 +106,6 @@ void login::openDatabase()
         qDebug() << "Success!";
     }
 }
-
 
 // 登录
 void login::loginSlot()
