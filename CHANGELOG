@@ -1,19 +1,24 @@
 # Change Log
 # All notable changes to this project will be documented in this file.
 
+## [2.1.1] 2018-05-04
+### Added
+- 增加预编译头文件stable.h，显著提升了二次编译的速度
+### Fixed
+- 将所有的ui, 统一改为指针
+- 将所有的类名统一改为大写的方式
+- 将头文件统一改为标准写法
+### ToDoList
+- 优化userinfowidget的界面
+- 修改knowledge部分。以及usecase部分
+- 对于PPT，swf，html的文件打开方式，仍然是绝对路径的方式。
+
 ## [2.1] 2018-04-21
 ### Fixed
 - 调通teach以及usecase部分，现在支持显示的教学案例格式有html, txt, pdf, swf
 - 解决teach和usecase部分的数据库重复BUG
 - 调通knowledge和attribute部分的代码. 但是显性知识显示仍然缺素材。
 - 解决knowledge和attribute的数据库重复BUG
-### ToDoList
-- 将所有的ui, 统一改为指针
-- 将所有的类名统一改为大写的方式
-- 将头文件统一改为标准写法
-- 优化userinfowidget的界面
-- 修改knowledge部分。以及usecase部分
-- 对于PPT，swf，html的文件打开方式，仍然是绝对路径的方式。
 
 ## [2.0.4] 2018-04-20
 ### Added

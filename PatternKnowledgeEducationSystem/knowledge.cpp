@@ -1,3 +1,4 @@
+#include "stable.h"
 #include <cmath>
 #include <vector>
 #include <iostream>
@@ -9,25 +10,27 @@
 #include <QRect>
 
 #include "knowledge.h"
+#include "ui_knowledge.h"
 #include "helper/node.h"
 #include "helper/user.h"
 #include "helper/myheaders.h"
 
 using namespace std;
-static double pi = 3.14159;
-extern user myUser;
+const double pi = 3.14159;
+extern User myUser;
 QString attribute;
 
-knowledge::knowledge(QWidget *parent)
-    : QWidget(parent)
+Knowledge::Knowledge(QWidget *parent)
+    : QWidget(parent), ui(new Ui::Knowledge)
 {
-    ui.setupUi(this);
+    ui->setupUi(this);
     initUI();
     init();
 }
 
-knowledge::~knowledge()
+Knowledge::~Knowledge()
 {
+    delete ui;
     QString connectName = db.connectionName();
     db = QSqlDatabase();
     db.removeDatabase(connectName);
@@ -35,7 +38,7 @@ knowledge::~knowledge()
 }
 
 //打开数据库
-void knowledge::openDatabase()
+void Knowledge::openDatabase()
 {
     this->db = QSqlDatabase::addDatabase("QMYSQL", "knowledge");
     this->db.setHostName("localhost");
@@ -53,19 +56,19 @@ void knowledge::openDatabase()
     }
 }
 
-void knowledge::initUI()
+void Knowledge::initUI()
 {
     setMouseTracking(true);
     setWindowModality(Qt::ApplicationModal);
     setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void knowledge::init()
+void Knowledge::init()
 {
     openDatabase();
 
     //追踪学习路径
-    connect(ui.pushButton, &QPushButton::clicked, this, &knowledge::trackLearning);
+    connect(ui->pushButton, &QPushButton::clicked, this, &Knowledge::trackLearning);
     vector<QString> attributes = getAttributesFromDB();
     vector<vector<int>> successors = getSuccessors(attributes);
     vector<vector<int>> predecessors = getPredecessors(successors);
@@ -73,7 +76,7 @@ void knowledge::init()
     generateNodes(attributes, successors, predecessors, r);
 }
 
-void knowledge::paintEvent(QPaintEvent *)
+void Knowledge::paintEvent(QPaintEvent *)
 {
     //NOTE: 真正运行的是这个画图
     drawCircles(nodesInPic, Qt::blue);
@@ -84,7 +87,7 @@ void knowledge::paintEvent(QPaintEvent *)
 }
 
 //画平面
-void knowledge::drawPanel(QPoint *basePoint, QString label, QColor color)
+void Knowledge::drawPanel(QPoint *basePoint, QString label, QColor color)
 {
     QPainter painter(this);
     painter.setPen(QPen(color, 1));
@@ -112,7 +115,7 @@ void knowledge::drawPanel(QPoint *basePoint, QString label, QColor color)
 }
 
 ////在两个圆之间连线
-//void knowledge::drawLine(QPoint *startPoint, QPoint *endPoint, int r, bool isTracked)
+//void Knowledge::drawLine(QPoint *startPoint, QPoint *endPoint, int r, bool isTracked)
 //{
 //	QPainter painter(this);
 //	painter.setPen(QPen(Qt::black, 1));
@@ -151,7 +154,7 @@ void knowledge::drawPanel(QPoint *basePoint, QString label, QColor color)
 //}
 
 //根据节点在图上画圆
-void knowledge::drawCircles(vector<Node> nodes, QColor color)
+void Knowledge::drawCircles(vector<Node> nodes, QColor color)
 {
     QPainter painter(this);
     for (int i = 0; i < nodes.size(); i++)
@@ -255,7 +258,7 @@ void knowledge::drawCircles(vector<Node> nodes, QColor color)
 }
 
 
-void knowledge::mousePressEvent(QMouseEvent *event)
+void Knowledge::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
@@ -276,15 +279,15 @@ void knowledge::mousePressEvent(QMouseEvent *event)
             while (query.next())
             {
                 qcout << "have the res";
-                ui.pointNameLabel->setText(attribute);
+                ui->pointNameLabel->setText(attribute);
                 qcout << query.value(1).toString();
                 QDateTime _dt = query.value(1).toDateTime();
-                ui.begintimeLabel->setText(_dt.toString("yyyy-MM-dd \nhh:mm:ss "));
-                ui.domainLabel->setText(query.value(0).toString());
-                ui.scoreLabel->setText(query.value(2).toString());
+                ui->begintimeLabel->setText(_dt.toString("yyyy-MM-dd \nhh:mm:ss "));
+                ui->domainLabel->setText(query.value(0).toString());
+                ui->scoreLabel->setText(query.value(2).toString());
             }
             qcout << "nothing";
-            attrWindow = new attribution();
+            attrWindow = new Attribution();
             attrWindow->show();
         }
         else
@@ -297,15 +300,15 @@ void knowledge::mousePressEvent(QMouseEvent *event)
 
 //移动鼠标就能显示属性
 //BUG:最好能够等待几秒，否则效果不行
-void knowledge::mouseMoveEvent(QMouseEvent * /* event */)
+void Knowledge::mouseMoveEvent(QMouseEvent * /* event */)
 {
     QPoint point = cursor().pos();
     QString attribute = getAttributeByPosition(point);
-    //ui.label->setText(attribute);
+    //ui->label->setText(attribute);
 }
 
 //根据鼠标点击坐标获取当前节点属性值
-QString knowledge::getAttributeByPosition(QPoint point)
+QString Knowledge::getAttributeByPosition(QPoint point)
 {
     if (nodesInPic.size() == 0)
     {
@@ -329,7 +332,7 @@ QString knowledge::getAttributeByPosition(QPoint point)
 }
 
 //从数据库中获得属性值
-vector<QString> knowledge::getAttributesFromDB()
+vector<QString> Knowledge::getAttributesFromDB()
 {
     vector<QString> attributes;
     QSqlQuery query(db);
@@ -343,7 +346,7 @@ vector<QString> knowledge::getAttributesFromDB()
 }
 
 //从数据库中获得后继节点关系
-vector<vector<int>> knowledge::getSuccessors(vector<QString> &attributes)
+vector<vector<int>> Knowledge::getSuccessors(vector<QString> &attributes)
 {
     vector<vector<int>> successors = vector<vector<int>>(attributes.size());
     QSqlQuery query(db);
@@ -393,7 +396,7 @@ vector<vector<int>> knowledge::getSuccessors(vector<QString> &attributes)
 }
 
 //从数据库中获得前驱节点关系
-vector<vector<int>> knowledge::getPredecessors(vector<vector<int>> &successors)
+vector<vector<int>> Knowledge::getPredecessors(vector<vector<int>> &successors)
 {
     vector<vector<int>> predecessors = vector<vector<int>>(successors.size());
     for (int i = 0; i < successors.size(); i++)
@@ -408,7 +411,7 @@ vector<vector<int>> knowledge::getPredecessors(vector<vector<int>> &successors)
 }
 
 //根据数据库中节点信息生成节点
-void knowledge::generateNodes(vector<QString> attributes, vector<vector<int>> successors,
+void Knowledge::generateNodes(vector<QString> attributes, vector<vector<int>> successors,
                               vector<vector<int>> predecessors, int r)
 {
     for (int i = 0; i < attributes.size(); i++)
@@ -445,7 +448,7 @@ void knowledge::generateNodes(vector<QString> attributes, vector<vector<int>> su
 }
 
 //设置节点坐标
-void knowledge::setNodesCoordinate(QPoint basePoint)
+void Knowledge::setNodesCoordinate(QPoint basePoint)
 {
     int x = basePoint.x();
     int y = basePoint.y();
@@ -468,7 +471,7 @@ void knowledge::setNodesCoordinate(QPoint basePoint)
 }
 
 //获取用户学习轨迹
-void knowledge::getLearningTrack(vector<QString> &lt)
+void Knowledge::getLearningTrack(vector<QString> &lt)
 {
     qcout << "getlearningtrack!";
     //vector<QString> learningTrack;
@@ -489,7 +492,7 @@ void knowledge::getLearningTrack(vector<QString> &lt)
 
 
 //slots
-void knowledge::trackLearning()
+void Knowledge::trackLearning()
 {
     getLearningTrack(learningTrack);
     qcout << "tracklearning!";

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>initial</class>
- <widget class="QWidget" name="initial">
+ <class>Initial</class>
+ <widget class="QWidget" name="Initial">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -404,7 +404,7 @@ QPushButton#quitButton:pressed
          </item>
         </layout>
        </widget>
-       <widget class="clickablelabel" name="knowledgeClickLabel">
+       <widget class="ClickableLabel" name="knowledgeClickLabel">
         <property name="geometry">
          <rect>
           <x>100</x>
@@ -423,7 +423,7 @@ QPushButton#quitButton:pressed
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="clickablelabel" name="teachClickLabel">
+       <widget class="ClickableLabel" name="teachClickLabel">
         <property name="geometry">
          <rect>
           <x>310</x>
@@ -442,7 +442,7 @@ QPushButton#quitButton:pressed
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="clickablelabel" name="testClickLabel">
+       <widget class="ClickableLabel" name="testClickLabel">
         <property name="geometry">
          <rect>
           <x>100</x>
@@ -461,7 +461,7 @@ QPushButton#quitButton:pressed
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="clickablelabel" name="userClickLabel">
+       <widget class="ClickableLabel" name="userClickLabel">
         <property name="geometry">
          <rect>
           <x>310</x>
@@ -489,7 +489,7 @@ QPushButton#quitButton:pressed
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>clickablelabel</class>
+   <class>ClickableLabel</class>
    <extends>QLabel</extends>
    <header location="global">helper\clickablelabel.h</header>
   </customwidget>

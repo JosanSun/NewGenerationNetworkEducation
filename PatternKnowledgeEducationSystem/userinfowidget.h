@@ -5,10 +5,9 @@
 
 #include <QWidget>
 #include <QtSql>
-//20170828 加入
 #include <QTableView>
 #include <QTimer>
-#include "qsqldatabase.h"
+#include <QSqlDatabase>
 
 namespace Ui {
 class UserInfoWidget;

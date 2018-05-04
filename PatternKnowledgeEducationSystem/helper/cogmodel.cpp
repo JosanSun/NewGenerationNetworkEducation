@@ -1,50 +1,50 @@
 #include "cogmodel.h"
 
-cogmodel::cogmodel()
+CogModel::CogModel()
 {
 }
 
 
-cogmodel::~cogmodel()
+CogModel::~CogModel()
 {
 }
 
-void cogmodel::setCogform(string _cogform)
+void CogModel::setCogform(string _cogform)
 {
     cogform = _cogform;
 }
 
-void cogmodel::setStrategy(string _strategy)
+void CogModel::setStrategy(string _strategy)
 {
     strategy = _strategy;
 }
 
-void cogmodel::setCogstyle(string _cogstyle)
+void CogModel::setCogstyle(string _cogstyle)
 {
     cogstyle = _cogstyle;
 }
 
-void cogmodel::setCogstructure(string _cogstructure)
+void CogModel::setCogstructure(string _cogstructure)
 {
     cogstructure = _cogstructure;
 }
 
-string cogmodel::getCogform()
+string CogModel::getCogform()
 {
     return cogform;
 }
 
-string cogmodel::getStrategy()
+string CogModel::getStrategy()
 {
     return strategy;
 }
 
-string cogmodel::getCogstyle()
+string CogModel::getCogstyle()
 {
     return cogstyle;
 }
 
-string cogmodel::getCogstructure()
+string CogModel::getCogstructure()
 {
     return cogstructure;
 }

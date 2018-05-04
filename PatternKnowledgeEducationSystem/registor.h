@@ -5,16 +5,16 @@
 #include <QWidget>
 
 namespace Ui {
-class registor;
+class Registor;
 }
 
-class registor : public QWidget
+class Registor : public QWidget
 {
     Q_OBJECT
 
 public:
-    registor(QWidget *parent = 0);
-    ~registor();
+    Registor(QWidget *parent = 0);
+    ~Registor();
 
     //get and set Functions
     QString getUserName();
@@ -52,7 +52,7 @@ private:
     void initUI();
 
 private:
-    Ui::registor* ui;
+    Ui::Registor* ui;
     //mouse moving
     bool        mMove;
     QPoint      mPos;

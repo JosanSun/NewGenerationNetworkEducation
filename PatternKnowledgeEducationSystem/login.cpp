@@ -1,3 +1,4 @@
+#include "stable.h"
 #include <QPixmap>
 #include <QDebug>
 #include <QMessageBox>
@@ -10,31 +11,55 @@
 #include "helper/user.h"
 
 
-user myUser;
+User myUser;
 
-login::login(QWidget *parent)
-    :  QWidget(parent), ui(new Ui::login)
+Login::Login(QWidget *parent)
+    :  QWidget(parent), ui(new Ui::Login)
 {
     ui->setupUi(this);
     initUI();
 
+    // usernambox栏安装事件过滤器
+    ui->usernamebox->installEventFilter(this);
     mMove=false;//mouse moving
 
-    connect(ui->buttonLogin, &QPushButton::clicked, this, &login::loginSlot);          // 点击登录按钮登录
-    connect(ui->passwordtext, &QLineEdit::returnPressed, this, &login::loginSlot);     // 回车键后登录
-    connect(ui->buttonRegister, &QPushButton::clicked, this, &login::registorSlot);    // 注册
-    connect(ui->buttonClose, &QPushButton::clicked, this, &login::close);              // 点击关闭
-    connect(ui->buttonMin, &QPushButton::clicked, this, &login::showMinimized);        // 点击最小化
+    connect(ui->buttonLogin, &QPushButton::clicked, this, &Login::loginSlot);          // 点击登录按钮登录
+    connect(ui->passwordtext, &QLineEdit::returnPressed, this, &Login::loginSlot);     // 回车键后登录
+    connect(ui->buttonRegister, &QPushButton::clicked, this, &Login::registorSlot);    // 注册
+    connect(ui->buttonClose, &QPushButton::clicked, this, &Login::close);              // 点击关闭
+    connect(ui->buttonMin, &QPushButton::clicked, this, &Login::showMinimized);        // 点击最小化
 
     openDatabase();
 }
 
-login::~login()
+// 事件过滤器
+bool Login::eventFilter(QObject *obj, QEvent *event)
+{
+    //用户在输入用户名时，按下回车键，可以直接转密码的输入.
+    if(obj == ui->usernamebox)
+    {
+        if (event->type() == QEvent::KeyPress)
+        {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
+            if (keyEvent->key() == Qt::Key_Return || keyEvent->key()==Qt::Key_Enter)
+            {
+                ui->passwordtext->setFocus();
+                return true;
+            }
+        }
+    }
+
+    return QObject::eventFilter(obj,event);
+}
+
+
+Login::~Login()
 {
     delete ui;
 }
 
-void login::initUI()
+void Login::initUI()
 {
     this->setFixedSize(432, 330);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//无边框且最小化任务栏还原
@@ -59,7 +84,7 @@ void login::initUI()
 }
 
 //重写鼠标函数实现窗口自由移动
-void login::mousePressEvent(QMouseEvent *event)
+void Login::mousePressEvent(QMouseEvent *event)
 {
     mMove = true;
     //记录下鼠标相对于窗口的位置
@@ -69,7 +94,7 @@ void login::mousePressEvent(QMouseEvent *event)
     return QWidget::mousePressEvent(event);
 }
 
-void login::mouseMoveEvent(QMouseEvent *event)
+void Login::mouseMoveEvent(QMouseEvent *event)
 {
     //(event->buttons() && Qt::LeftButton)按下是左键
     //通过事件event->globalPos()知道鼠标坐标，鼠标坐标减去鼠标相对于窗口位置，就是窗口在整个屏幕的坐标
@@ -82,13 +107,13 @@ void login::mouseMoveEvent(QMouseEvent *event)
     return QWidget::mouseMoveEvent(event);
 }
 
-void login::mouseReleaseEvent(QMouseEvent* /* event */)
+void Login::mouseReleaseEvent(QMouseEvent* /* event */)
 {
     mMove = false;
 }
 //mouse END
 
-void login::openDatabase()
+void Login::openDatabase()
 {
     this->db = QSqlDatabase::addDatabase("QMYSQL");
     this->db.setHostName("localhost");
@@ -108,7 +133,7 @@ void login::openDatabase()
 }
 
 // 登录
-void login::loginSlot()
+void Login::loginSlot()
 {
     QString _username = ui->usernamebox->currentText();
     if(_username.isEmpty())
@@ -143,7 +168,7 @@ void login::loginSlot()
                 db = QSqlDatabase();
                 db.removeDatabase(connectName);
                 db.close();
-                initWindow = new initial();
+                initWindow = new Initial();
                 // initWindow->setCurrentUserId(query.value(0).toString());   // 这个用来解决全局变量的设定
                 initWindow->show();
                 //关闭登录窗口
@@ -171,12 +196,12 @@ void login::loginSlot()
 }
 
 //进入注册模块
-void login::registorSlot()
+void Login::registorSlot()
 {
     hide();
-    regWindow = new registor();
+    regWindow = new Registor();
 
-    connect(regWindow, &registor::registerUser,
+    connect(regWindow, &Registor::registerUser,
             [=]()
     {
         QString _username = regWindow->getUserName();
@@ -227,7 +252,7 @@ void login::registorSlot()
         QMessageBox::information(this, tr("恭喜！"), tr("您已经注册成功！请登录！"));
         regWindow->close();
     });
-    connect(regWindow, &registor::closeSignal,
+    connect(regWindow, &Registor::closeSignal,
             [=]()
     {
         this->show();
