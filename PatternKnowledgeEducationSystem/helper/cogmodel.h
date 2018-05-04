@@ -1,15 +1,15 @@
 /*======== 认知模型类 ========*/
-
 #ifndef COGMODEL_H
 #define COFMODEL_H
+
 #include <string>
 using namespace std;
 
-class cogmodel
+class CogModel
 {
 public:
-    cogmodel();
-    ~cogmodel();
+    CogModel();
+    ~CogModel();
     void setCogform(string);
     void setStrategy(string);
     void setCogstyle(string);

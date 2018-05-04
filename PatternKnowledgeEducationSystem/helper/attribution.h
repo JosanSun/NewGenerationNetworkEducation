@@ -6,15 +6,17 @@
 #include <QtSql>
 #include <QSqlDatabase>
 
-#include "ui_attribution.h"
+namespace Ui {
+class Attribution;
+}
 
-class attribution : public QWidget
+class Attribution : public QWidget
 {
     Q_OBJECT
 
 public:
-    attribution(QWidget *parent = 0);
-    ~attribution();
+    Attribution(QWidget *parent = 0);
+    ~Attribution();
 
 private:
     void initUI();
@@ -23,7 +25,7 @@ private:
     void openXml(QString);
 
 private:
-    Ui::attribution ui;
+    Ui::Attribution* ui;
     QSqlDatabase db;
 };
 

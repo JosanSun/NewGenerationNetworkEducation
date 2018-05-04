@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>attribution</class>
- <widget class="QWidget" name="attribution">
+ <class>Attribution</class>
+ <widget class="QWidget" name="Attribution">
   <property name="geometry">
    <rect>
     <x>0</x>

@@ -6,12 +6,12 @@
 #include <QtGui>
 #include <QLabel>
 
-class clickablelabel : public QLabel
+class ClickableLabel : public QLabel
 {
     Q_OBJECT
 
 public:
-    clickablelabel(QWidget *parent = 0);
+    ClickableLabel(QWidget *parent = 0);
     int myLabelPressed;
     void mousePressEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);

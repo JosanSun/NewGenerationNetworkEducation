@@ -1,80 +1,80 @@
 #include "user.h"
 
-user::user()
+User::User()
 {
 }
 
 
-user::~user()
+User::~User()
 {
 }
 
-void user::setSid(int _sid)
+void User::setSid(int _sid)
 {
     sid = _sid;
 }
 
-void user::setName(string _name)
+void User::setName(string _name)
 {
     name = _name;
 }
 
-void user::setPassword(string _password)
+void User::setPassword(string _password)
 {
     password = _password;
 }
 
-void user::setSex(string _sex)
+void User::setSex(string _sex)
 {
     sex = _sex;
 }
 
-void user::setAge(int _age)
+void User::setAge(int _age)
 {
     age = _age;
 }
 
-void user::setEducation(string _education)
+void User::setEducation(string _education)
 {
     education = _education;
 }
 
-void user::setModel(cogmodel &_model)
+void User::setModel(CogModel &_model)
 {
     model = _model;
 }
 
-int user::getSid()
+int User::getSid()
 {
     return sid;
 }
 
-string user::getName()
+string User::getName()
 {
     return name;
 }
 
-string user::getPassword()
+string User::getPassword()
 {
     return password;
 }
 
-string user::getSex()
+string User::getSex()
 {
     return sex;
 }
 
-int user::getAge()
+int User::getAge()
 {
     return age;
 }
 
-string user::getEducation()
+string User::getEducation()
 {
     return education;
 }
 
-cogmodel user::getModel()
+CogModel User::getModel()
 {
     return model;
 }

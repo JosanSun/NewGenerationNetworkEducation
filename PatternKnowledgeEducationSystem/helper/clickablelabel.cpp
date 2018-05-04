@@ -1,17 +1,17 @@
 #include "clickablelabel.h"
 
-clickablelabel::clickablelabel(QWidget *parent)
+ClickableLabel::ClickableLabel(QWidget *parent)
     : QLabel(parent)
 {
     this->setText("clickableLabel");
 }
 
-void clickablelabel::mousePressEvent(QMouseEvent * /* e */)
+void ClickableLabel::mousePressEvent(QMouseEvent * /* e */)
 {
     myLabelPressed = 1;
 }
 
-void clickablelabel::mouseReleaseEvent(QMouseEvent * /* e */)
+void ClickableLabel::mouseReleaseEvent(QMouseEvent * /* e */)
 {
     if (myLabelPressed)
     {

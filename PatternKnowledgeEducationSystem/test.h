@@ -2,24 +2,23 @@
 #ifndef TEST_H
 #define TEST_H
 
-#include <QWidget>
+#include "stable.h"
 #include <QtSql>
 #include <map>
 #include <vector>
-#include <QRadioButton>
-#include <QScrollArea>
-#include <QTimer>
-
-#include "ui_test.h"
 using namespace std;
 
-class test : public QWidget
+namespace Ui {
+class Test;
+}
+
+class Test : public QWidget
 {
     Q_OBJECT
 
 public:
-    test(QWidget *parent = 0);
-    ~test();
+    Test(QWidget *parent = 0);
+    ~Test();
 
 private slots:
     void timeUpdateSlot();
@@ -35,7 +34,7 @@ private:
     void openDatabase();
 
 private:
-    Ui::test ui;
+    Ui::Test* ui;
     // timer1用于更新系统当前时间
     QTimer* timer1 = nullptr;
     QTimer* timer2 = nullptr;

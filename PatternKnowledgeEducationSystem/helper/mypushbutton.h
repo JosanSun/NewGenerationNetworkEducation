@@ -6,12 +6,12 @@
 
 #include <QPushButton>
 
-class myPushButton : public QPushButton
+class MyPushButton : public QPushButton
 {
     Q_OBJECT
 
 public:
-    explicit myPushButton(QWidget *parent);
+    explicit MyPushButton(QWidget *parent);
     int myLabelPressed;
     void mousePressEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
