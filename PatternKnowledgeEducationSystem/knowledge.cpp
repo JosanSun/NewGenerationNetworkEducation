@@ -157,7 +157,7 @@ void Knowledge::drawPanel(QPoint *basePoint, QString label, QColor color)
 void Knowledge::drawCircles(vector<Node> nodes, QColor color)
 {
     QPainter painter(this);
-    for (int i = 0; i < nodes.size(); i++)
+    for (int i = 0; i < static_cast<int>(nodes.size()); i++)
     {
         if (nodes[i].getIsLearned())
         {
@@ -215,7 +215,7 @@ void Knowledge::drawCircles(vector<Node> nodes, QColor color)
         QPoint *startPoint;
 
         painter.setBrush(QBrush(Qt::black, Qt::SolidPattern));
-        for (int j = 0; j < children.size(); j++)
+        for (int j = 0; j < static_cast<int>(children.size()); j++)
         {
             //---------画线
             if (nodes[i].getIsLearned() && nodesInPic[children[j]].getIsLearned())
@@ -399,9 +399,9 @@ vector<vector<int>> Knowledge::getSuccessors(vector<QString> &attributes)
 vector<vector<int>> Knowledge::getPredecessors(vector<vector<int>> &successors)
 {
     vector<vector<int>> predecessors = vector<vector<int>>(successors.size());
-    for (int i = 0; i < successors.size(); i++)
+    for (int i = 0; i < static_cast<int>(successors.size()); i++)
     {
-        for (int j = 0; j < successors[i].size(); j++)
+        for (int j = 0; j < static_cast<int>(successors[i].size()); j++)
         {
             predecessors[successors[i][j]].push_back(i);
         }
@@ -414,7 +414,7 @@ vector<vector<int>> Knowledge::getPredecessors(vector<vector<int>> &successors)
 void Knowledge::generateNodes(vector<QString> attributes, vector<vector<int>> successors,
                               vector<vector<int>> predecessors, int r)
 {
-    for (int i = 0; i < attributes.size(); i++)
+    for (int i = 0; i < static_cast<int>(attributes.size()); i++)
     {
         Node node;
         node.setAttribute(attributes[i]);
@@ -427,17 +427,17 @@ void Knowledge::generateNodes(vector<QString> attributes, vector<vector<int>> su
         nodesAttributesMap.insert(map<QString, int>::value_type(attributes[i], i));
     }
 
-    for (int i = 0; i < successors.size(); i++)
+    for (int i = 0; i < static_cast<int>(successors.size()); i++)
     {
-        for (int j = 0; j < successors[i].size(); j++)
+        for (int j = 0; j < static_cast<int>(successors[i].size()); j++)
         {
             nodesInPic[i].addChild(successors[i][j]);
         }
     }
 
-    for (int i = 0; i < predecessors.size(); i++)
+    for (int i = 0; i < static_cast<int>(predecessors.size()); i++)
     {
-        for (int j = 0; j < predecessors[i].size(); j++)
+        for (int j = 0; j < static_cast<int>(predecessors[i].size()); j++)
         {
             nodesInPic[i].addParent(predecessors[i][j]);
         }

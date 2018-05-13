@@ -31,8 +31,8 @@ public:
 
 private:
     QPoint center;
-    int radius;
     QString attribute;
+    int radius;
     vector<int> children;
     vector<int> parents;
     bool isLearned;
