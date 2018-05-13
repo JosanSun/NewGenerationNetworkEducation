@@ -1,6 +1,14 @@
 # Change Log
 # All notable changes to this project will be documented in this file.
 
+## [2.1.2] 2018-05-13
+### Fixed
+- 去掉除flash相关的warning警告。
+### ToDoList
+- 优化userinfowidget的界面
+- 修改knowledge部分。以及usecase部分
+- 对于PPT，swf，html的文件打开方式，仍然是绝对路径的方式。
+
 ## [2.1.1] 2018-05-04
 ### Added
 - 增加预编译头文件stable.h，显著提升了二次编译的速度

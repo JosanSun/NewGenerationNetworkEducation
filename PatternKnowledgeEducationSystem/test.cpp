@@ -7,6 +7,7 @@
 #include "test.h"
 #include "ui_test.h"
 #include "helper/user.h"
+#include "helper/myheaders.h"
 
 extern User myUser;
 extern QString currentKid;
@@ -174,7 +175,7 @@ void Test::startTestSlot()
     firstLayout->addStretch();
     //ui->scrollArea->setLayout(firstLayout);
     allLayout->addLayout(firstLayout);
-    int numRows;//记录查询的行数
+    int numRows;                //记录查询的行数
     QSqlQuery query(db);
     query.exec("select * from testcase where tid='" + currentTid + "'");
     QSqlDatabase defaultDB = QSqlDatabase::database();
@@ -188,6 +189,7 @@ void Test::startTestSlot()
         query.last();
         numRows = query.at() + 1;
     }
+    qcout << numRows;
     while (query.next())
     {
         //题目标题
