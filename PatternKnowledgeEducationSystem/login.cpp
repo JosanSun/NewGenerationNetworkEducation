@@ -8,7 +8,6 @@
 
 #include "login.h"
 #include "ui_login.h"
-#include "helper/user.h"
 
 
 User myUser;
@@ -57,6 +56,10 @@ bool Login::eventFilter(QObject *obj, QEvent *event)
 Login::~Login()
 {
     delete ui;
+    QString connectName = db.connectionName();
+    db = QSqlDatabase();
+    db.removeDatabase(connectName);
+    db.close();
 }
 
 void Login::initUI()
@@ -82,6 +85,23 @@ void Login::initUI()
     // 设置焦点以及tab顺序
     ui->usernamebox->setFocus();
 }
+
+void Login::updateCogModel(CogModel &model)
+{
+    // 更新全局用户的认知风格
+    myUser.getModel().setCogApproach(model.getCogApproach());
+    myUser.getModel().setCogStrategy(model.getCogStrategy());
+
+    // 更新数据库
+    QSqlQuery query;
+    query.prepare("update student set cogApproach=:cogApproach , "
+                  "cogStrategy=:cogStrategy where sid=:sid;");
+    query.bindValue(":cogApproach", QString(model.getCogApproach().data()));
+    query.bindValue(":cogStrategy", QString(model.getCogStrategy().data()));
+    query.bindValue(":sid", myUser.getSid());
+    query.exec();
+}
+
 
 //重写鼠标函数实现窗口自由移动
 void Login::mousePressEvent(QMouseEvent *event)
@@ -164,15 +184,70 @@ void Login::loginSlot()
                 //对全局myUser进行部分初始化
                 myUser.setName(_username.toStdString());
                 myUser.setPassword(_password.toStdString());
-                QString connectName = db.connectionName();
-                db = QSqlDatabase();
-                db.removeDatabase(connectName);
-                db.close();
-                initWindow = new Initial();
-                // initWindow->setCurrentUserId(query.value(0).toString());   // 这个用来解决全局变量的设定
-                initWindow->show();
-                //关闭登录窗口
-                this->close();
+                myUser.setSid(query.value(0).toInt());
+                myUser.setAge(query.value(3).toInt());
+                myUser.setEducation(query.value(4).toString().toStdString());
+                CogModel tmp;
+                tmp.setCogApproach(query.value(5).toString().toStdString());
+                tmp.setCogStrategy(query.value(6).toString().toStdString());
+                tmp.setCogExperience(query.value(7).toString().toStdString());
+                tmp.setMetaCogAbility(query.value(8).toString().toStdString());
+                myUser.setModel(tmp);
+
+                string curCogApproach = myUser.getModel().getCogApproach();
+                CogModel model;
+
+                if(curCogApproach.empty())
+                {
+                    hide();
+                    QMessageBox msgBox;
+                    msgBox.setWindowTitle(tr("警告"));
+                    msgBox.setText(tr("系统检测到您是初次学习本系统。强烈建议您通过问卷测量表初始化您的认知方式，这样系统能"
+                                      "更加准确地为您推荐学习案例。否则，系统会采用默认值作为初始值。\n是否现在进行问卷调查？"));
+                    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+                    msgBox.setDefaultButton(QMessageBox::Yes);
+                    int ret = msgBox.exec();
+                    if(ret == QMessageBox::Yes)
+                    {
+                        patternTestWindow = new PatternTest();
+                        patternTestWindow->show();
+                        connect(patternTestWindow, &PatternTest::getCogApproach,
+                                [=](QString curStr) mutable
+                        {
+                            QString str = curStr;
+                            model.setCogApproach(str.toStdString());
+                            model.setCogStrategy(string("复述策略"));
+                            updateCogModel(model);
+
+                        });
+                        connect(patternTestWindow, &PatternTest::closeSignal,
+                                [=]()
+                        {
+                            initWindow = new Initial();
+                            // initWindow->setCurrentUserId(query.value(0).toString());   // 这个用来解决全局变量的设定
+                            initWindow->show();
+                            //关闭登录窗口
+                            this->close();
+                            return ;
+                        });
+                    }
+                    else
+                    {
+                        model.setCogApproach("活跃型");
+                        model.setCogStrategy("复述策略");
+                        updateCogModel(model);
+
+                        initWindow = new Initial();
+                        initWindow->show();
+                        this->close();
+                    }
+                }
+                else
+                {
+                    initWindow = new Initial();
+                    initWindow->show();
+                    this->close();
+                }
             }
             else
             {

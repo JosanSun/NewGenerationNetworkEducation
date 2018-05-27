@@ -143,7 +143,7 @@ void Initial::mouseReleaseEvent(QMouseEvent* /* event */)
 
 void Initial::openDatabase()
 {
-    this->db = QSqlDatabase::addDatabase("QMYSQL");
+    this->db = QSqlDatabase::addDatabase("QMYSQL", "initial");
     this->db.setHostName("localhost");
     this->db.setUserName("root");
     this->db.setPassword("1234");

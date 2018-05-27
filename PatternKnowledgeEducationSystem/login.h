@@ -7,6 +7,8 @@
 
 #include "registor.h"
 #include "initial.h"
+#include "helper/patterntest.h"
+#include "helper/user.h"
 
 namespace Ui {
 class Login;
@@ -34,15 +36,17 @@ private slots:
 private:
     void openDatabase();
     void initUI();
+    void updateCogModel(CogModel& model);
 
 private:
-    Ui::Login* ui;
+    Ui::Login*   ui;
     QSqlDatabase db;
-    Registor *regWindow;
-    Initial *initWindow;
+    Registor*    regWindow;
+    Initial*     initWindow;
+    PatternTest* patternTestWindow;
     //mouse moving
-    bool        mMove;
-    QPoint      mPos;
+    bool         mMove;
+    QPoint       mPos;
 };
 
 #endif // LOGIN_H

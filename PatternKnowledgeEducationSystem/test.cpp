@@ -21,8 +21,8 @@ Test::Test(QWidget *parent)
     init();
 
     connect(timer1, &QTimer::timeout, this, &Test::timeUpdateSlot);//更新系统时间
-    connect(ui->submitButton, &QPushButton::clicked, this, &Test::submitTestSlot);//提交测试
-    connect(startButton, &QPushButton::clicked, this, &Test::startTestSlot);//点击开始测试按钮进入测试
+    connect(ui->submitButton, &QPushButton::clicked, this, &Test::submitTestSlot);      //提交测试
+    connect(startButton, &QPushButton::clicked, this, &Test::startTestSlot);            //点击开始测试按钮进入测试
 }
 
 Test::~Test()

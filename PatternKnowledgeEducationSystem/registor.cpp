@@ -1,7 +1,6 @@
 #include "stable.h"
 #include <QPixmap>
 #include <QDebug>
-#include <QMessageBox>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QPalette>

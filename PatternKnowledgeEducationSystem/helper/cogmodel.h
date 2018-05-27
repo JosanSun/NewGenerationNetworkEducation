@@ -10,20 +10,20 @@ class CogModel
 public:
     CogModel();
     ~CogModel();
-    void setCogform(string);
-    void setStrategy(string);
-    void setCogstyle(string);
-    void setCogstructure(string);
-    string getCogform();
-    string getStrategy();
-    string getCogstyle();
-    string getCogstructure();
+    void setCogApproach(string);
+    void setCogStrategy(string);
+    void setCogExperience(string);
+    void setMetaCogAbility(string);
+    string getCogApproach();
+    string getCogStrategy();
+    string getCogExperience();
+    string getMetaCogAbility();
 
 private:
-    string cogform;
-    string strategy;
-    string cogstyle;
-    string cogstructure;
+    string cogApproach;
+    string cogStrategy;
+    string cogExperience;
+    string metaCogAbility;
 };
 
 #endif
