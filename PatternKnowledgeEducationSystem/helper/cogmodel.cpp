@@ -4,49 +4,48 @@ CogModel::CogModel()
 {
 }
 
-
 CogModel::~CogModel()
 {
 }
 
-void CogModel::setCogform(string _cogform)
+void CogModel::setCogApproach(string _cogApproach)
 {
-    cogform = _cogform;
+    cogApproach = _cogApproach;
 }
 
-void CogModel::setStrategy(string _strategy)
+void CogModel::setCogStrategy(string _cogStrategy)
 {
-    strategy = _strategy;
+    cogStrategy = _cogStrategy;
 }
 
-void CogModel::setCogstyle(string _cogstyle)
+void CogModel::setCogExperience(string _cogExperience)
 {
-    cogstyle = _cogstyle;
+    cogExperience = _cogExperience;
 }
 
-void CogModel::setCogstructure(string _cogstructure)
+void CogModel::setMetaCogAbility(string _metaCogAbility)
 {
-    cogstructure = _cogstructure;
+    metaCogAbility = _metaCogAbility;
 }
 
-string CogModel::getCogform()
+string CogModel::getCogApproach()
 {
-    return cogform;
+    return cogApproach;
 }
 
-string CogModel::getStrategy()
+string CogModel::getCogStrategy()
 {
-    return strategy;
+    return cogStrategy;
 }
 
-string CogModel::getCogstyle()
+string CogModel::getCogExperience()
 {
-    return cogstyle;
+    return cogExperience;
 }
 
-string CogModel::getCogstructure()
+string CogModel::getMetaCogAbility()
 {
-    return cogstructure;
+    return metaCogAbility;
 }
 
 

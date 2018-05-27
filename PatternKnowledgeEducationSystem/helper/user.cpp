@@ -74,7 +74,7 @@ string User::getEducation()
     return education;
 }
 
-CogModel User::getModel()
+CogModel& User::getModel()
 {
     return model;
 }

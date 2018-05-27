@@ -26,7 +26,7 @@ public:
     string getSex();
     int getAge();
     string getEducation();
-    CogModel getModel();
+    CogModel& getModel();
 
 private:
     int sid;
