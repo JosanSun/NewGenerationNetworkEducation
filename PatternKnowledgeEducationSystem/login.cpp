@@ -197,7 +197,7 @@ void Login::loginSlot()
                 string curCogApproach = myUser.getModel().getCogApproach();
                 CogModel model;
 
-                if(!curCogApproach.empty())
+                if(curCogApproach.empty())
                 {
                     hide();
                     QMessageBox msgBox;
