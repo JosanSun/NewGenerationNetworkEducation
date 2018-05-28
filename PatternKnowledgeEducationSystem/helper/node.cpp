@@ -1,6 +1,5 @@
-#include "node.h"
 #include <vector>
-
+#include "node.h"
 using namespace std;
 
 Node::Node()

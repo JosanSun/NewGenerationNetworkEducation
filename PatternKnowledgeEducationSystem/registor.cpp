@@ -1,6 +1,6 @@
+#include "stable.h"
 #include <QPixmap>
 #include <QDebug>
-#include <QMessageBox>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QPalette>
@@ -9,26 +9,26 @@
 #include "registor.h"
 #include "ui_registor.h"
 
-registor::registor(QWidget *parent)
-    : QWidget(parent), ui(new Ui::registor)
+Registor::Registor(QWidget *parent)
+    : QWidget(parent), ui(new Ui::Registor)
 {
     ui->setupUi(this);
     initUI();
 
     mMove = false;//mouse moving
 
-    //connect(ui->cancelButton, &QPushButton::clicked, this, &registor::close);                    // 关闭注册界面
+    //connect(ui->cancelButton, &QPushButton::clicked, this, &Registor::close);                    // 关闭注册界面
 
-    connect(ui->buttonClose, &QPushButton::clicked, this, &registor::close);              // 点击关闭
-    connect(ui->buttonMin, &QPushButton::clicked, this, &registor::showMinimized);        // 点击最小化
+    connect(ui->buttonClose, &QPushButton::clicked, this, &Registor::close);              // 点击关闭
+    connect(ui->buttonMin, &QPushButton::clicked, this, &Registor::showMinimized);        // 点击最小化
 }
 
-registor::~registor()
+Registor::~Registor()
 {
     delete ui;
 }
 
-void registor::initUI()
+void Registor::initUI()
 {
     setWindowModality(Qt::ApplicationModal);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -50,7 +50,7 @@ void registor::initUI()
 }
 
 //重写鼠标函数实现窗口自由移动
-void registor::mousePressEvent(QMouseEvent *event)
+void Registor::mousePressEvent(QMouseEvent *event)
 {
     mMove = true;
     //记录下鼠标相对于窗口的位置
@@ -60,7 +60,7 @@ void registor::mousePressEvent(QMouseEvent *event)
     return QWidget::mousePressEvent(event);
 }
 
-void registor::mouseMoveEvent(QMouseEvent *event)
+void Registor::mouseMoveEvent(QMouseEvent *event)
 {
     //(event->buttons() && Qt::LeftButton)按下是左键
     //通过事件event->globalPos()知道鼠标坐标，鼠标坐标减去鼠标相对于窗口位置，就是窗口在整个屏幕的坐标
@@ -73,73 +73,73 @@ void registor::mouseMoveEvent(QMouseEvent *event)
     return QWidget::mouseMoveEvent(event);
 }
 
-void registor::mouseReleaseEvent(QMouseEvent * /* event */)
+void Registor::mouseReleaseEvent(QMouseEvent * /* event */)
 {
     mMove = false;
 }
 //mouse END
 
-QString registor::getUserName()
+QString Registor::getUserName()
 {
     return ui->usernameLineEdit->text();
 }
 
-QString registor::getSex()
+QString Registor::getSex()
 {
     return ui->sexComboBox->currentText();
 }
 
-QString registor::getPassword()
+QString Registor::getPassword()
 {
     return ui->passwordLineEdit->text();
 }
 
-QString registor::getDoublePassword()
+QString Registor::getDoublePassword()
 {
     return ui->doublePasswordLineEdit->text();
 }
 
-QString registor::getAge()
+QString Registor::getAge()
 {
     return ui->ageLineEdit->text();
 }
 
-QString registor::getEducation()
+QString Registor::getEducation()
 {
     return ui->educationComboBox->currentText();
 }
 
-void registor::resetUserName()
+void Registor::resetUserName()
 {
     ui->usernameLineEdit->clear();
 }
 
-void registor::resetSex()
+void Registor::resetSex()
 {
     ui->sexComboBox->setEditText(tr("男"));
 }
 
-void registor::resetPassword()
+void Registor::resetPassword()
 {
     ui->passwordLineEdit->clear();
 }
 
-void registor::resetDoublePassword()
+void Registor::resetDoublePassword()
 {
     ui->doublePasswordLineEdit->clear();
 }
 
-void registor::resetAge()
+void Registor::resetAge()
 {
     ui->ageLineEdit->clear();
 }
 
-void registor::resetEducation()
+void Registor::resetEducation()
 {
     ui->educationComboBox->setEditText(tr("请选择"));
 }
 
-void registor::resetAll()
+void Registor::resetAll()
 {
     resetUserName();
     resetSex();
@@ -149,12 +149,12 @@ void registor::resetAll()
     resetEducation();
 }
 
-void registor::closeEvent(QCloseEvent * /* ev */)
+void Registor::closeEvent(QCloseEvent * /* ev */)
 {
     emit closeSignal();
 }
 
-void registor::on_registerButton_clicked()
+void Registor::on_registerButton_clicked()
 {
     emit registerUser();
 }

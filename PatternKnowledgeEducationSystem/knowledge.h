@@ -10,17 +10,19 @@
 
 #include "helper/node.h"
 #include "helper/attribution.h"
-#include "ui_knowledge.h"
-
 using namespace std;
 
-class knowledge : public QWidget
+namespace Ui {
+class Knowledge;
+}
+
+class Knowledge : public QWidget
 {
     Q_OBJECT
 
 public:
-    knowledge(QWidget *parent = 0);
-    ~knowledge();
+    Knowledge(QWidget *parent = 0);
+    ~Knowledge();
 
 protected:
     virtual void mousePressEvent(QMouseEvent *event);
@@ -67,9 +69,9 @@ private:
     void getLearningTrack(vector<QString>&); //ymm
 
 private:
-    Ui::knowledge ui;
+    Ui::Knowledge* ui;
     QSqlDatabase db;
-    attribution *attrWindow;
+    Attribution *attrWindow;
     vector<QString> learningTrack;
     vector<Node> nodesInPic;
     map<QString, int> nodesAttributesMap;

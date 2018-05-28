@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>test</class>
- <widget class="QWidget" name="test">
+ <class>Test</class>
+ <widget class="QWidget" name="Test">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -191,7 +191,7 @@
      <string>当前还剩：</string>
     </property>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QWidget" name="layoutWidget_2">
     <property name="geometry">
      <rect>
       <x>20</x>

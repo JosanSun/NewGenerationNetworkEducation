@@ -1,3 +1,4 @@
+#include "stable.h"
 #include <QTimer>
 #include <QMessageBox>
 #include <QPixmap>
@@ -7,28 +8,28 @@
 #include "ui_initial.h"
 #include "helper/user.h"
 
-extern user myUser;
+extern User myUser;
 QString currentKid;
 
-initial::initial(QWidget *parent)
-    : QWidget(parent), ui(new Ui::initial), timer(new QTimer(this))
+Initial::Initial(QWidget *parent)
+    : QWidget(parent), ui(new Ui::Initial), timer(new QTimer(this))
 {
     ui->setupUi(this);
     initUI();
     init();
 
     // 点击最小化小化、关闭按钮图标
-    connect(ui->buttonClose, &QPushButton::clicked, this, &initial::close);                                 // 点击关闭
-    connect(ui->buttonMin, &QPushButton::clicked, this, &initial::showMinimized);                           // 点击最小化
-    connect(timer, &QTimer::timeout, this, &initial::timerUpDateSlot);                                      // 更新系统时间
-    connect(ui->knowledgeClickLabel, &clickablelabel::clicked, this, &initial::goToKnowledgeWindowSlot);    // 进入知识库查看模块
-    connect(ui->teachClickLabel, &clickablelabel::clicked, this, &initial::goToTeachWindowSlot);            // 进入教学模块
-    connect(ui->testClickLabel, &clickablelabel::clicked, this, &initial::goToTestWindowSlot);              // 进入测试模块
-    connect(ui->userClickLabel, &clickablelabel::clicked, this, &initial::goToUserWindowSlot);              // 进入用户管理模块
-    connect(ui->quitButton, &QPushButton::clicked, this, &initial::close);                                  // 关闭系统
+    connect(ui->buttonClose, &QPushButton::clicked, this, &Initial::close);                                 // 点击关闭
+    connect(ui->buttonMin, &QPushButton::clicked, this, &Initial::showMinimized);                           // 点击最小化
+    connect(timer, &QTimer::timeout, this, &Initial::timerUpDateSlot);                                      // 更新系统时间
+    connect(ui->knowledgeClickLabel, &ClickableLabel::clicked, this, &Initial::goToKnowledgeWindowSlot);    // 进入知识库查看模块
+    connect(ui->teachClickLabel, &ClickableLabel::clicked, this, &Initial::goToTeachWindowSlot);            // 进入教学模块
+    connect(ui->testClickLabel, &ClickableLabel::clicked, this, &Initial::goToTestWindowSlot);              // 进入测试模块
+    connect(ui->userClickLabel, &ClickableLabel::clicked, this, &Initial::goToUserWindowSlot);              // 进入用户管理模块
+    connect(ui->quitButton, &QPushButton::clicked, this, &Initial::close);                                  // 关闭系统
 }
 
-initial::~initial()
+Initial::~Initial()
 {
     delete ui;
     QString connectName = db.connectionName();
@@ -37,7 +38,7 @@ initial::~initial()
     db.close();
 }
 
-void initial::initUI()
+void Initial::initUI()
 {
     setWindowTitle(tr("在线网络教学系统客户端"));
     setAttribute(Qt::WA_DeleteOnClose);
@@ -57,7 +58,7 @@ void initial::initUI()
 }
 
 //初始化当前用户以及用户上次学习到的知识点
-void initial::init()
+void Initial::init()
 {
     openDatabase();
 
@@ -111,7 +112,7 @@ void initial::init()
 
 
 //重写鼠标函数实现窗口自由移动
-void initial::mousePressEvent(QMouseEvent *event)
+void Initial::mousePressEvent(QMouseEvent *event)
 {
     mMove = true;
     //记录下鼠标相对于窗口的位置
@@ -121,7 +122,7 @@ void initial::mousePressEvent(QMouseEvent *event)
     return QWidget::mousePressEvent(event);
 }
 
-void initial::mouseMoveEvent(QMouseEvent *event)
+void Initial::mouseMoveEvent(QMouseEvent *event)
 {
     //(event->buttons() && Qt::LeftButton)按下是左键
     //通过事件event->globalPos()知道鼠标坐标，鼠标坐标减去鼠标相对于窗口位置，就是窗口在整个屏幕的坐标
@@ -134,15 +135,15 @@ void initial::mouseMoveEvent(QMouseEvent *event)
     return QWidget::mouseMoveEvent(event);
 }
 
-void initial::mouseReleaseEvent(QMouseEvent* /* event */)
+void Initial::mouseReleaseEvent(QMouseEvent* /* event */)
 {
     mMove = false;
 }
 //mouse END
 
-void initial::openDatabase()
+void Initial::openDatabase()
 {
-    this->db = QSqlDatabase::addDatabase("QMYSQL");
+    this->db = QSqlDatabase::addDatabase("QMYSQL", "initial");
     this->db.setHostName("localhost");
     this->db.setUserName("root");
     this->db.setPassword("1234");
@@ -159,7 +160,7 @@ void initial::openDatabase()
     }
 }
 
-void initial::showFirstKnowledge()
+void Initial::showFirstKnowledge()
 {
     QSqlQuery query;
     query.prepare("select kid from recpath where sid=:sid and state=0 and orders=1");
@@ -174,21 +175,21 @@ void initial::showFirstKnowledge()
 }
 
 //显示系统时间
-void initial::timerUpDateSlot()
+void Initial::timerUpDateSlot()
 {
     QDateTime time = QDateTime::currentDateTime();
     ui->currentTimeLabel->setText(time.toString("yyyy-MM-dd \nhh:mm:ss \ndddd"));
 }
 
 //知识可视化显示模块
-void initial::goToKnowledgeWindowSlot()
+void Initial::goToKnowledgeWindowSlot()
 {
-    knowWindow = new knowledge();  
+    knowWindow = new Knowledge();
     knowWindow->show();
 }
 
 //教学模块
-void initial::goToTeachWindowSlot()
+void Initial::goToTeachWindowSlot()
 {
     QString _lastPoint = ui->lastPointnameLabel->text();
     if (_lastPoint == tr("无"))
@@ -251,28 +252,28 @@ void initial::goToTeachWindowSlot()
             break;
         }
     }
-    teachWindow = new teach();
+    teachWindow = new Teach();
     teachWindow->show();
-    connect(teachWindow, &teach::destroyed, this, &initial::updateCurrentKidSlot);
+    connect(teachWindow, &Teach::destroyed, this, &Initial::updateCurrentKidSlot);
 }
 
 //测试模块
-void initial::goToTestWindowSlot()
+void Initial::goToTestWindowSlot()
 {
-    testWindow = new test();
+    testWindow = new Test();
     testWindow->show();
-    connect(testWindow, &test::destroyed, this, &initial::updateCurrentKidSlot);
+    connect(testWindow, &Test::destroyed, this, &Initial::updateCurrentKidSlot);
 }
 
 //个人信息模块
-void initial::goToUserWindowSlot()
+void Initial::goToUserWindowSlot()
 {
     userInfoWindow = new UserInfoWidget();
     userInfoWindow->show();
 }
 
 //当前知识点测试通过后再次进入教学模块更新当前知识点
-void initial::updateCurrentKidSlot()
+void Initial::updateCurrentKidSlot()
 {
     QSqlQuery query;
     QString _first = currentKid.left(1);
@@ -296,7 +297,7 @@ void initial::updateCurrentKidSlot()
 
 
 // 解决全局变量myUser
-void initial::setCurrentUserId(const QString &userId)
+void Initial::setCurrentUserId(const QString &userId)
 {
     curUserId = userId;
 }

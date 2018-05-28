@@ -1,39 +1,41 @@
 #include <QDomDocument>
 
 #include "helper/attribution.h"
+#include "ui_attribution.h"
 #include "helper/myheaders.h"
 
 extern QString attribute;
 
-attribution::attribution(QWidget *parent)
-    : QWidget(parent)
+Attribution::Attribution(QWidget *parent)
+    : QWidget(parent), ui(new Ui::Attribution)
 {
-    ui.setupUi(this);
+    ui->setupUi(this);
     initUI();
     init();
 }
 
-attribution::~attribution()
+Attribution::~Attribution()
 {
+    delete ui;
     QString connectName = db.connectionName();
     db = QSqlDatabase();
     db.removeDatabase(connectName);
     db.close();
 }
 
-void attribution::initUI()
+void Attribution::initUI()
 {
     setWindowModality(Qt::ApplicationModal);
     setAttribute(Qt::WA_DeleteOnClose);
 
-    ui.tabWidget->setTabText(0, tr("属性信息"));
-    ui.tabWidget->setTabText(1, tr("特征信息"));
-    ui.houLineEdit->setText(tr("无"));
-    ui.tipsLabel->setText(tr("无"));
+    ui->tabWidget->setTabText(0, tr("属性信息"));
+    ui->tabWidget->setTabText(1, tr("特征信息"));
+    ui->houLineEdit->setText(tr("无"));
+    ui->tipsLabel->setText(tr("无"));
 }
 
 //初始化属性界面
-void attribution::init()
+void Attribution::init()
 {
     openDatabase();
     QSqlQuery query;
@@ -43,10 +45,10 @@ void attribution::init()
     query.exec(sqlStr);
     while (query.next())
     {
-        ui.idLineEdit->setText(query.value(0).toString());
-        ui.titleLineEdit->setText(attribute);
-        ui.domainLineEdit->setText(query.value(2).toString());
-        ui.textEdit->setText(tr("数据的简单堆叠形成堆叠模式"));
+        ui->idLineEdit->setText(query.value(0).toString());
+        ui->titleLineEdit->setText(attribute);
+        ui->domainLineEdit->setText(query.value(2).toString());
+        ui->textEdit->setText(tr("数据的简单堆叠形成堆叠模式"));
         QString _patternFile = query.value(3).toString();
         _patternFile.replace(0, 1, "../PatternKnowledgeEducationSystem");
         qcout << _patternFile;
@@ -58,17 +60,17 @@ void attribution::init()
     {
         if (query.value(0).toString() == "0")
         {
-            ui.qianLineEdit->setText(query.value(1).toString());
+            ui->qianLineEdit->setText(query.value(1).toString());
         }
         else
         {
-            ui.houLineEdit->setText(query.value(1).toString());
+            ui->houLineEdit->setText(query.value(1).toString());
         }
     }
 }
 
 //打开数据库
-void attribution::openDatabase()
+void Attribution::openDatabase()
 {
     this->db = QSqlDatabase::addDatabase("QMYSQL", "attribution");
     this->db.setHostName("localhost");
@@ -87,7 +89,7 @@ void attribution::openDatabase()
 }
 
 //读模式知识的特征xml文档
-void attribution::openXml(QString filename)
+void Attribution::openXml(QString filename)
 {
     QDomDocument doc;
     QFile xmlFile(filename);
@@ -110,17 +112,17 @@ void attribution::openXml(QString filename)
         {
             if (e.tagName() == "pname")
             {
-                ui.patternLabel->setText(e.text());
+                ui->patternLabel->setText(e.text());
 
             }
             else if (e.tagName() == "pproblem")
             {
-                ui.problemLabel->setText(e.text());
+                ui->problemLabel->setText(e.text());
 
             }
             else if (e.tagName() == "psolution")
             {
-                ui.solutionLabel->setText(e.text());
+                ui->solutionLabel->setText(e.text());
 
             }
             else if (e.tagName() == "pcharacteries")
@@ -129,21 +131,21 @@ void attribution::openXml(QString filename)
                 QDomElement ce = cnode.toElement();
                 if (!ce.isNull())
                 {
-                    ui.feature1Label->setText(ce.text());
+                    ui->feature1Label->setText(ce.text());
 
                 }
                 cnode = cnode.nextSibling();
                 ce = cnode.toElement();
                 if (!ce.isNull())
                 {
-                    ui.feature2Label->setText(ce.text());
+                    ui->feature2Label->setText(ce.text());
 
                 }
                 cnode = cnode.nextSibling();
                 ce = cnode.toElement();
                 if (!ce.isNull())
                 {
-                    ui.feature3Label->setText(ce.text());
+                    ui->feature3Label->setText(ce.text());
 
                 }
             }
@@ -161,7 +163,7 @@ void attribution::openXml(QString filename)
                     }
                     pnode = pnode.nextSibling();
                 }
-                ui.exampleLabel->setText(str);
+                ui->exampleLabel->setText(str);
             }
         }
         node = node.nextSibling();

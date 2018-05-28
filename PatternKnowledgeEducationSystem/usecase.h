@@ -7,16 +7,19 @@
 #include <QSqlDatabase>
 #include <QTimer>
 
-#include "ui_usecase.h"
 #include "test.h"
 
-class usecase : public QWidget
+namespace Ui {
+class Usecase;
+}
+
+class Usecase : public QWidget
 {
     Q_OBJECT
 
 public:
-    usecase(QWidget *parent = 0);
-    ~usecase();
+    Usecase(QWidget *parent = 0);
+    ~Usecase();
 
 private slots:
     void updateTimeSlot();
@@ -29,9 +32,9 @@ private:
     void init();
 
 private:
-    Ui::usecase ui;
+    Ui::Usecase* ui;
     QTimer* timer;
-    test *testWindow;
+    Test *testWindow;
     QSqlDatabase db;
 };
 

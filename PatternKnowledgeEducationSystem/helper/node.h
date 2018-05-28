@@ -5,7 +5,7 @@
 #include <QPainter>
 #include <string>
 #include <vector>
-using namespace  std;
+using namespace std;
 
 class Node
 {
@@ -31,8 +31,8 @@ public:
 
 private:
     QPoint center;
-    int radius;
     QString attribute;
+    int radius;
     vector<int> children;
     vector<int> parents;
     bool isLearned;

@@ -13,16 +13,16 @@
 #include "userinfowidget.h"
 
 namespace Ui {
-class initial;
+class Initial;
 }
 
-class initial : public QWidget
+class Initial : public QWidget
 {
     Q_OBJECT
 
 public:
-    initial(QWidget *parent = 0);
-    ~initial();
+    Initial(QWidget *parent = 0);
+    ~Initial();
 
     void setCurrentUserId(const QString& userId);
 
@@ -47,13 +47,13 @@ private:
     void showFirstKnowledge();
 
 private:
-    Ui::initial* ui;
+    Ui::Initial* ui;
     QSqlDatabase db;
     QString curUserId;
     QTimer* timer                  = nullptr;
-    knowledge* knowWindow          = nullptr;
-    teach* teachWindow             = nullptr;
-    test* testWindow               = nullptr;
+    Knowledge* knowWindow          = nullptr;
+    Teach* teachWindow             = nullptr;
+    Test* testWindow               = nullptr;
     UserInfoWidget* userInfoWindow = nullptr;
     //mouse moving
     bool        mMove;

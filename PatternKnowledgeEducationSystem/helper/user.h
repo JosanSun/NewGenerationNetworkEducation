@@ -6,11 +6,11 @@
 #include "cogmodel.h"
 using namespace std;
 
-class user
+class User
 {
 public:
-    user();
-    ~user();
+    User();
+    ~User();
 
     void setSid(int);
     void setName(string);
@@ -18,7 +18,7 @@ public:
     void setSex(string);
     void setAge(int);
     void setEducation(string);
-    void setModel(cogmodel&);
+    void setModel(CogModel&);
 
     int getSid();
     string getName();
@@ -26,7 +26,7 @@ public:
     string getSex();
     int getAge();
     string getEducation();
-    cogmodel getModel();
+    CogModel& getModel();
 
 private:
     int sid;
@@ -35,7 +35,7 @@ private:
     string sex;
     int age;
     string education;
-    cogmodel model;
+    CogModel model;
 };
 
 #endif

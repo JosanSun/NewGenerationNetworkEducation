@@ -22,6 +22,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+# 增加预编译头，提升二次编译的速度
+PRECOMPILED_HEADER = stable.h
+
 
 SOURCES += main.cpp\
     helper/attribution.cpp \
@@ -37,7 +40,8 @@ SOURCES += main.cpp\
     test.cpp \
     usecase.cpp \
     helper/user.cpp \
-    userinfowidget.cpp
+    userinfowidget.cpp \
+    helper/patterntest.cpp
 
 HEADERS  += \
     helper/attribution.h \
@@ -54,7 +58,9 @@ HEADERS  += \
     test.h \
     usecase.h \
     helper/user.h \
-    userinfowidget.h
+    userinfowidget.h \
+    stable.h \
+    helper/patterntest.h
 
 FORMS    += \
     helper/attribution.ui \
@@ -65,7 +71,8 @@ FORMS    += \
     test.ui \
     usecase.ui \
     login.ui \
-    userinfowidget.ui
+    userinfowidget.ui \
+    helper/patterntest.ui
 
 # CONFIG += qaxcontainer  为了使dynamicCall等  ActiveQt\qaxwidget.h 下的相关文件有效
 
@@ -78,3 +85,5 @@ RC_FILE = education.rc
 
 DISTFILES += \
     education.rc
+
+

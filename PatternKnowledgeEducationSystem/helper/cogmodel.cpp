@@ -1,52 +1,51 @@
 #include "cogmodel.h"
 
-cogmodel::cogmodel()
+CogModel::CogModel()
 {
 }
 
-
-cogmodel::~cogmodel()
+CogModel::~CogModel()
 {
 }
 
-void cogmodel::setCogform(string _cogform)
+void CogModel::setCogApproach(string _cogApproach)
 {
-    cogform = _cogform;
+    cogApproach = _cogApproach;
 }
 
-void cogmodel::setStrategy(string _strategy)
+void CogModel::setCogStrategy(string _cogStrategy)
 {
-    strategy = _strategy;
+    cogStrategy = _cogStrategy;
 }
 
-void cogmodel::setCogstyle(string _cogstyle)
+void CogModel::setCogExperience(string _cogExperience)
 {
-    cogstyle = _cogstyle;
+    cogExperience = _cogExperience;
 }
 
-void cogmodel::setCogstructure(string _cogstructure)
+void CogModel::setMetaCogAbility(string _metaCogAbility)
 {
-    cogstructure = _cogstructure;
+    metaCogAbility = _metaCogAbility;
 }
 
-string cogmodel::getCogform()
+string CogModel::getCogApproach()
 {
-    return cogform;
+    return cogApproach;
 }
 
-string cogmodel::getStrategy()
+string CogModel::getCogStrategy()
 {
-    return strategy;
+    return cogStrategy;
 }
 
-string cogmodel::getCogstyle()
+string CogModel::getCogExperience()
 {
-    return cogstyle;
+    return cogExperience;
 }
 
-string cogmodel::getCogstructure()
+string CogModel::getMetaCogAbility()
 {
-    return cogstructure;
+    return metaCogAbility;
 }
 
 

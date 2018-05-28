@@ -1,3 +1,4 @@
+#include "stable.h"
 #include <QFile>
 #include <QUrl>
 #include <QTimer>
@@ -9,34 +10,36 @@
 #include <ActiveQt\qaxwidget.h>
 
 #include "usecase.h"
+#include "ui_usecase.h"
 #include "helper/user.h"
 #include "helper/myheaders.h"
 
 extern QString currentKid;
 extern QString currentCid;
-extern user myUser;
+extern User myUser;
 QString note;
 
-usecase::usecase(QWidget *parent)
-    : QWidget(parent), timer(new QTimer(this))
+Usecase::Usecase(QWidget *parent)
+    : QWidget(parent), ui(new Ui::Usecase), timer(new QTimer(this))
 {
-    ui.setupUi(this);
+    ui->setupUi(this);
     initUI();
     init();
 
-    connect(timer, &QTimer::timeout, this, &usecase::updateTimeSlot);                   // 更新系统时间
-    connect(ui.testButton, &QPushButton::clicked, this, &usecase::goToTestWindowSlot);  // 进入测试模块
+    connect(timer, &QTimer::timeout, this, &Usecase::updateTimeSlot);                   // 更新系统时间
+    connect(ui->testButton, &QPushButton::clicked, this, &Usecase::goToTestWindowSlot);  // 进入测试模块
 }
 
-usecase::~usecase()
+Usecase::~Usecase()
 {
+    delete ui;
     QString connectName = db.connectionName();
     db = QSqlDatabase();
     db.removeDatabase(connectName);
     db.close();
 }
 
-void usecase::openDatabase()
+void Usecase::openDatabase()
 {
 
     this->db = QSqlDatabase::addDatabase("QMYSQL", "usecase");
@@ -55,7 +58,7 @@ void usecase::openDatabase()
     }
 }
 
-void usecase::initUI()
+void Usecase::initUI()
 {
     setWindowModality(Qt::ApplicationModal);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -66,15 +69,15 @@ void usecase::initUI()
 
 
 
-    ui.textBrowser->setWordWrapMode(QTextOption::WrapAnywhere);
-    ui.textEdit->setReadOnly(false);
-    ui.textEdit->setText(tr("开始测试"));
-    ui.currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
-    ui.usernameLabel->setText(QString::fromStdString(myUser.getName()));
+    ui->textBrowser->setWordWrapMode(QTextOption::WrapAnywhere);
+    ui->textEdit->setReadOnly(false);
+    ui->textEdit->setText(tr("开始测试"));
+    ui->currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
+    ui->usernameLabel->setText(QString::fromStdString(myUser.getName()));
 }
 
 //初始化案例播放界面
-void usecase::init()
+void Usecase::init()
 {
     openDatabase();
 
@@ -117,12 +120,12 @@ void usecase::init()
             if (!codec1)
                 return ;
             // qcout << "invalidChars > 0";
-            ui.textBrowser->setText(codec1->toUnicode(data));
+            ui->textBrowser->setText(codec1->toUnicode(data));
         }
         else
         {
             qcout << "invalidChars = 0";
-            ui.textBrowser->setText(text);
+            ui->textBrowser->setText(text);
         }
 
         QApplication::restoreOverrideCursor();
@@ -133,7 +136,7 @@ void usecase::init()
         path.replace(0, 1, "file:///E:/MyCode/qt/NewGenerationNetworkEducation/PatternKnowledgeEducationSystem");
         qcout << path;
         QUrl url(path);
-        ui.textBrowser->setSource(url);
+        ui->textBrowser->setSource(url);
     }
     else if (_form == "swf")
     {
@@ -146,7 +149,7 @@ void usecase::init()
         qcout << path;
 
         //BUG:这个会不停的运行，然后占据着  使得不能触发按钮点击事件
-        QAxWidget *flash = new QAxWidget(ui.textBrowser);       //QAxWidget使用的是ActiveX插件
+        QAxWidget *flash = new QAxWidget(ui->textBrowser);       //QAxWidget使用的是ActiveX插件
         flash->resize(701,461);                                 //设置该控件的初始大小
         flash->setControl(QString::fromUtf8("{d27cdb6e-ae6d-11cf-96b8-444553540000}"));
         flash->dynamicCall("LoadMovie(long,string)", 0, path);
@@ -157,22 +160,22 @@ void usecase::init()
     timer->start(1000);
 }
 
-void usecase::updateTimeSlot()
+void Usecase::updateTimeSlot()
 {
     QDateTime time = QDateTime::currentDateTime();
-    ui.currentTimeLabel->setText(time.toString("yyyy-MM-dd \nhh:mm:ss dddd"));
-    note = ui.textEdit->toPlainText();
+    ui->currentTimeLabel->setText(time.toString("yyyy-MM-dd \nhh:mm:ss dddd"));
+    note = ui->textEdit->toPlainText();
 }
 
 //进入测试模块
-void usecase::goToTestWindowSlot()
+void Usecase::goToTestWindowSlot()
 {
     qcout << "This can be run ";
 }
 
-void usecase::on_testButton_clicked()
+void Usecase::on_testButton_clicked()
 {
-    note = ui.textEdit->toPlainText();
+    note = ui->textEdit->toPlainText();
 
     QSqlQuery query(db);
     //首先记录上次学习的案例的结束时间以及通过情况
@@ -185,9 +188,9 @@ void usecase::on_testButton_clicked()
     query.exec();
 
     qcout << "This can be run    ";
-    testWindow = new test();
+    testWindow = new Test();
     testWindow->show();
-    connect(testWindow, &test::destroyed, this, &usecase::close);
+    connect(testWindow, &Test::destroyed, this, &Usecase::close);
 
     this->close();
 }

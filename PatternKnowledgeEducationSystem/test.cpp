@@ -1,40 +1,45 @@
+#include "stable.h"
 #include <QTimer>
 #include <QDateTime>
 #include <QRadioButton>
 #include <QMessageBox>
 
 #include "test.h"
+#include "ui_test.h"
 #include "helper/user.h"
+#include "helper/myheaders.h"
 
-extern user myUser;
+extern User myUser;
 extern QString currentKid;
 extern QString currentCid;
 
-test::test(QWidget *parent)
-    : QWidget(parent), timer1(new QTimer(this))
+Test::Test(QWidget *parent)
+    : QWidget(parent), ui(new Ui::Test), timer1(new QTimer(this))
 {
-    ui.setupUi(this);
+    ui->setupUi(this);
     initUI();
     init();
 
-    connect(timer1, &QTimer::timeout, this, &test::timeUpdateSlot);//更新系统时间
-    connect(ui.submitButton, &QPushButton::clicked, this, &test::submitTestSlot);//提交测试
-    connect(startButton, &QPushButton::clicked, this, &test::startTestSlot);//点击开始测试按钮进入测试
+    connect(timer1, &QTimer::timeout, this, &Test::timeUpdateSlot);//更新系统时间
+    connect(ui->submitButton, &QPushButton::clicked, this, &Test::submitTestSlot);      //提交测试
+    connect(startButton, &QPushButton::clicked, this, &Test::startTestSlot);            //点击开始测试按钮进入测试
 }
 
-test::~test()
+Test::~Test()
 {
+    delete ui;
     QString connectName = db.connectionName();
     db = QSqlDatabase();
     db.removeDatabase(connectName);
     db.close();
 }
 
-void test::initUI()
+void Test::initUI()
 {
     setWindowModality(Qt::ApplicationModal);
     setAttribute(Qt::WA_DeleteOnClose);
 
+<<<<<<< HEAD
     QPalette palette(this->palette());
     palette.setColor(QPalette::Background, Qt::white);
     this->setPalette(palette);//设置窗口背景颜色：白
@@ -42,9 +47,14 @@ void test::initUI()
     ui.currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
     ui.usernameLabel->setText(QString::fromStdString(myUser.getName()));
     ui.submitButton->setDisabled(true);
+=======
+    ui->currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
+    ui->usernameLabel->setText(QString::fromStdString(myUser.getName()));
+    ui->submitButton->setDisabled(true);
+>>>>>>> bf8d45bb619f2b1bf161c1692e40e41bf9d5bf70
 
     //提示用户开始测试
-    initLabel = new QLabel(ui.scrollArea);
+    initLabel = new QLabel(ui->scrollArea);
     initLabel->setText(tr("请点击开始测试按钮开始测试！"));
     initLabel->setGeometry(150, 100, 390, 50);
     QFont ft;
@@ -55,7 +65,7 @@ void test::initUI()
     pa.setColor(QPalette::WindowText, Qt::red);
     //初始化开始测试按钮
     initLabel->setPalette(pa);
-    startButton = new QPushButton(ui.scrollArea);
+    startButton = new QPushButton(ui->scrollArea);
     startButton->setGeometry(280, 180, 110, 30);
     startButton->setText(tr("开始测试"));
     ft.setPointSize(12);
@@ -63,7 +73,7 @@ void test::initUI()
 }
 
 //初始化
-void test::init()
+void Test::init()
 {
     pass = false;
     currentTid = "";
@@ -83,7 +93,7 @@ void test::init()
     }
     while (query.next())
     {
-        ui.currentPointNameLabel->setText(query.value(0).toString());
+        ui->currentPointNameLabel->setText(query.value(0).toString());
         currentDomain = query.value(1).toString();
     }
     query.exec("select * from test where kid='" + currentKid + "'");
@@ -92,21 +102,21 @@ void test::init()
         currentTid = query.value(1).toString();
         QPalette pa;
         pa.setColor(QPalette::WindowText, Qt::red);
-        ui.testHourLabel->setText(query.value(2).toString());
-        ui.testHourLabel->setPalette(pa);
-        ui.testMinuteLabel->setText(query.value(3).toString());
-        ui.testMinuteLabel->setPalette(pa);
-        ui.restHourLabel->setText(query.value(2).toString());
-        ui.restHourLabel->setPalette(pa);
-        ui.restMinuteLabel->setText(query.value(3).toString());
-        ui.restMinuteLabel->setPalette(pa);
+        ui->testHourLabel->setText(query.value(2).toString());
+        ui->testHourLabel->setPalette(pa);
+        ui->testMinuteLabel->setText(query.value(3).toString());
+        ui->testMinuteLabel->setPalette(pa);
+        ui->restHourLabel->setText(query.value(2).toString());
+        ui->restHourLabel->setPalette(pa);
+        ui->restMinuteLabel->setText(query.value(3).toString());
+        ui->restMinuteLabel->setPalette(pa);
         limitScore = query.value(4).toInt();
     }
 
     timer1->start(1000);
 }
 
-void test::openDatabase()
+void Test::openDatabase()
 {
     this->db = QSqlDatabase::addDatabase("QMYSQL", "test");
     this->db.setHostName("localhost");
@@ -125,14 +135,14 @@ void test::openDatabase()
 }
 
 //显示系统时间
-void test::timeUpdateSlot()
+void Test::timeUpdateSlot()
 {
     QDateTime time = QDateTime::currentDateTime();
-    ui.currentTimeLabel->setText(time.toString("yyyy-MM-dd \nhh:mm:ss dddd"));
+    ui->currentTimeLabel->setText(time.toString("yyyy-MM-dd \nhh:mm:ss dddd"));
 }
 
 //更新当前测试剩余时间
-void test::restTimeUpdateSlot()
+void Test::restTimeUpdateSlot()
 {
     int alreadyHour = QDateTime::currentDateTime().time().hour() - startTestTime.time().hour();
     int alreadyMinute = QDateTime::currentDateTime().time().minute() - startTestTime.time().minute();
@@ -141,14 +151,14 @@ void test::restTimeUpdateSlot()
         alreadyMinute += 60;
         alreadyHour -= 1;
     }
-    int restHour = ui.testHourLabel->text().toInt() - alreadyHour;
-    int restMinute = ui.testMinuteLabel->text().toInt() - alreadyMinute;
-    ui.restHourLabel->setText(QString::number(restHour));
-    ui.restMinuteLabel->setText(QString::number(restMinute));
+    int restHour = ui->testHourLabel->text().toInt() - alreadyHour;
+    int restMinute = ui->testMinuteLabel->text().toInt() - alreadyMinute;
+    ui->restHourLabel->setText(QString::number(restHour));
+    ui->restMinuteLabel->setText(QString::number(restMinute));
 }
 
 //动态显示测试界面
-void test::startTestSlot()
+void Test::startTestSlot()
 {
     if (initLabel != nullptr)
     {
@@ -162,20 +172,20 @@ void test::startTestSlot()
     }
     timer2 = new QTimer(this);
     timer2->start(1000);
-    connect(timer2, &QTimer::timeout, this, &test::restTimeUpdateSlot);
+    connect(timer2, &QTimer::timeout, this, &Test::restTimeUpdateSlot);
     startTestTime = QDateTime::currentDateTime();
-    ui.submitButton->setDisabled(false);
-    //ui.scrollArea->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
-    //ui.scrollArea->setWidgetResizable(true);
+    ui->submitButton->setDisabled(false);
+    //ui->scrollArea->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+    //ui->scrollArea->setWidgetResizable(true);
     allLayout = new QVBoxLayout;
     firstLayout = new QHBoxLayout;
     firstTitleLabel = new QLabel;
     firstTitleLabel->setText(tr("一、单项选择题"));
     firstLayout->addWidget(firstTitleLabel);
     firstLayout->addStretch();
-    //ui.scrollArea->setLayout(firstLayout);
+    //ui->scrollArea->setLayout(firstLayout);
     allLayout->addLayout(firstLayout);
-    int numRows;//记录查询的行数
+    int numRows;                //记录查询的行数
     QSqlQuery query(db);
     query.exec("select * from testcase where tid='" + currentTid + "'");
     QSqlDatabase defaultDB = QSqlDatabase::database();
@@ -189,6 +199,7 @@ void test::startTestSlot()
         query.last();
         numRows = query.at() + 1;
     }
+    qcout << numRows;
     while (query.next())
     {
         //题目标题
@@ -254,12 +265,12 @@ void test::startTestSlot()
         allLayout->addLayout(dLayout);
     }
     allLayout->addSpacing(5000);
-    ui.scrollArea->setLayout(allLayout);
+    ui->scrollArea->setLayout(allLayout);
 }
 
 
 //提交测试结果
-void test::submitTestSlot()
+void Test::submitTestSlot()
 {
     QMessageBox msgBox;
     msgBox.setWindowTitle(tr("提示"));
@@ -379,7 +390,7 @@ void test::submitTestSlot()
     query.exec();
 
     QMessageBox::information(this, tr("恭喜"), tr("您已经提交成功！"));
-    ui.submitButton->setEnabled(false);
+    ui->submitButton->setEnabled(false);
     //释放空间
     if (firstLayout != nullptr && firstTitleLabel != nullptr)
     {
@@ -439,7 +450,7 @@ void test::submitTestSlot()
         QPushButton *nextButton = new QPushButton(w);
         nextButton->setText(tr("下一知识点"));
         nextButton->setGeometry(280, 180, 110, 30);
-        connect(nextButton, &QPushButton::clicked, this, &test::nextKnowledgeSlot);
+        connect(nextButton, &QPushButton::clicked, this, &Test::nextKnowledgeSlot);
     }
     else
     {//没有通过测试
@@ -449,20 +460,20 @@ void test::submitTestSlot()
         againButton->setGeometry(280, 180, 110, 30);
         if (_first == "B")
         {
-            connect(againButton, &QPushButton::clicked, this, &test::againKnowledgeSlot);
+            connect(againButton, &QPushButton::clicked, this, &Test::againKnowledgeSlot);
         }
         else
         {
-            connect(againButton, &QPushButton::clicked, this, &test::nextKnowledgeSlot);
+            connect(againButton, &QPushButton::clicked, this, &Test::nextKnowledgeSlot);
         }
     }
     endLabel->setGeometry(100, 100, 500, 50);
     allLayout->addWidget(w);
-    ui.scrollArea->setLayout(allLayout);
+    ui->scrollArea->setLayout(allLayout);
 }
 
 //下一个知识节点
-void test::nextKnowledgeSlot()
+void Test::nextKnowledgeSlot()
 {
     beforeKid = currentKid;
     QSqlQuery query(db);
@@ -486,7 +497,7 @@ void test::nextKnowledgeSlot()
 }
 
 //重新学习当前知识点
-void test::againKnowledgeSlot()
+void Test::againKnowledgeSlot()
 {
     this->close();
 }

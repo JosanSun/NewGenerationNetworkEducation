@@ -1,3 +1,4 @@
+#include "stable.h"
 #include <QTableView>
 #include <QMessageBox>
 
@@ -5,7 +6,7 @@
 #include "ui_userinfowidget.h"
 #include "helper/user.h"
 
-extern user myUser; //全局用户变量
+extern User myUser; //全局用户变量
 
 UserInfoWidget::UserInfoWidget(QWidget *parent)
     : QWidget(parent), ui(new Ui::UserInfoWidget),

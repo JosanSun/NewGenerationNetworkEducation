@@ -1,3 +1,4 @@
+#include "stable.h"
 #include <QDateTime>
 #include <QTimer>
 #include <QFile>
@@ -9,39 +10,42 @@
 #include <QDesktopServices>
 
 #include "teach.h"
+#include "ui_teach.h"
 #include "helper/user.h"
 #include "helper/mypushbutton.h"
 #include "helper/myheaders.h"
 
-extern user myUser;
+extern User myUser;
 extern QString currentKid;
 QString currentCid;
 extern QString note;
 
-teach::teach(QWidget *parent)
-    : QWidget(parent), timer(new QTimer(this))
+Teach::Teach(QWidget *parent)
+    : QWidget(parent), ui(new Ui::Teach), timer(new QTimer(this))
 {
-    ui.setupUi(this);
+    ui->setupUi(this);
     initUI();
     init();
 
-    connect(timer, &QTimer::timeout, this, &teach::timeUpdateSlot);                         //更新系统时间
-    connect(ui.playAgainButton, &QPushButton::clicked, this, &teach::playAgainSlot);        //重新播放案例
-    connect(ui.changeCaseButton, &QPushButton::clicked, this, &teach::changeCaseSlot);      //更换案例
-    connect(ui.discussionButton, &QPushButton::clicked, this, &teach::goToDiscussionSlot);  //进入讨论区
-    connect(ui.beginTestButton, &QPushButton::clicked, this, &teach::goToTestSlot);         //进入测试模块
-    connect(ui.quitButton, &QPushButton::clicked, this, &teach::close);                     //关闭系统
+    connect(timer, &QTimer::timeout, this, &Teach::timeUpdateSlot);                         //更新系统时间
+    connect(ui->playAgainButton, &QPushButton::clicked, this, &Teach::playAgainSlot);        //重新播放案例
+    connect(ui->changeCaseButton, &QPushButton::clicked, this, &Teach::changeCaseSlot);      //更换案例
+    connect(ui->discussionButton, &QPushButton::clicked, this, &Teach::goToDiscussionSlot);  //进入讨论区
+    connect(ui->beginTestButton, &QPushButton::clicked, this, &Teach::goToTestSlot);         //进入测试模块
+    connect(ui->quitButton, &QPushButton::clicked, this, &Teach::close);                     //关闭系统
 }
 
-teach::~teach()
+Teach::~Teach()
 {
+    delete ui;
+
     QString connectName = db.connectionName();
     db = QSqlDatabase();
     db.removeDatabase(connectName);
     db.close();
 }
 
-void teach::openDatabase()
+void Teach::openDatabase()
 {
     this->db = QSqlDatabase::addDatabase("QMYSQL", "teach");
     this->db.setHostName("localhost");
@@ -60,27 +64,32 @@ void teach::openDatabase()
 }
 
 //更新系统时间槽
-void teach::timeUpdateSlot()
+void Teach::timeUpdateSlot()
 {
     QDateTime time = QDateTime::currentDateTime();
-    ui.currentTimeLabel->setText(time.toString("yyyy-MM-dd \nhh:mm:ss dddd"));
+    ui->currentTimeLabel->setText(time.toString("yyyy-MM-dd \nhh:mm:ss dddd"));
 }
 
-void teach::initUI()
+void Teach::initUI()
 {
     setWindowModality(Qt::ApplicationModal);
     setAttribute(Qt::WA_DeleteOnClose);
 
+<<<<<<< HEAD
     QPalette palette(this->palette());
     palette.setColor(QPalette::Background, Qt::white);
     this->setPalette(palette);//设置窗口背景颜色：白
 
     ui.currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
     ui.usernameLabel->setText(QString::fromStdString(myUser.getName()));
+=======
+    ui->currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
+    ui->usernameLabel->setText(QString::fromStdString(myUser.getName()));
+>>>>>>> bf8d45bb619f2b1bf161c1692e40e41bf9d5bf70
 }
 
 //初始化教学界面
-void teach::init()
+void Teach::init()
 {
     haveDomainTab = false;
     currentCid = "";
@@ -96,7 +105,7 @@ void teach::init()
         query.exec("select * from bk where bid='" + currentKid + "'");
         while (query.next())
         {
-            ui.pointnameLabel->setText(query.value(1).toString());
+            ui->pointnameLabel->setText(query.value(1).toString());
             //显示当前知识的description信息
             QString _descFileName = query.value(3).toString();
             _descFileName.replace(0, 1, "../PatternKnowledgeEducationSystem");
@@ -108,7 +117,7 @@ void teach::init()
             while (!out.atEnd())
             {
                 //知识点描述窗口
-                ui.descriptionTextBrowser->setText(out.readAll());
+                ui->descriptionTextBrowser->setText(out.readAll());
             }
             //领域知识按钮---查找与显示
             //显示当前知识的领域信息  领域信息以,相分隔
@@ -118,24 +127,24 @@ void teach::init()
             int pos=_domain.indexOf(_sep);
             while (pos != -1)
             {
-                myPushButton *domainButton = new myPushButton(ui.groupBox_2);
+                MyPushButton *domainButton = new MyPushButton(ui->groupBox_2);
                 domainButton->setGeometry(110 + 100 * (inx - 1), 230, 75, 20);
                 domainButton->setText(_domain.left(pos));
                 //点击领域知识按钮，触发显示领域知识信息   不点击的话，默认不显示
-                void (myPushButton::*pfn)(QString) = myPushButton::clicked;
+                void (MyPushButton::*pfn)(QString) = MyPushButton::clicked;
                 // connect(domainButton, pfn, this, SLOT(showDomainKnowledgesSlot(QString)));
-                connect(domainButton, pfn, this, &teach::showDomainKnowledgesSlot);
+                connect(domainButton, pfn, this, &Teach::showDomainKnowledgesSlot);
                 _domain = _domain.remove(0, pos+1);
                 ++inx;
                 pos = _domain.indexOf(_sep);
             }
             //处理最后一个领域知识按钮
-            myPushButton *domainButton = new myPushButton(ui.groupBox_2);
+            MyPushButton *domainButton = new MyPushButton(ui->groupBox_2);
             domainButton->setGeometry(110 + 100 * (inx - 1), 230, 75, 20);
             domainButton->setText(_domain);
-            void (myPushButton::*pfn1)(QString) = myPushButton::clicked;
+            void (MyPushButton::*pfn1)(QString) = MyPushButton::clicked;
             //connect(domainButton, pfn1, this, SLOT(showDomainKnowledgesSlot(QString)));
-            connect(domainButton, pfn1, this, &teach::showDomainKnowledgesSlot);
+            connect(domainButton, pfn1, this, &Teach::showDomainKnowledgesSlot);
 
         }
         //显示当前知识的案例按钮
@@ -143,13 +152,13 @@ void teach::init()
         int inx = 1;
         while (query.next())
         {
-            myPushButton *usecaseButton = new myPushButton(ui.groupBox_2);
+            MyPushButton *usecaseButton = new MyPushButton(ui->groupBox_2);
             usecaseButton->setGeometry(110 + 100 * (inx - 1), 270, 75, 20);
             usecaseButton->setText(query.value(1).toString());
             //点击案例按钮，触发打开案例界面
-            void (myPushButton::*pfn2)(QString) = myPushButton::clicked;
+            void (MyPushButton::*pfn2)(QString) = MyPushButton::clicked;
             //connect(usecaseButton, pfn2, this, SLOT(openUsecaseSlot(QString)));
-            connect(usecaseButton, pfn2, this, &teach::openUsecaseSlot);
+            connect(usecaseButton, pfn2, this, &Teach::openUsecaseSlot);
             ++inx;
         }
         //显示当前知识的前驱后继
@@ -163,7 +172,7 @@ void teach::init()
                 int pos = _about.indexOf(_sep);
                 while (pos != -1)
                 {
-                    myPushButton *aboutKnowButton = new myPushButton(ui.groupBox_2);
+                    MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
                     QString buttonText = "";
                     QString _aboutKid = _about.left(pos);
                     QString _singleKid = _aboutKid.left(4);
@@ -198,7 +207,7 @@ void teach::init()
                     pos = _about.indexOf(_sep);
                 }
                 //处理最后一个前驱
-                myPushButton *aboutKnowButton = new myPushButton(ui.groupBox_2);
+                MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
                 QString buttonText = "";
                 QString _singleKid = _about.left(4);
                 while (!_singleKid.isEmpty())
@@ -232,7 +241,7 @@ void teach::init()
                 int pos = _about.indexOf(_sep);
                 while (pos != -1)
                 {
-                    myPushButton *aboutKnowButton = new myPushButton(ui.groupBox_2);
+                    MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
                     QString buttonText = "";
                     QString _aboutKid = _about.left(pos);
                     QString _singleKid = _aboutKid.left(4);
@@ -267,7 +276,7 @@ void teach::init()
                     pos = _about.indexOf(_sep);
                 }
                 //处理最后一个后继
-                myPushButton *aboutKnowButton = new myPushButton(ui.groupBox_2);
+                MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
                 QString buttonText = "";
                 QString _singleKid = _about.left(4);
                 while (!_singleKid.isEmpty())
@@ -306,7 +315,7 @@ void teach::init()
         query.exec("select * from pk where pid='" + currentKid + "'");
         while (query.next())
         {
-            ui.pointnameLabel->setText(query.value(1).toString());
+            ui->pointnameLabel->setText(query.value(1).toString());
             QString _patternFile = query.value(3).toString();
             _patternFile.replace(0, 1, "../PatternKnowledgeEducationSystem");
             qcout << _patternFile;
@@ -319,20 +328,20 @@ void teach::init()
             int pos = _domain.indexOf(_sep);
             while (pos != -1)
             {
-                myPushButton *domainButton = new myPushButton(ui.groupBox_2);
+                MyPushButton *domainButton = new MyPushButton(ui->groupBox_2);
                 domainButton->setGeometry(110 + 100 * (inx - 1), 230, 75, 20);
                 domainButton->setText(_domain.left(pos));
-                void (myPushButton::*pfn3)(QString) = myPushButton::clicked;
-                connect(domainButton, pfn3, this, &teach::showDomainKnowledgesSlot);
+                void (MyPushButton::*pfn3)(QString) = MyPushButton::clicked;
+                connect(domainButton, pfn3, this, &Teach::showDomainKnowledgesSlot);
                 _domain = _domain.remove(0, pos + 1);
                 ++inx;
                 pos = _domain.indexOf(_sep);
             }
-            myPushButton *domainButton = new myPushButton(ui.groupBox_2);
+            MyPushButton *domainButton = new MyPushButton(ui->groupBox_2);
             domainButton->setGeometry(110 + 100 * (inx - 1), 230, 75, 20);
             domainButton->setText(_domain);
-            void (myPushButton::*pfn4)(QString) = myPushButton::clicked;
-            connect(domainButton, pfn4, this, &teach::showDomainKnowledgesSlot);
+            void (MyPushButton::*pfn4)(QString) = MyPushButton::clicked;
+            connect(domainButton, pfn4, this, &Teach::showDomainKnowledgesSlot);
         }
 
 
@@ -341,11 +350,11 @@ void teach::init()
         int inx = 1;
         while (query.next())
         {
-            myPushButton *usecaseButton = new myPushButton(ui.groupBox_2);
+            MyPushButton *usecaseButton = new MyPushButton(ui->groupBox_2);
             usecaseButton->setGeometry(110 + 100 * (inx - 1), 270, 75, 20);
             usecaseButton->setText(query.value(1).toString());
-            void (myPushButton::*pfn5)(QString) = myPushButton::clicked;
-            connect(usecaseButton, pfn5, this, &teach::openUsecaseSlot);
+            void (MyPushButton::*pfn5)(QString) = MyPushButton::clicked;
+            connect(usecaseButton, pfn5, this, &Teach::openUsecaseSlot);
             ++inx;
         }
 
@@ -361,7 +370,7 @@ void teach::init()
                 int pos = _about.indexOf(_sep);
                 while (pos != -1)
                 {
-                    myPushButton *aboutKnowButton = new myPushButton(ui.groupBox_2);
+                    MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
                     QString buttonText = "";
                     QString _aboutKid = _about.left(pos);
                     QString _singleKid = _aboutKid.left(4);
@@ -394,7 +403,7 @@ void teach::init()
                     ++inx;
                     pos = _about.indexOf(_sep);
                 }
-                myPushButton *aboutKnowButton = new myPushButton(ui.groupBox_2);
+                MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
                 QString buttonText = "";
 
                 QString _singleKid = _about.left(4);
@@ -433,7 +442,7 @@ void teach::init()
                 int pos = _about.indexOf(_sep);
                 while (pos != -1)
                 {
-                    myPushButton *aboutKnowButton = new myPushButton(ui.groupBox_2);
+                    MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
                     QString buttonText = "";
                     QString _aboutKid = _about.left(pos);
                     QString _singleKid = _aboutKid.left(4);
@@ -467,7 +476,7 @@ void teach::init()
                     ++inx;
                     pos = _about.indexOf(_sep);
                 }
-                myPushButton *aboutKnowButton = new myPushButton(ui.groupBox_2);
+                MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
                 QString buttonText = "";
 
                 QString _singleKid = _about.left(4);
@@ -502,7 +511,7 @@ void teach::init()
 }
 
 //模式知识模式属性读取xml文档
-void teach::openXml(QString filename)
+void Teach::openXml(QString filename)
 {
     QDomDocument doc;
     QFile xmlFile(filename);
@@ -525,40 +534,40 @@ void teach::openXml(QString filename)
         {
             if (e.tagName() == "pname")
             {
-                ui.descriptionTextBrowser->append(tr("模式：") + e.text());
+                ui->descriptionTextBrowser->append(tr("模式：") + e.text());
             }
             else if (e.tagName() == "pproblem")
             {
-                ui.descriptionTextBrowser->append(tr("解决问题：") + e.text());
+                ui->descriptionTextBrowser->append(tr("解决问题：") + e.text());
             }
             else if (e.tagName() == "psolution")
             {
-                ui.descriptionTextBrowser->append(tr("解决方案：") + e.text());
+                ui->descriptionTextBrowser->append(tr("解决方案：") + e.text());
             }
             else if (e.tagName() == "pcharacteries")
             {
-                ui.descriptionTextBrowser->append(tr("特征点："));
+                ui->descriptionTextBrowser->append(tr("特征点："));
                 QDomNode cnode = e.firstChild();
                 while (!cnode.isNull())
                 {
                     QDomElement ce = cnode.toElement();
                     if (!ce.isNull())
                     {
-                        ui.descriptionTextBrowser->append(ce.text());
+                        ui->descriptionTextBrowser->append(ce.text());
                     }
                     cnode = cnode.nextSibling();
                 }
             }
             else if (e.tagName() == "preference")
             {
-                ui.descriptionTextBrowser->append(tr("参考："));
+                ui->descriptionTextBrowser->append(tr("参考："));
                 QDomNode pnode = e.firstChild();
                 while (!pnode.isNull())
                 {
                     QDomElement pe = pnode.toElement();
                     if (!pe.isNull())
                     {
-                        ui.descriptionTextBrowser->append(pe.text());
+                        ui->descriptionTextBrowser->append(pe.text());
                     }
                     pnode = pnode.nextSibling();
                 }
@@ -570,7 +579,7 @@ void teach::openXml(QString filename)
 }
 
 //显示领域相关知识节点信息
-void teach::showDomainKnowledgesSlot(QString domain)
+void Teach::showDomainKnowledgesSlot(QString domain)
 {
     //ERROR: 这部分逻辑有问题
     if (haveDomainTab)
@@ -595,7 +604,7 @@ void teach::showDomainKnowledgesSlot(QString domain)
         domainKnowWidget = new QWidget();
         bkTableView = new QTableView(domainKnowWidget);
         bkTableView->setGeometry(12, 10, 680, 220);
-        ui.tabWidget->addTab(domainKnowWidget, tr("领域相关知识"));
+        ui->tabWidget->addTab(domainKnowWidget, tr("领域相关知识"));
         QSqlQueryModel *model = new QSqlQueryModel;
         QString sqlString = "select bid,title,domain from bk where domain like '%" + domain
                 + "%' union all select pid,title,domain from pk where domain like '%" + domain + "%'";
@@ -611,7 +620,7 @@ void teach::showDomainKnowledgesSlot(QString domain)
 }
 
 //打开案例
-void teach::openUsecaseSlot(QString casename)
+void Teach::openUsecaseSlot(QString casename)
 {
     QSqlQuery query(db);
     currentCid = casename;
@@ -641,14 +650,14 @@ void teach::openUsecaseSlot(QString casename)
     }
     else
     {//否则进入案例播放界面
-        usecaseWindow = new usecase();
+        usecaseWindow = new Usecase();
         usecaseWindow->show();
-        connect(usecaseWindow, &usecase::destroyed, this, &teach::updateBehaviorTableSlot);
+        connect(usecaseWindow, &Usecase::destroyed, this, &Teach::updateBehaviorTableSlot);
     }
 }
 
 //重新播放案例
-void teach::playAgainSlot()
+void Teach::playAgainSlot()
 {
     //首先记录上次学习的案例的结束时间以及通过情况
     QSqlQuery query(db);
@@ -662,7 +671,7 @@ void teach::playAgainSlot()
     openUsecaseSlot(currentCid);
 }
 
-void teach::changeCaseSlot()
+void Teach::changeCaseSlot()
 {
     QSqlQuery query(db);
     //首先记录上次学习的案例的结束时间以及通过情况
@@ -686,13 +695,13 @@ void teach::changeCaseSlot()
 }
 
 //进入讨论区模块
-void teach::goToDiscussionSlot()
+void Teach::goToDiscussionSlot()
 {
 
 }
 
 //进入测试模块
-void teach::goToTestSlot()
+void Teach::goToTestSlot()
 {
     QSqlQuery query;
     //首先记录上次学习的案例的结束时间以及通过情况
@@ -705,31 +714,31 @@ void teach::goToTestSlot()
     query.exec();
 
     //进入测试
-    testWindow = new test();
+    testWindow = new Test();
     testWindow->show();
-    connect(testWindow, &test::destroyed, this, &teach::close);
+    connect(testWindow, &Test::destroyed, this, &Teach::close);
 }
 
 ////更新当前知识节点
-//void teach::updateCurrentKidSlot(){
+//void Teach::updateCurrentKidSlot(){
 //	QSqlQuery query;
 //	QString _first = currentKid.left(1);
 //	if (_first == "B"){
 //		query.exec("select title from bk where bid='" + currentKid + "'");
 //		while (query.next()){
-//			ui.pointnameLabel->setText(query.value(0).toString());
+//			ui->pointnameLabel->setText(query.value(0).toString());
 //		}
 //	}
 //	else if (_first == "P"){
 //		query.exec("select title from pk where pid='" + currentKid + "'");
 //		while (query.next()){
-//			ui.pointnameLabel->setText(query.value(0).toString());
+//			ui->pointnameLabel->setText(query.value(0).toString());
 //		}
 //	}
 //}
 
 //更新行为记录表
-void teach::updateBehaviorTableSlot()
+void Teach::updateBehaviorTableSlot()
 {
     QSqlQuery query(db);
     query.prepare("update behavior set end=:end,pass=0,note=:note where sid=:sid and kid=:kid and cid=:cid");

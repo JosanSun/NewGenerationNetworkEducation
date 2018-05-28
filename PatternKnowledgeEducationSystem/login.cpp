@@ -1,3 +1,4 @@
+#include "stable.h"
 #include <QPixmap>
 #include <QDebug>
 #include <QMessageBox>
@@ -7,34 +8,61 @@
 
 #include "login.h"
 #include "ui_login.h"
-#include "helper/user.h"
 
 
-user myUser;
+User myUser;
 
-login::login(QWidget *parent)
-    :  QWidget(parent), ui(new Ui::login)
+Login::Login(QWidget *parent)
+    :  QWidget(parent), ui(new Ui::Login)
 {
     ui->setupUi(this);
     initUI();
 
+    // usernambox栏安装事件过滤器
+    ui->usernamebox->installEventFilter(this);
     mMove=false;//mouse moving
 
-    connect(ui->buttonLogin, &QPushButton::clicked, this, &login::loginSlot);          // 点击登录按钮登录
-    connect(ui->passwordtext, &QLineEdit::returnPressed, this, &login::loginSlot);     // 回车键后登录
-    connect(ui->buttonRegister, &QPushButton::clicked, this, &login::registorSlot);    // 注册
-    connect(ui->buttonClose, &QPushButton::clicked, this, &login::close);              // 点击关闭
-    connect(ui->buttonMin, &QPushButton::clicked, this, &login::showMinimized);        // 点击最小化
+    connect(ui->buttonLogin, &QPushButton::clicked, this, &Login::loginSlot);          // 点击登录按钮登录
+    connect(ui->passwordtext, &QLineEdit::returnPressed, this, &Login::loginSlot);     // 回车键后登录
+    connect(ui->buttonRegister, &QPushButton::clicked, this, &Login::registorSlot);    // 注册
+    connect(ui->buttonClose, &QPushButton::clicked, this, &Login::close);              // 点击关闭
+    connect(ui->buttonMin, &QPushButton::clicked, this, &Login::showMinimized);        // 点击最小化
 
     openDatabase();
 }
 
-login::~login()
+// 事件过滤器
+bool Login::eventFilter(QObject *obj, QEvent *event)
 {
-    delete ui;
+    //用户在输入用户名时，按下回车键，可以直接转密码的输入.
+    if(obj == ui->usernamebox)
+    {
+        if (event->type() == QEvent::KeyPress)
+        {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
+            if (keyEvent->key() == Qt::Key_Return || keyEvent->key()==Qt::Key_Enter)
+            {
+                ui->passwordtext->setFocus();
+                return true;
+            }
+        }
+    }
+
+    return QObject::eventFilter(obj,event);
 }
 
-void login::initUI()
+
+Login::~Login()
+{
+    delete ui;
+    QString connectName = db.connectionName();
+    db = QSqlDatabase();
+    db.removeDatabase(connectName);
+    db.close();
+}
+
+void Login::initUI()
 {
     this->setFixedSize(432, 330);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//无边框且最小化任务栏还原
@@ -58,8 +86,25 @@ void login::initUI()
     ui->usernamebox->setFocus();
 }
 
+void Login::updateCogModel(CogModel &model)
+{
+    // 更新全局用户的认知风格
+    myUser.getModel().setCogApproach(model.getCogApproach());
+    myUser.getModel().setCogStrategy(model.getCogStrategy());
+
+    // 更新数据库
+    QSqlQuery query;
+    query.prepare("update student set cogApproach=:cogApproach , "
+                  "cogStrategy=:cogStrategy where sid=:sid;");
+    query.bindValue(":cogApproach", QString(model.getCogApproach().data()));
+    query.bindValue(":cogStrategy", QString(model.getCogStrategy().data()));
+    query.bindValue(":sid", myUser.getSid());
+    query.exec();
+}
+
+
 //重写鼠标函数实现窗口自由移动
-void login::mousePressEvent(QMouseEvent *event)
+void Login::mousePressEvent(QMouseEvent *event)
 {
     mMove = true;
     //记录下鼠标相对于窗口的位置
@@ -69,7 +114,7 @@ void login::mousePressEvent(QMouseEvent *event)
     return QWidget::mousePressEvent(event);
 }
 
-void login::mouseMoveEvent(QMouseEvent *event)
+void Login::mouseMoveEvent(QMouseEvent *event)
 {
     //(event->buttons() && Qt::LeftButton)按下是左键
     //通过事件event->globalPos()知道鼠标坐标，鼠标坐标减去鼠标相对于窗口位置，就是窗口在整个屏幕的坐标
@@ -82,13 +127,13 @@ void login::mouseMoveEvent(QMouseEvent *event)
     return QWidget::mouseMoveEvent(event);
 }
 
-void login::mouseReleaseEvent(QMouseEvent* /* event */)
+void Login::mouseReleaseEvent(QMouseEvent* /* event */)
 {
     mMove = false;
 }
 //mouse END
 
-void login::openDatabase()
+void Login::openDatabase()
 {
     this->db = QSqlDatabase::addDatabase("QMYSQL");
     this->db.setHostName("localhost");
@@ -108,7 +153,7 @@ void login::openDatabase()
 }
 
 // 登录
-void login::loginSlot()
+void Login::loginSlot()
 {
     QString _username = ui->usernamebox->currentText();
     if(_username.isEmpty())
@@ -139,15 +184,70 @@ void login::loginSlot()
                 //对全局myUser进行部分初始化
                 myUser.setName(_username.toStdString());
                 myUser.setPassword(_password.toStdString());
-                QString connectName = db.connectionName();
-                db = QSqlDatabase();
-                db.removeDatabase(connectName);
-                db.close();
-                initWindow = new initial();
-                // initWindow->setCurrentUserId(query.value(0).toString());   // 这个用来解决全局变量的设定
-                initWindow->show();
-                //关闭登录窗口
-                this->close();
+                myUser.setSid(query.value(0).toInt());
+                myUser.setAge(query.value(3).toInt());
+                myUser.setEducation(query.value(4).toString().toStdString());
+                CogModel tmp;
+                tmp.setCogApproach(query.value(5).toString().toStdString());
+                tmp.setCogStrategy(query.value(6).toString().toStdString());
+                tmp.setCogExperience(query.value(7).toString().toStdString());
+                tmp.setMetaCogAbility(query.value(8).toString().toStdString());
+                myUser.setModel(tmp);
+
+                string curCogApproach = myUser.getModel().getCogApproach();
+                CogModel model;
+
+                if(curCogApproach.empty())
+                {
+                    hide();
+                    QMessageBox msgBox;
+                    msgBox.setWindowTitle(tr("警告"));
+                    msgBox.setText(tr("系统检测到您是初次学习本系统。强烈建议您通过问卷测量表初始化您的认知方式，这样系统能"
+                                      "更加准确地为您推荐学习案例。否则，系统会采用默认值作为初始值。\n是否现在进行问卷调查？"));
+                    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+                    msgBox.setDefaultButton(QMessageBox::Yes);
+                    int ret = msgBox.exec();
+                    if(ret == QMessageBox::Yes)
+                    {
+                        patternTestWindow = new PatternTest();
+                        patternTestWindow->show();
+                        connect(patternTestWindow, &PatternTest::getCogApproach,
+                                [=](QString curStr) mutable
+                        {
+                            QString str = curStr;
+                            model.setCogApproach(str.toStdString());
+                            model.setCogStrategy(string("复述策略"));
+                            updateCogModel(model);
+
+                        });
+                        connect(patternTestWindow, &PatternTest::closeSignal,
+                                [=]()
+                        {
+                            initWindow = new Initial();
+                            // initWindow->setCurrentUserId(query.value(0).toString());   // 这个用来解决全局变量的设定
+                            initWindow->show();
+                            //关闭登录窗口
+                            this->close();
+                            return ;
+                        });
+                    }
+                    else
+                    {
+                        model.setCogApproach("活跃型");
+                        model.setCogStrategy("复述策略");
+                        updateCogModel(model);
+
+                        initWindow = new Initial();
+                        initWindow->show();
+                        this->close();
+                    }
+                }
+                else
+                {
+                    initWindow = new Initial();
+                    initWindow->show();
+                    this->close();
+                }
             }
             else
             {
@@ -171,12 +271,12 @@ void login::loginSlot()
 }
 
 //进入注册模块
-void login::registorSlot()
+void Login::registorSlot()
 {
     hide();
-    regWindow = new registor();
+    regWindow = new Registor();
 
-    connect(regWindow, &registor::registerUser,
+    connect(regWindow, &Registor::registerUser,
             [=]()
     {
         QString _username = regWindow->getUserName();
@@ -227,7 +327,7 @@ void login::registorSlot()
         QMessageBox::information(this, tr("恭喜！"), tr("您已经注册成功！请登录！"));
         regWindow->close();
     });
-    connect(regWindow, &registor::closeSignal,
+    connect(regWindow, &Registor::closeSignal,
             [=]()
     {
         this->show();
