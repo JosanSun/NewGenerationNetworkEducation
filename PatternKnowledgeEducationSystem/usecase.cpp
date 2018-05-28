@@ -60,6 +60,11 @@ void usecase::initUI()
     setWindowModality(Qt::ApplicationModal);
     setAttribute(Qt::WA_DeleteOnClose);
 
+    QPalette palette(this->palette());
+    palette.setColor(QPalette::Background, Qt::white);
+    this->setPalette(palette);//设置窗口背景颜色：白
+
+
 
     ui.textBrowser->setWordWrapMode(QTextOption::WrapAnywhere);
     ui.textEdit->setReadOnly(false);

@@ -54,6 +54,11 @@ void UserInfoWidget::initUI()
     setWindowModality(Qt::ApplicationModal);
     setAttribute(Qt::WA_DeleteOnClose);
 
+    QPalette palette(this->palette());
+    palette.setColor(QPalette::Background, Qt::white);
+    this->setPalette(palette);//设置窗口背景颜色：白
+
+
     ui->modifyButton->setEnabled(true);
     ui->saveButton->setEnabled(false);
     ui->quitButton->setEnabled(true);

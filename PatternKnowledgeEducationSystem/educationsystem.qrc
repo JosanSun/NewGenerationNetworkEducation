@@ -10,5 +10,7 @@
         <file>images/zc.png</file>
         <file>images/downarrow.png</file>
         <file>images/myapp.ico</file>
+        <file>images/aa.png</file>
+        <file>images/lx.png</file>
     </qresource>
 </RCC>

@@ -58,6 +58,10 @@ void knowledge::initUI()
     setMouseTracking(true);
     setWindowModality(Qt::ApplicationModal);
     setAttribute(Qt::WA_DeleteOnClose);
+
+    QPalette palette(this->palette());
+    palette.setColor(QPalette::Background, Qt::white);
+    this->setPalette(palette);//设置窗口背景颜色：白
 }
 
 void knowledge::init()
@@ -70,7 +74,7 @@ void knowledge::init()
     vector<vector<int>> successors = getSuccessors(attributes);
     vector<vector<int>> predecessors = getPredecessors(successors);
     int r = 10;
-    generateNodes(attributes, successors, predecessors, r);
+   // generateNodes(attributes, successors, predecessors, r);
 }
 
 void knowledge::paintEvent(QPaintEvent *)
