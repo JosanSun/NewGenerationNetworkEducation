@@ -27,6 +27,8 @@ Teach::Teach(QWidget *parent)
     initUI();
     init();
 
+    connect(ui->buttonClose, &QPushButton::clicked, this, &Teach::close);                                 // 点击关闭
+    connect(ui->buttonMin, &QPushButton::clicked, this, &Teach::showMinimized);                           // 点击最小化
     connect(timer, &QTimer::timeout, this, &Teach::timeUpdateSlot);                         //更新系统时间
     connect(ui->playAgainButton, &QPushButton::clicked, this, &Teach::playAgainSlot);        //重新播放案例
     connect(ui->changeCaseButton, &QPushButton::clicked, this, &Teach::changeCaseSlot);      //更换案例
@@ -75,8 +77,24 @@ void Teach::initUI()
     setWindowModality(Qt::ApplicationModal);
     setAttribute(Qt::WA_DeleteOnClose);
 
+//<<<<<<< HEAD
+    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//无边框且最小化任务栏还原
+
+    QPalette palette(this->palette());
+    palette.setColor(QPalette::Background, Qt::white);
+    this->setPalette(palette);//设置窗口背景颜色：白
+
+    QPixmap minPix=style()->standardPixmap(QStyle::SP_TitleBarMinButton);
+    QPixmap closePix=style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
+    ui->buttonMin->setIcon(minPix);
+    ui->buttonClose->setIcon(closePix);//获取并设置
+
     ui->currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
     ui->usernameLabel->setText(QString::fromStdString(myUser.getName()));
+//=======
+    ui->currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
+    ui->usernameLabel->setText(QString::fromStdString(myUser.getName()));
+//>>>>>>> bf8d45bb619f2b1bf161c1692e40e41bf9d5bf70
 }
 
 //初始化教学界面
@@ -119,7 +137,7 @@ void Teach::init()
             while (pos != -1)
             {
                 MyPushButton *domainButton = new MyPushButton(ui->groupBox_2);
-                domainButton->setGeometry(110 + 100 * (inx - 1), 230, 75, 20);
+                domainButton->setGeometry(110 + 100 * (inx - 1), 230, 80, 23);
                 domainButton->setText(_domain.left(pos));
                 //点击领域知识按钮，触发显示领域知识信息   不点击的话，默认不显示
                 void (MyPushButton::*pfn)(QString) = MyPushButton::clicked;
@@ -131,7 +149,7 @@ void Teach::init()
             }
             //处理最后一个领域知识按钮
             MyPushButton *domainButton = new MyPushButton(ui->groupBox_2);
-            domainButton->setGeometry(110 + 100 * (inx - 1), 230, 75, 20);
+            domainButton->setGeometry(110 + 100 * (inx - 1), 230, 80, 23);
             domainButton->setText(_domain);
             void (MyPushButton::*pfn1)(QString) = MyPushButton::clicked;
             //connect(domainButton, pfn1, this, SLOT(showDomainKnowledgesSlot(QString)));
@@ -144,7 +162,7 @@ void Teach::init()
         while (query.next())
         {
             MyPushButton *usecaseButton = new MyPushButton(ui->groupBox_2);
-            usecaseButton->setGeometry(110 + 100 * (inx - 1), 270, 75, 20);
+            usecaseButton->setGeometry(110 + 100 * (inx - 1), 270, 80, 23);
             usecaseButton->setText(query.value(1).toString());
             //点击案例按钮，触发打开案例界面
             void (MyPushButton::*pfn2)(QString) = MyPushButton::clicked;
@@ -192,7 +210,7 @@ void Teach::init()
                         _singleKid = _aboutKid.left(4);
                     }
                     aboutKnowButton->setText(buttonText);
-                    aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 310, 75, 20);
+                    aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 310, 80, 23);
                     _about = _about.remove(0, pos + 1);
                     ++inx;
                     pos = _about.indexOf(_sep);
@@ -222,7 +240,7 @@ void Teach::init()
                     _singleKid = _about.left(4);
                 }
                 aboutKnowButton->setText(buttonText);
-                aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 310, 75, 20);
+                aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 310, 80, 23);
             }
             else if (query.value(1).toInt() == 1)
             {//后继
@@ -261,7 +279,7 @@ void Teach::init()
                         _singleKid = _aboutKid.left(4);
                     }
                     aboutKnowButton->setText(buttonText);
-                    aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 350, 75, 20);
+                    aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 350, 80, 23);
                     _about = _about.remove(0, pos + 1);
                     ++inx;
                     pos = _about.indexOf(_sep);
@@ -295,7 +313,7 @@ void Teach::init()
                     _singleKid = _about.left(4);
                 }
                 aboutKnowButton->setText(buttonText);
-                aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 350, 75, 20);
+                aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 350, 80, 23);
             }
         }
     }
@@ -320,7 +338,7 @@ void Teach::init()
             while (pos != -1)
             {
                 MyPushButton *domainButton = new MyPushButton(ui->groupBox_2);
-                domainButton->setGeometry(110 + 100 * (inx - 1), 230, 75, 20);
+                domainButton->setGeometry(110 + 100 * (inx - 1), 230, 80, 23);
                 domainButton->setText(_domain.left(pos));
                 void (MyPushButton::*pfn3)(QString) = MyPushButton::clicked;
                 connect(domainButton, pfn3, this, &Teach::showDomainKnowledgesSlot);
@@ -329,7 +347,7 @@ void Teach::init()
                 pos = _domain.indexOf(_sep);
             }
             MyPushButton *domainButton = new MyPushButton(ui->groupBox_2);
-            domainButton->setGeometry(110 + 100 * (inx - 1), 230, 75, 20);
+            domainButton->setGeometry(110 + 100 * (inx - 1), 230, 80, 23);
             domainButton->setText(_domain);
             void (MyPushButton::*pfn4)(QString) = MyPushButton::clicked;
             connect(domainButton, pfn4, this, &Teach::showDomainKnowledgesSlot);
@@ -342,7 +360,7 @@ void Teach::init()
         while (query.next())
         {
             MyPushButton *usecaseButton = new MyPushButton(ui->groupBox_2);
-            usecaseButton->setGeometry(110 + 100 * (inx - 1), 270, 75, 20);
+            usecaseButton->setGeometry(110 + 100 * (inx - 1), 270, 80, 23);
             usecaseButton->setText(query.value(1).toString());
             void (MyPushButton::*pfn5)(QString) = MyPushButton::clicked;
             connect(usecaseButton, pfn5, this, &Teach::openUsecaseSlot);
@@ -389,7 +407,7 @@ void Teach::init()
                         _singleKid = _aboutKid.left(4);
                     }
                     aboutKnowButton->setText(buttonText);
-                    aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 310, 75, 20);
+                    aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 310, 80, 23);
                     _about = _about.remove(0, pos + 1);
                     ++inx;
                     pos = _about.indexOf(_sep);
@@ -423,7 +441,7 @@ void Teach::init()
                     _singleKid = _about.left(4);
                 }
                 aboutKnowButton->setText(buttonText);
-                aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 310, 75, 20);
+                aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 310, 80, 23);
             }
             else if (query.value(1).toInt() == 1)
             {//后继
@@ -462,7 +480,7 @@ void Teach::init()
                         _singleKid = _aboutKid.left(4);
                     }
                     aboutKnowButton->setText(buttonText);
-                    aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 350, 75, 20);
+                    aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 350, 80, 23);
                     _about = _about.remove(0, pos + 1);
                     ++inx;
                     pos = _about.indexOf(_sep);
@@ -495,7 +513,7 @@ void Teach::init()
                     _singleKid = _about.left(4);
                 }
                 aboutKnowButton->setText(buttonText);
-                aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 350, 75, 20);
+                aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 350, 80, 23);
             }
         }
     }
