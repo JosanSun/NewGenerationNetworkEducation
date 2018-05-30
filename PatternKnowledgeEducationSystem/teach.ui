@@ -105,6 +105,9 @@
      <property name="sizeConstraint">
       <enum>QLayout::SetDefaultConstraint</enum>
      </property>
+     <property name="bottomMargin">
+      <number>10</number>
+     </property>
      <item>
       <spacer name="horizontalSpacer_3">
        <property name="orientation">
@@ -178,13 +181,13 @@
         <widget class="QGroupBox" name="groupBox_3">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-           <horstretch>79</horstretch>
+           <horstretch>150</horstretch>
            <verstretch>13</verstretch>
           </sizepolicy>
          </property>
          <property name="minimumSize">
           <size>
-           <width>130</width>
+           <width>140</width>
            <height>13</height>
           </size>
          </property>
@@ -293,7 +296,7 @@
            <rect>
             <x>10</x>
             <y>30</y>
-            <width>111</width>
+            <width>131</width>
             <height>51</height>
            </rect>
           </property>
@@ -322,7 +325,7 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>130</width>
+           <width>140</width>
            <height>13</height>
           </size>
          </property>
@@ -668,15 +671,15 @@
        <item>
         <widget class="QTabWidget" name="tabWidget">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
            <horstretch>127</horstretch>
-           <verstretch>10</verstretch>
+           <verstretch>7</verstretch>
           </sizepolicy>
          </property>
          <property name="minimumSize">
           <size>
            <width>127</width>
-           <height>10</height>
+           <height>7</height>
           </size>
          </property>
          <property name="currentIndex">

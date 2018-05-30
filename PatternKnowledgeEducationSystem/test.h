@@ -20,6 +20,12 @@ public:
     Test(QWidget *parent = 0);
     ~Test();
 
+protected:
+    //mouse func
+    virtual void mousePressEvent(QMouseEvent *event);
+    virtual void mouseMoveEvent(QMouseEvent *event);
+    virtual void mouseReleaseEvent(QMouseEvent *event);
+
 private slots:
     void timeUpdateSlot();
     void restTimeUpdateSlot();
@@ -56,6 +62,9 @@ private:
     QDateTime startTestTime;
     int limitScore;
     map<int, QButtonGroup*> test_map;
+    //mouse moving
+    bool        mMove;
+    QPoint      mPos;
 };
 
 #endif // TEST_H

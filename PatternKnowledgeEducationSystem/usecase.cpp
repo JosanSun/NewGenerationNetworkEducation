@@ -88,7 +88,7 @@ void Usecase::initUI()
 void Usecase::init()
 {
     openDatabase();
-
+    mMove=false;//mouse moving
     QString casename = currentCid;
     QSqlQuery query(db);
     QString path;
@@ -167,6 +167,36 @@ void Usecase::init()
 
     timer->start(1000);
 }
+
+//重写鼠标函数实现窗口自由移动
+void Usecase::mousePressEvent(QMouseEvent *event)
+{
+    mMove = true;
+    //记录下鼠标相对于窗口的位置
+    //event->globalPos()鼠标按下时，鼠标相对于整个屏幕位置
+    //pos() this->pos()鼠标按下时，窗口相对于整个屏幕位置
+    mPos = event->globalPos() - pos();
+    return QWidget::mousePressEvent(event);
+}
+
+void Usecase::mouseMoveEvent(QMouseEvent *event)
+{
+    //(event->buttons() && Qt::LeftButton)按下是左键
+    //通过事件event->globalPos()知道鼠标坐标，鼠标坐标减去鼠标相对于窗口位置，就是窗口在整个屏幕的坐标
+    if (mMove && (event->buttons() && Qt::LeftButton)
+            && (event->globalPos()-mPos).manhattanLength() > QApplication::startDragDistance())
+    {
+        move(event->globalPos()-mPos);
+        mPos = event->globalPos() - pos();
+    }
+    return QWidget::mouseMoveEvent(event);
+}
+
+void Usecase::mouseReleaseEvent(QMouseEvent* /* event */)
+{
+    mMove = false;
+}
+//mouse END
 
 void Usecase::updateTimeSlot()
 {
