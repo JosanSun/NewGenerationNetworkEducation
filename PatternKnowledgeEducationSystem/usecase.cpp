@@ -141,19 +141,28 @@ void Usecase::init()
     }
     else if (_form == "html")
     {
-        path.replace(0, 1, "file:///E:/MyCode/qt/github/NewGenerationNetworkEducation/PatternKnowledgeEducationSystem");
+        QString curpath = QDir::currentPath();
+        int loc = curpath.lastIndexOf('/');
+        curpath.remove(loc, curpath.size());
+        curpath.append("/PatternKnowledgeEducationSystem");
+        curpath.prepend("file:///");
+        path.replace(0, 1, curpath);
         qcout << path;
         QUrl url(path);
         ui->textBrowser->setSource(url);
     }
     else if (_form == "swf")
     {
-        //path.replace(19, 1, "\\");
-        //NOTE:如何改为绝对路径呢？
-        qcout << path;   //../knowledge/usecase/U008.swf输出是这个
+        //NOTE:如何改为绝对路径呢？      【已解决】
+        //qcout << path;   //../knowledge/usecase/U008.swf输出是这个
         // 无法使用相对路径
         // path.replace(0, 1, "../PatternKnowledgeEducationSystem");
-        path.replace(0, 1, "E:/MyCode/qt/github/NewGenerationNetworkEducation/PatternKnowledgeEducationSystem");
+        QString curpath = QDir::currentPath();
+        int loc = curpath.lastIndexOf('/');
+        curpath.remove(loc, curpath.size());
+        curpath.append("/PatternKnowledgeEducationSystem");
+        curpath.prepend("file:///");
+        path.replace(0, 1, curpath);
         qcout << path;
 
         //BUG:这个会不停的运行，然后占据着  使得不能触发按钮点击事件

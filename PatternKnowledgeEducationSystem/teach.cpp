@@ -649,11 +649,19 @@ void Teach::openUsecaseSlot(QString casename)
         {
             path = query.value(2).toString();
         }
-        path.replace(0, 1, "file:///E:/MyCode/qt/github/NewGenerationNetworkEducation/"
-                           "PatternKnowledgeEducationSystem");//此处可根据本地文件夹名称更改
+        QString curpath = QDir::currentPath();
+        //qcout << curpath;
+        int loc = curpath.lastIndexOf('/');
+        //qcout << loc;
+        curpath.remove(loc, curpath.size());
+        curpath.append("/PatternKnowledgeEducationSystem");
+        curpath.prepend("file:///");
+        //curpath.replace('\\', '/');
+        //qcout << curpath;
+        path.replace(0, 1, curpath);//此处可根据本地文件夹名称更改
         // qcout << path;
         // path这种绝对路径可以打开file:///E:/MyCode/qt/github/NewGenerationNetworkEducation/PatternKnowledgeEducationSystem/knowledge/usecase/U002.ppsx
-        // 如何更改为相对路径呢？
+        // 如何更改为相对路径呢？   已解决！
         QDesktopServices::openUrl(QUrl(path, QUrl::TolerantMode));
         //记录用户behavior
     }
