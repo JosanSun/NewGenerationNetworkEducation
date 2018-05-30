@@ -20,6 +20,8 @@ Test::Test(QWidget *parent)
     initUI();
     init();
 
+    connect(ui->buttonClose, &QPushButton::clicked, this, &Test::close);                                 // 点击关闭
+    connect(ui->buttonMin, &QPushButton::clicked, this, &Test::showMinimized);                           // 点击最小化
     connect(timer1, &QTimer::timeout, this, &Test::timeUpdateSlot);//更新系统时间
     connect(ui->submitButton, &QPushButton::clicked, this, &Test::submitTestSlot);      //提交测试
     connect(startButton, &QPushButton::clicked, this, &Test::startTestSlot);            //点击开始测试按钮进入测试
@@ -39,19 +41,26 @@ void Test::initUI()
     setWindowModality(Qt::ApplicationModal);
     setAttribute(Qt::WA_DeleteOnClose);
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
+    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//无边框且最小化任务栏还原
+
     QPalette palette(this->palette());
     palette.setColor(QPalette::Background, Qt::white);
     this->setPalette(palette);//设置窗口背景颜色：白
 
-    ui.currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
-    ui.usernameLabel->setText(QString::fromStdString(myUser.getName()));
-    ui.submitButton->setDisabled(true);
-=======
+    QPixmap minPix=style()->standardPixmap(QStyle::SP_TitleBarMinButton);
+    QPixmap closePix=style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
+    ui->buttonMin->setIcon(minPix);
+    ui->buttonClose->setIcon(closePix);//获取并设置
+
     ui->currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
     ui->usernameLabel->setText(QString::fromStdString(myUser.getName()));
     ui->submitButton->setDisabled(true);
->>>>>>> bf8d45bb619f2b1bf161c1692e40e41bf9d5bf70
+//=======
+    ui->currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
+    ui->usernameLabel->setText(QString::fromStdString(myUser.getName()));
+    ui->submitButton->setDisabled(true);
+//>>>>>>> bf8d45bb619f2b1bf161c1692e40e41bf9d5bf70
 
     //提示用户开始测试
     initLabel = new QLabel(ui->scrollArea);

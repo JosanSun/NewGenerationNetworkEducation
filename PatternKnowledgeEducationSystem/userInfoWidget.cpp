@@ -16,6 +16,8 @@ UserInfoWidget::UserInfoWidget(QWidget *parent)
     initUI();
     init();
 
+    connect(ui->buttonClose, &QPushButton::clicked, this, &UserInfoWidget::close);                                 // 点击关闭
+    connect(ui->buttonMin, &QPushButton::clicked, this, &UserInfoWidget::showMinimized);                           // 点击最小化
     connect(timer, &QTimer::timeout, this, &UserInfoWidget::updateTimeSlot);                        // 更新系统时间
     connect(ui->modifyButton, &QPushButton::clicked, this, &UserInfoWidget::modifyInformationSlot); // 修改个人信息
     connect(ui->saveButton, &QPushButton::clicked, this, &UserInfoWidget::saveInformationSlot);     // 保存个人信息
@@ -54,10 +56,16 @@ void UserInfoWidget::initUI()
 {
     setWindowModality(Qt::ApplicationModal);
     setAttribute(Qt::WA_DeleteOnClose);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//无边框且最小化任务栏还原
 
     QPalette palette(this->palette());
     palette.setColor(QPalette::Background, Qt::white);
     this->setPalette(palette);//设置窗口背景颜色：白
+
+    QPixmap minPix=style()->standardPixmap(QStyle::SP_TitleBarMinButton);
+    QPixmap closePix=style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
+    ui->buttonMin->setIcon(minPix);
+    ui->buttonClose->setIcon(closePix);//获取并设置
 
 
     ui->modifyButton->setEnabled(true);

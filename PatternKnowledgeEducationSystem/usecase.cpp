@@ -26,6 +26,8 @@ Usecase::Usecase(QWidget *parent)
     initUI();
     init();
 
+    connect(ui->buttonClose, &QPushButton::clicked, this, &Usecase::close);                                 // 点击关闭
+    connect(ui->buttonMin, &QPushButton::clicked, this, &Usecase::showMinimized);                           // 点击最小化
     connect(timer, &QTimer::timeout, this, &Usecase::updateTimeSlot);                   // 更新系统时间
     connect(ui->testButton, &QPushButton::clicked, this, &Usecase::goToTestWindowSlot);  // 进入测试模块
 }
@@ -62,10 +64,16 @@ void Usecase::initUI()
 {
     setWindowModality(Qt::ApplicationModal);
     setAttribute(Qt::WA_DeleteOnClose);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//无边框且最小化任务栏还原
 
     QPalette palette(this->palette());
     palette.setColor(QPalette::Background, Qt::white);
     this->setPalette(palette);//设置窗口背景颜色：白
+
+    QPixmap minPix=style()->standardPixmap(QStyle::SP_TitleBarMinButton);
+    QPixmap closePix=style()->standardPixmap(QStyle::SP_TitleBarCloseButton);
+    ui->buttonMin->setIcon(minPix);
+    ui->buttonClose->setIcon(closePix);//获取并设置
 
 
 
