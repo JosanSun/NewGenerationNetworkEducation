@@ -47,7 +47,7 @@ void LearningPatternTest::openDatabase()
 void LearningPatternTest::init()
 {
     openDatabase();
-
+    mMove=false;//mouse moving
     allLayout = new QVBoxLayout;
     firstLayout = new QHBoxLayout;
     firstTitleLabel = new QLabel;
@@ -148,6 +148,36 @@ void LearningPatternTest::init()
     ui->scrollArea->setWidget(allWidget);
     // ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 }
+
+//重写鼠标函数实现窗口自由移动
+void LearningPatternTest::mousePressEvent(QMouseEvent *event)
+{
+    mMove = true;
+    //记录下鼠标相对于窗口的位置
+    //event->globalPos()鼠标按下时，鼠标相对于整个屏幕位置
+    //pos() this->pos()鼠标按下时，窗口相对于整个屏幕位置
+    mPos = event->globalPos() - pos();
+    return QWidget::mousePressEvent(event);
+}
+
+void LearningPatternTest::mouseMoveEvent(QMouseEvent *event)
+{
+    //(event->buttons() && Qt::LeftButton)按下是左键
+    //通过事件event->globalPos()知道鼠标坐标，鼠标坐标减去鼠标相对于窗口位置，就是窗口在整个屏幕的坐标
+    if (mMove && (event->buttons() && Qt::LeftButton)
+            && (event->globalPos()-mPos).manhattanLength() > QApplication::startDragDistance())
+    {
+        move(event->globalPos()-mPos);
+        mPos = event->globalPos() - pos();
+    }
+    return QWidget::mouseMoveEvent(event);
+}
+
+void LearningPatternTest::mouseReleaseEvent(QMouseEvent* /* event */)
+{
+    mMove = false;
+}
+//mouse END
 
 void LearningPatternTest::on_submitButton_clicked()
 {

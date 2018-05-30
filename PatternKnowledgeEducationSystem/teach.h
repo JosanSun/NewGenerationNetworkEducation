@@ -22,6 +22,12 @@ public:
     Teach(QWidget *parent = 0);
     ~Teach();
 
+protected:
+    //mouse func
+    virtual void mousePressEvent(QMouseEvent *event);
+    virtual void mouseMoveEvent(QMouseEvent *event);
+    virtual void mouseReleaseEvent(QMouseEvent *event);
+
 private slots:
     void timeUpdateSlot();
     void showDomainKnowledgesSlot(QString);
@@ -51,6 +57,9 @@ private:
     Usecase *usecaseWindow;
     Test *testWindow;
     bool haveDomainTab;
+    //mouse moving
+    bool        mMove;
+    QPoint      mPos;
 };
 
 #endif // TEACH_H

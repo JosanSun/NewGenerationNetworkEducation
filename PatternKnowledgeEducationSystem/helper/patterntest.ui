@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>所罗门学习风格自测问卷表</string>
+   <string>Form</string>
   </property>
   <property name="styleSheet">
    <string notr="true">font: 11pt &quot;幼圆&quot;;</string>

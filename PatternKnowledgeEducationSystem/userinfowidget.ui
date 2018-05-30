@@ -99,6 +99,9 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <property name="bottomMargin">
+      <number>10</number>
+     </property>
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
@@ -243,7 +246,7 @@
            <rect>
             <x>10</x>
             <y>30</y>
-            <width>111</width>
+            <width>141</width>
             <height>51</height>
            </rect>
           </property>

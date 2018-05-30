@@ -79,7 +79,7 @@ void Knowledge::initUI()
 void Knowledge::init()
 {
     openDatabase();
-
+    mMove=false;//mouse moving
     //追踪学习路径
     connect(ui->pushButton, &QPushButton::clicked, this, &Knowledge::trackLearning);
     vector<QString> attributes = getAttributesFromDB();
@@ -88,6 +88,36 @@ void Knowledge::init()
     int r = 10;
    // generateNodes(attributes, successors, predecessors, r);
 }
+
+//重写鼠标函数实现窗口自由移动
+void Knowledge::mousePressEvent(QMouseEvent *event)
+{
+    mMove = true;
+    //记录下鼠标相对于窗口的位置
+    //event->globalPos()鼠标按下时，鼠标相对于整个屏幕位置
+    //pos() this->pos()鼠标按下时，窗口相对于整个屏幕位置
+    mPos = event->globalPos() - pos();
+    return QWidget::mousePressEvent(event);
+}
+
+void Knowledge::mouseMoveEvent(QMouseEvent *event)
+{
+    //(event->buttons() && Qt::LeftButton)按下是左键
+    //通过事件event->globalPos()知道鼠标坐标，鼠标坐标减去鼠标相对于窗口位置，就是窗口在整个屏幕的坐标
+    if (mMove && (event->buttons() && Qt::LeftButton)
+            && (event->globalPos()-mPos).manhattanLength() > QApplication::startDragDistance())
+    {
+        move(event->globalPos()-mPos);
+        mPos = event->globalPos() - pos();
+    }
+    return QWidget::mouseMoveEvent(event);
+}
+
+void Knowledge::mouseReleaseEvent(QMouseEvent* /* event */)
+{
+    mMove = false;
+}
+//mouse END
 
 void Knowledge::paintEvent(QPaintEvent *)
 {
@@ -271,7 +301,7 @@ void Knowledge::drawCircles(vector<Node> nodes, QColor color)
 }
 
 
-void Knowledge::mousePressEvent(QMouseEvent *event)
+void Knowledge::mousePressEventK(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
@@ -313,7 +343,7 @@ void Knowledge::mousePressEvent(QMouseEvent *event)
 
 //移动鼠标就能显示属性
 //BUG:最好能够等待几秒，否则效果不行
-void Knowledge::mouseMoveEvent(QMouseEvent * /* event */)
+void Knowledge::mouseMoveEventK(QMouseEvent * /* event */)
 {
     QPoint point = cursor().pos();
     QString attribute = getAttributeByPosition(point);
