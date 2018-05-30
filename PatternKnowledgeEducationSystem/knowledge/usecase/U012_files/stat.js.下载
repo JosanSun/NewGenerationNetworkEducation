@@ -1,0 +1,7 @@
+/*document.writeln("<script type=\"text/javascript\" id=\"bdshare_js\" data=\"type=slide&amp;img=1&amp;uid=11874\" ></script>");
+document.writeln("<script type=\"text/javascript\" id=\"bdshell_js\"></script>");
+document.writeln("<script type=\"text/javascript\">");
+document.writeln("	document.getElementById(\"bdshell_js\").src = \"http://bdimg.share.baidu.com/static/js/shell_v2.js?t=\" + new Date().getHours();");
+document.writeln("</script>");
+*/
+document.write('<script src="http://s21.cnzz.com/stat.php?id=2948697&web_id=2948697" language="JavaScript"></script>');

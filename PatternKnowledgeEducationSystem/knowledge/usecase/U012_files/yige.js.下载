@@ -1,0 +1,24 @@
+$(function(){
+	init_menu_link();
+	
+	document.body.oncopy = function() {
+		//event.returnValue = false;
+		try {
+			var t = document.selection.createRange().text;
+			var s = "本文转载自#一个网# http://yige.org";
+			clipboardData.setData('Text', t + '\r\n' + s);	
+		} catch(err){/*alert(err);*/}
+	};
+});
+
+function init_menu_link() {
+	var url_arr = window.location.href.split("/");
+	var script_name = '/' + url_arr[3] + '/' + url_arr[4];
+	
+	$("#yige_content .menu a").each(function(){
+		if($(this).attr("href") == script_name) {
+			$(this).attr("style", "font-weight:bold;")
+		}
+		
+	});
+}

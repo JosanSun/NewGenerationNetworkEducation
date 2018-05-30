@@ -63,13 +63,13 @@ void PatternTest::init()
     query.exec("select * from patternTest;");
     numRows = query.size();
     qcout << numRows;
-//    int debugInt = 0;
+    //int debugInt = 0;
     while (query.next())
     {
-//        if(debugInt++ > 7)
-//        {
-//            break;
-//        }
+        //        if(debugInt++ > 7)
+        //        {
+        //            break;
+        //        }
         //题目标题
         int questionId = query.value(0).toInt();
         QHBoxLayout *contentLayout = new QHBoxLayout;
@@ -78,6 +78,7 @@ void PatternTest::init()
         QLabel *questionLabel = new QLabel;
         label_vec.push_back(questionLabel);
         questionLabel->setText(_question);
+        //questionLabel->adjustSize();
         questionLabel->setStyleSheet("QLabel{background:yellow}");
         contentLayout->addWidget(questionLabel);
         contentLayout->addStretch();

@@ -12,14 +12,14 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>870</width>
-    <height>670</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>870</width>
-    <height>670</height>
+    <width>16777215</width>
+    <height>16777215</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -194,15 +194,15 @@
    <widget class="QWidget" name="layoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>440</y>
-      <width>196</width>
+      <width>131</width>
       <height>20</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QLabel" name="restHourLabel">
+      <widget class="QLabel" name="restMinuteLabel">
        <property name="font">
         <font>
          <pointsize>12</pointsize>
@@ -221,12 +221,12 @@
         </font>
        </property>
        <property name="text">
-        <string>时</string>
+        <string>分</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="restMinuteLabel">
+      <widget class="QLabel" name="restSecondLabel">
        <property name="font">
         <font>
          <pointsize>12</pointsize>
@@ -245,7 +245,7 @@
         </font>
        </property>
        <property name="text">
-        <string>分</string>
+        <string>秒</string>
        </property>
       </widget>
      </item>
@@ -267,15 +267,15 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>290</y>
-      <width>196</width>
+      <width>131</width>
       <height>20</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="testHourLabel">
+      <widget class="QLabel" name="testMinuteLabel">
        <property name="font">
         <font>
          <pointsize>12</pointsize>
@@ -294,12 +294,12 @@
         </font>
        </property>
        <property name="text">
-        <string>时</string>
+        <string>分</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="testMinuteLabel">
+      <widget class="QLabel" name="testSecondLabel">
        <property name="font">
         <font>
          <pointsize>12</pointsize>
@@ -318,7 +318,7 @@
         </font>
        </property>
        <property name="text">
-        <string>分</string>
+        <string>秒</string>
        </property>
       </widget>
      </item>

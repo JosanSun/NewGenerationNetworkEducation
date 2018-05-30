@@ -1,0 +1,7 @@
+document.writeln("<form action=\"http://search.yige.org/cse/search\" method=\"get\" name=\"searchform\" target=\"_blank\">");
+document.writeln("  <div>");
+document.writeln("    <input type=\"hidden\" name=\"s\" value=\"13897225202946025678\" />");
+document.writeln("    <input type=\"text\" name=\"q\" size=\"20\" />");
+document.writeln("    <input type=\"submit\" value=\"搜索\" />");
+document.writeln("  </div>");
+document.writeln("</form>");

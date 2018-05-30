@@ -1,0 +1,211 @@
+// jQuery cookie 插件
+(function($,document,undefined){var pluses=/\+/g;function raw(s){return s}function decoded(s){return unRfc2068(decodeURIComponent(s.replace(pluses," ")))}function unRfc2068(value){if(value.indexOf('"')===0){value=value.slice(1,-1).replace('\\"','"').replace("\\\\","\\")}return value}var config=$.cookie=function(key,value,options){if(value!==undefined){options=$.extend({},config.defaults,options);if(value===null){options.expires=-1}if(typeof options.expires==="number"){var days=options.expires,t=options.expires=new Date();t.setDate(t.getDate()+days)}value=config.json?JSON.stringify(value):String(value);return(document.cookie=[encodeURIComponent(key),"=",config.raw?value:encodeURIComponent(value),options.expires?"; expires="+options.expires.toUTCString():"",options.path?"; path="+options.path:"",options.domain?"; domain="+options.domain:"",options.secure?"; secure":""].join(""))}var decode=config.raw?raw:decoded;var cookies=document.cookie.split("; ");var result=key?null:{};for(var i=0,l=cookies.length;i<l;i++){var parts=cookies[i].split("=");var name=decode(parts.shift());var cookie=decode(parts.join("="));if(config.json){cookie=JSON.parse(cookie)}if(key&&key===name){result=cookie;break}if(!key){result[name]=cookie}}return result};config.defaults={};$.removeCookie=function(key,options){if($.cookie(key)!==null){$.cookie(key,null,options);return true}return false}})(jQuery,document);
+
+$(document).ready(function(){
+	var qqgroup = "709109338";
+	// 用户登录
+	(function(){
+		window.isVipValid = 0;
+		var username = $.cookie("username");
+		var userdata = $.cookie("userdata");
+		if(username && userdata){
+			userdata = userdata.split("_");
+			var vip = userdata[1];
+			var vipexpire = userdata[2];
+			var timenow = parseInt( (new Date()).getTime() / 1000 );
+			
+
+			if(vip <= 5){
+				window.isVipValid = vipexpire>timenow ? 1 : 0;
+				$("#user-info").html('' +
+					'<a id="btn-logout" class="right" href="#">退出</a>' +
+					'<span class="right">&nbsp;&nbsp;|&nbsp;&nbsp;</span>' +
+					'<span class="right" id="vip-type" style="background-image: url(' + window.cmsTemplets + '/images/vip_' + vip + '_' + window.isVipValid + '.png' + ')"></span>' +
+					'<span class="right"><a href="http://vip.biancheng.net/">' + username + '</a>&nbsp;</span>'
+				);
+			}else{
+				window.isVipValid = 1;
+				$("#user-info").html('' +
+					'<a id="btn-logout" class="right" href="#">退出</a>' +
+					'<span class="right">&nbsp;&nbsp;|&nbsp;&nbsp;</span>' +
+					'<span class="right" id="vip-type" style="width:28px;background-image: url(' + window.cmsTemplets + '/images/vip.png' + ')"></span>' +
+					'<span class="right"><a href="http://vip.biancheng.net/">' + username + '</a>&nbsp;</span>'
+				);
+			}
+		}else{
+			$("#user-info").html('' +
+				'<a href="http://vip.biancheng.net/login.php" target="_blank">登录</a>&nbsp;&nbsp;|&nbsp;' +
+				'<a href="http://vip.biancheng.net/register.php" target="_blank">注册</a>'
+			);
+		}
+
+		// 退出登录
+		$("body").delegate("#btn-logout", "click", function(e){
+			e.preventDefault();
+
+			var expire = -1;
+			var path = "/";
+			var domain = "www.cyuyan.com";
+			$.cookie("username", '', {"path": path, "expires": expire, "domain": domain});
+			$.cookie("userdata", '', {"path": path, "expires": expire, "domain": domain});
+			$.cookie("userdataencode", '', {"path": path, "expires": expire, "domain": domain});
+
+			$.getScript("http://vip.biancheng.net/logout_jsonp.php", function(){
+				history.go(0);
+			});
+		});
+	})();
+
+	//提示购买VIP或者加载VIP文章内容
+	(function(){
+		var buyVipTip = $("#buy-vip-tip");
+		if(buyVipTip.length){
+			if(window.isVipValid){
+				$.ajax({
+					method: 'get',
+					url: "http://vip.biancheng.net/get_arc_body.php",
+					dataType: 'jsonp',
+					data: {"aid": buyVipTip.attr("aid"), "v": window.cmsTempletsVer},
+					timeout: 10000,
+					beforeSend: function(XMLHttpRequest){
+						buyVipTip.html('<p>正在加载文章内容...</p>');
+					},
+					success: function(retData){
+						var data = decodeURIComponent(retData.data);
+						if(retData.success){
+							buyVipTip.parent().html(data);
+							codeHighlight();
+							addLinkForImg();
+						}else{
+							buyVipTip.html('<p>' + data + '</p>');
+						}
+					},
+					error: function(jqXHR, textStatus, errorThrown){
+						buyVipTip.html('<p>加载文章内容失败，请刷新重试！</p>');
+					}
+				});
+			}else{
+				buyVipTip.html('<p>您好，您正在阅读付费教程，请<a href="http://vip.biancheng.net/" target="_blank">开通VIP会员（提供QQ一对一答疑，并赠送1TB编程资料）</a>。</p>');
+			}
+		}
+	})();
+
+	// 加载文章顶部广告
+	$("#ad-arc-top-diy").html('' +
+		'<p><a href="http://fudao.biancheng.net" target="_blank" style="color:#D33428;">C语言中文网推出辅导班啦，包括<span style="color: #008000;">「C语言辅导班、C++辅导班、算法/数据结构辅导班」</span>，全部都是一对一教学：一对一辅导 + 一对一答疑 + 布置作业 + 项目实践 + 永久学习。QQ在线，随时响应！</a></p>'
+	);
+
+	// 加载文章底部
+	$("#ad-arc-bottom-diy").html('<div>' +
+		'<p><a href="http://fudao.biancheng.net" target="_blank" style="color:#D33428;">C语言中文网推出辅导班啦，包括<span style="color: #008000;">「C语言辅导班、C++辅导班、算法/数据结构辅导班」</span>，全部都是一对一教学：一对一辅导 + 一对一答疑 + 布置作业 + 项目实践 + 永久学习。QQ在线，随时响应！</a></p>' +
+		'<p style="margin-top:8px; padding-top:8px; border-top: 1px dashed #aaa;"><a class="col-link" href="/cpp/html/3464.html" target="_blank">为什么你总是被拉进各种购物群和电影群，原来这是一个小黑产！</a></p>' +
+		'</div>'
+	);
+
+	//背景隔行换色
+	(function(){
+		$(".bg_change").each(function(){
+			var nodes = $(this).children("li:even");
+			if(nodes && nodes.length){
+				nodes.addClass('bg-f7f7f7');
+			}else{
+				$(this).children("dd:even").addClass('bg-f7f7f7');
+			}
+		});
+	})();
+
+	//QQ群
+    (function(){
+    	$(".qq-qun-number").text(qqgroup);
+    	$(".qq-qun-link").attr("href", "//shang.qq.com/wpa/qunwpa?idkey=96d5ac796ff5f621c605efddb3309201c34479d6eafb4b730d3cef840e230462");
+    	$("#btn-close-qq-qun").click(function(){
+    		$("#qq-qun-float").css("display", "none");
+    	});
+    })();
+
+	// 加载代码高亮插件
+    function codeHighlight(){
+        var pres = document.getElementsByTagName("pre");
+        if(!pres || !pres.length)
+        	return;
+
+        $.getScript(window.cmsTemplets+"/script/jquery.snippet.js",function(){
+            $(pres).each(function(){
+                var thisClass = $(this).attr("class");
+                thisClass = thisClass && thisClass.replace( /^shell$/, "sh" );  // Shell
+                thisClass = thisClass && thisClass.replace( /^objective-c$/, "oc" );  // Shell
+
+                thisClass && !/info-box/.test(thisClass) && !/console/.test(thisClass) && $(this).snippet(thisClass,{
+                    style:"bright"//,
+                    //clipboard:window.cmsTemplets+"/js/ZeroClipboard.swf"
+                });
+            });
+        });
+    }
+    codeHighlight();
+
+    // 下拉菜单
+    (function(){
+    	$(".share,.sub-menu").mouseover(function(){
+        	$(this).children('ul').css({
+        		'display': 'block'
+        	});
+        }).mouseout(function(){
+        	$(this).children('ul').css({
+        		'display': 'none'
+        	});
+        });
+    })();
+
+
+    // 关注我们
+    (function(){
+    	var followUsWrap = $(".follow-us");
+    	followUsWrap.append('' + 
+    		'<dt>关注我们：</dt>' +
+			'<dd class="weixin"><a href="/cpp/html/3391.html" target="_blank">微信公众号</a></dd>' +
+			'<dd class="weibo"><a href="http://weibo.com/cyuyanzhongwenwang" target="_blank">新浪微博</a></dd>' +
+			'<dd class="qq">读者QQ交流群：' + qqgroup + '</a></dd>'
+		);
+    })();
+
+    // 在目录中找到当前文章，并为上一节下一节按钮添加链接
+	(function(){
+		var url = document.location.pathname;
+		var preBtnUrl = null;
+    	var nextBtnUrl = null;
+		var contents = $("#course-contents");
+		var as = contents.length ? contents.find('a') : null;
+
+		as && as.each(function(index, domEle){
+			var thisURL = $(domEle).attr('href');
+			if(thisURL === url){
+				$(this).parent().addClass('active');
+				preBtnUrl = index===0 ? thisURL : $(as.get(index-1)).attr('href');
+				nextBtnUrl = index===as.length-1 ? thisURL : $(as.get(index+1)).attr('href');
+				return false;
+			}
+		});
+
+		$(".paging-btn").click(function(){
+			var isPreBtn = /paging-pre/.test( $(this).attr("class") );
+			if(isPreBtn){
+				var preNextLink = preBtnUrl;
+			}else{
+				var preNextLink = nextBtnUrl;
+			}
+			location.href = preNextLink;
+		});
+	})();
+
+	// 为文章内的图片添加链接
+	function addLinkForImg(){
+		$("#art-body img").click(function(){
+			if(! $(this).parent().is("a") ){
+				window.open($(this).attr("src"));
+			}
+		});
+	}
+	addLinkForImg();
+
+});

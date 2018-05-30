@@ -631,10 +631,10 @@ void Teach::openUsecaseSlot(QString casename)
         {
             path = query.value(2).toString();
         }
-        path.replace(0, 1, "file:///E:/MyCode/qt/NewGenerationNetworkEducation/"
+        path.replace(0, 1, "file:///E:/MyCode/qt/github/NewGenerationNetworkEducation/"
                            "PatternKnowledgeEducationSystem");//此处可根据本地文件夹名称更改
         // qcout << path;
-        // path这种绝对路径可以打开file:///E:/MyCode/qt/NewGenerationNetworkEducation/PatternKnowledgeEducationSystem/knowledge/usecase/U002.ppsx
+        // path这种绝对路径可以打开file:///E:/MyCode/qt/github/NewGenerationNetworkEducation/PatternKnowledgeEducationSystem/knowledge/usecase/U002.ppsx
         // 如何更改为相对路径呢？
         QDesktopServices::openUrl(QUrl(path, QUrl::TolerantMode));
         //记录用户behavior
@@ -739,4 +739,29 @@ void Teach::updateBehaviorTableSlot()
     query.bindValue(":kid", currentKid);
     query.bindValue(":cid", currentCid);
     query.exec();
+}
+
+//下一个知识节点
+void Teach::on_nextKnowledgeButton_clicked()
+{
+    QString beforeKid = currentKid;
+    QSqlQuery query(db);
+    query.prepare("select kid from recpath where sid=:sid and state=0 order by orders");
+    query.bindValue(":sid", myUser.getSid());
+    query.exec();
+    while (query.next())
+    {
+        currentKid = query.value(0).toString();
+        qcout << currentKid;
+        break;
+    }
+    QString _first = beforeKid.left(1);
+    if (_first=="P")
+    {
+        query.prepare("update recpath set state=0 where sid=:sid and kid=:kid");
+        query.bindValue(":sid", myUser.getSid());
+        query.bindValue(":kid", beforeKid);
+        query.exec();
+    }
+    this->close();
 }

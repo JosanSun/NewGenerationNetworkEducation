@@ -41,7 +41,8 @@ SOURCES += main.cpp\
     usecase.cpp \
     helper/user.cpp \
     userinfowidget.cpp \
-    helper/patterntest.cpp
+    helper/patterntest.cpp \
+    helper/learnpatterntest.cpp
 
 HEADERS  += \
     helper/attribution.h \
@@ -60,7 +61,8 @@ HEADERS  += \
     helper/user.h \
     userinfowidget.h \
     stable.h \
-    helper/patterntest.h
+    helper/patterntest.h \
+    helper/learningpatterntest.h
 
 FORMS    += \
     helper/attribution.ui \
@@ -72,7 +74,8 @@ FORMS    += \
     usecase.ui \
     login.ui \
     userinfowidget.ui \
-    helper/patterntest.ui
+    helper/patterntest.ui \
+    helper/learningpatterntest.ui
 
 # CONFIG += qaxcontainer  为了使dynamicCall等  ActiveQt\qaxwidget.h 下的相关文件有效
 

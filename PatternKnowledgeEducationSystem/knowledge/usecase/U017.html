@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<!-- saved from url=(0065)https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C++指针详解 - ggjucheng - 博客园</title>
+<link type="text/css" rel="stylesheet" href="./U017_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="./U017_files/bundle-Cogitation.css">
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./U017_files/bundle-Cogitation-mobile.css">
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/ggjucheng/rss">
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/ggjucheng/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/ggjucheng/wlwmanifest.xml">
+<script async="" src="./U017_files/analytics.js.下载"></script><script type="text/javascript" src="./U017_files/encoder.js.下载"></script><script src="./U017_files/jquery-2.2.0.min.js.下载"></script>
+<script type="text/javascript">var currentBlogApp = 'ggjucheng', cb_enable_mathjax=false;var isLogined=false;</script>
+<script src="./U017_files/blog-common.js.下载" type="text/javascript"></script>
+<link type="text/css" rel="stylesheet" href="chrome-extension://pioclpoplcdbaefihamjohnefbikjilc/content.css"></head>
+<body>
+<a name="top"></a>
+
+<div id="top">
+	
+<div>
+	<table>
+		<tbody><tr>
+			<td class="HeaderTitles">
+				<h1 class="HeaderTitle"><a id="Header1_HeaderTitle" class="HeaderMainTitle" href="http://www.cnblogs.com/ggjucheng/">简单，可复制</a></h1>
+				<p id="tagline">点点滴滴，尽在文中</p>
+			</td>
+		</tr>
+	</tbody></table>
+</div>
+<div class="HeaderBar">
+	<table id="HeaderBar" class="HeaderBar" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+			<td class="HeaderBarTab" nowrap="">
+&nbsp;
+ ::
+<a id="blog_nav_myhome" href="http://www.cnblogs.com/ggjucheng/">首页</a> ::
+<a href="http://q.cnblogs.com/" class="menu">博问</a> ::
+<a href="http://home.cnblogs.com/ing/" class="menu">闪存</a> ::
+<a id="blog_nav_newpost" rel="nofollow" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a> ::
+<a id="blog_nav_contact" accesskey="9" rel="nofollow" href="https://msg.cnblogs.com/send/ggjucheng">联系</a> ::
+<a id="blog_nav_rss" href="http://www.cnblogs.com/ggjucheng/rss">订阅</a>
+<a id="blog_nav_rss_image" class="XMLLink" href="http://www.cnblogs.com/ggjucheng/rss"><img src="./U017_files/xml.gif" alt="订阅"></a> ::
+<a id="blog_nav_admin" rel="nofollow" href="https://i.cnblogs.com/">管理</a> ::
+
+</td>
+			<td><img id="Header1_BlueTab" src="./U017_files/BlueTabRight.gif" align="absmiddle"></td>
+			<td class="HeaderBarTabBack" nowrap="" width="100%">
+				<div id="blog_stats">
+<div class="BlogStatsBar">
+	<table class="BlogStatsBar">
+		<tbody><tr>
+			<td width="100%">
+			</td>
+			<td class="BlogStatsBar" nowrap="">
+				&nbsp;
+				431 
+				随笔&nbsp;::
+				0 文章
+				::
+				529 评论
+				::
+				0 引用
+			</td>
+		</tr>
+	</tbody></table>
+</div>
+</div>
+			</td>
+		</tr>
+	</tbody></table>
+</div>
+
+</div>
+<div id="leftmenu">	
+
+	    <div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+		
+<h3>公告</h3>
+<div class="News">
+	<div id="blog-news">
+<p></p>
+<br>
+<a href="http://www.52svn.com/?bokeyuan" target="blank"><font size="4">史上最好的免费svn空间</font></a>
+<p></p>
+<br>
+
+<br>
+
+
+<br><div id="profile_block">昵称：<a href="https://home.cnblogs.com/u/ggjucheng/">ggjucheng</a><br>园龄：<a href="https://home.cnblogs.com/u/ggjucheng/" title="入园时间：2011-12-13">6年5个月</a><br>粉丝：<a href="https://home.cnblogs.com/u/ggjucheng/followers/">1566</a><br>关注：<a href="https://home.cnblogs.com/u/ggjucheng/followees/">6</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="follow(&#39;d3935eec-4025-e111-b422-842b2b196315&#39;)">+加关注</a></div><script>getFollowStatus('d3935eec-4025-e111-b422-842b2b196315')</script></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+		<div id="blog-sidecolumn"><div id="sidebar_search" class="sidebar-block"></div><div id="sidebar_categories">
+		<h3>博客地图</h3>
+		
+				<ul>
+			
+				<li><a id="CatList_LinkList_0_Link_0" href="https://www.cnblogs.com/ggjucheng/archive/2012/08/18/2645319.html">c/c++笔记</a> </li>
+			<li class="c_b_p_link_desc">本人学习c/c++的一些笔记</li>
+				<li><a id="CatList_LinkList_0_Link_1" href="https://www.cnblogs.com/ggjucheng/archive/2012/11/02/2751119.html">db笔记</a> </li>
+			<li class="c_b_p_link_desc">mysql nosql</li>
+				<li><a id="CatList_LinkList_0_Link_2" href="https://www.cnblogs.com/ggjucheng/archive/2012/04/22/2465625.html">hadoop笔记</a> </li>
+			<li class="c_b_p_link_desc">本人工作中hadoop的心得</li>
+				<li><a id="CatList_LinkList_0_Link_3" href="https://www.cnblogs.com/ggjucheng/archive/2013/01/20/2868837.html">internet笔记</a> </li>
+			<li class="c_b_p_link_desc">互联网学习笔记</li>
+				<li><a id="CatList_LinkList_0_Link_4" href="https://www.cnblogs.com/ggjucheng/archive/2012/11/19/2777695.html">java笔记</a> </li>
+			<li class="c_b_p_link_desc">java平台笔记</li>
+				<li><a id="CatList_LinkList_0_Link_5" href="https://www.cnblogs.com/ggjucheng/archive/2012/08/18/2645321.html">Linux/Unix笔记</a> </li>
+			<li class="c_b_p_link_desc">本人学习linux/unix的笔记 <br></li>
+				<li><a id="CatList_LinkList_0_Link_6" href="https://www.cnblogs.com/ggjucheng/archive/2012/08/18/2645324.html">TCP/IP笔记</a> </li>
+			<li class="c_b_p_link_desc">本人学习TCP/IP的心得和笔记</li>
+				<li><a id="CatList_LinkList_0_Link_7" href="https://www.cnblogs.com/ggjucheng/p/3348355.html" rel="nofollow">web开发</a> </li>
+			<li class="c_b_p_link_desc">html css js php etc.....</li>
+				<li><a id="CatList_LinkList_0_Link_8" href="https://www.cnblogs.com/ggjucheng/p/3348282.html" rel="nofollow">技术花絮</a> </li>
+			<li class="c_b_p_link_desc">非技术的技术</li>
+				<li><a id="CatList_LinkList_0_Link_9" href="https://www.cnblogs.com/ggjucheng/archive/2011/12/15/2288839.html">其他笔记本</a> </li>
+			<li class="c_b_p_link_desc">比较零碎的技术文章归类</li>
+				<li><a id="CatList_LinkList_0_Link_10" href="https://www.cnblogs.com/ggjucheng/archive/2012/11/17/2774916.html">学习指南</a> </li>
+			<li class="c_b_p_link_desc">IT技术学习路线,IT经典书籍学习和下载</li>
+				</ul>
+			
+	
+		<h3>友情链接</h3>
+		
+				<ul>
+			
+				<li><a id="CatList_LinkList_1_Link_0" href="https://itfun.objweb.com/" rel="nofollow" target="_blank">IT短篇笑话</a> </li>
+			<li class="c_b_p_link_desc">百忙中，可以看看it短篇笑话，笑一笑，放松下！</li>
+				<li><a id="CatList_LinkList_1_Link_1" href="https://www.svn999.com/" rel="nofollow" target="_blank">相当好用的免费svn空间</a> </li>
+			<li class="c_b_p_link_desc">国内挺不错的svn免费空间，很适合小团队使用</li>
+				</ul>
+			
+	</div><div id="sidebar_scorerank" class="sidebar-block">
+<h3>积分与排名</h3>
+<ul>
+	<li>
+		积分 -
+		1035197
+	</li><li>
+		排名 -
+		70
+	</li>
+</ul>
+</div><div id="sidebar_recentcomments" class="sidebar-block"><div id="recent_comments_wrap">
+<h3 class="catListTitle">最新评论</h3>
+<div class="RecentComment" id="RecentComments">
+	<div id="RecentCommentsBlock"><ul>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/ggjucheng/archive/2013/01/13/2858470.html#3960988">1. Re:linux awk命令详解</a></li>
+        <li class="recent_comment_body">再次感谢楼主</li>
+        <li class="recent_comment_author">--荒漠千蝶</li>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/ggjucheng/archive/2013/01/13/2858470.html#3960985">2. Re:linux awk命令详解</a></li>
+        <li class="recent_comment_body">感谢楼主，讲的很好</li>
+        <li class="recent_comment_author">--荒漠千蝶</li>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/ggjucheng/p/3348277.html#3941100">3. Re:Redis几个认识误区(转)</a></li>
+        <li class="recent_comment_body">第一次知道 timyang 这个大神，谢谢</li>
+        <li class="recent_comment_author">--岁月漫步</li>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/ggjucheng/archive/2012/04/22/2465625.html#3907328">4. Re:hadoop笔记本</a></li>
+        <li class="recent_comment_body"><a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html" target="_blank"></a><br>HDFS读写流程</li>
+        <li class="recent_comment_author">--大牛笔记</li>
+        <li class="recent_comment_title"><a href="http://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3893658">5. Re:C++指针详解</a></li>
+        <li class="recent_comment_body">@TFScoutp。p=&amp;a。刚开始学，不对之处，请指教。...</li>
+        <li class="recent_comment_author">--赛布星人</li>
+</ul>
+</div>
+</div>
+</div></div><div id="sidebar_topviewedposts" class="sidebar-block"><div id="topview_posts_wrap">
+<h3 class="catListTitle">阅读排行榜</h3>
+<div class="RecentComment" id="TopViewPosts"> 
+	<div id="TopViewPostsBlock"><ul><li><a href="https://www.cnblogs.com/ggjucheng/archive/2013/01/13/2858470.html">1. linux awk命令详解(1171489)</a></li><li><a href="https://www.cnblogs.com/ggjucheng/archive/2012/01/14/2322659.html">2. Linux tcpdump命令详解(816376)</a></li><li><a href="https://www.cnblogs.com/ggjucheng/archive/2012/01/08/2316661.html">3. Linux netstat命令详解(567557)</a></li><li><a href="https://www.cnblogs.com/ggjucheng/archive/2013/01/13/2856896.html">4. linux grep命令详解(417986)</a></li><li><a href="https://www.cnblogs.com/ggjucheng/archive/2013/01/13/2856901.html">5. linux sed命令详解(363554)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topcommentedposts" class="sidebar-block"><div id="topfeedback_posts_wrap">
+<h3 class="catListTitle">评论排行榜</h3>
+<div class="RecentComment" id="TopCommentsPosts">
+	<div id="TopFeedbackPostsBlock"><ul><li><a href="https://www.cnblogs.com/ggjucheng/archive/2013/01/13/2858470.html">1. linux awk命令详解(39)</a></li><li><a href="https://www.cnblogs.com/ggjucheng/archive/2012/01/14/2322659.html">2. Linux tcpdump命令详解(27)</a></li><li><a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html">3. C++指针详解(24)</a></li><li><a href="https://www.cnblogs.com/ggjucheng/archive/2013/01/13/2856901.html">4. linux sed命令详解(22)</a></li><li><a href="https://www.cnblogs.com/ggjucheng/archive/2012/01/08/2316661.html">5. Linux netstat命令详解(21)</a></li></ul></div>
+</div></div></div><div id="sidebar_topdiggedposts" class="sidebar-block"><div id="topdigg_posts_wrap">
+<h3 class="catListTitle">推荐排行榜</h3>
+<div class="RecentComment">
+	<div id="TopDiggPostsBlock"><ul><li><a href="https://www.cnblogs.com/ggjucheng/archive/2013/01/13/2858470.html">1. linux awk命令详解(112)</a></li><li><a href="https://www.cnblogs.com/ggjucheng/archive/2012/01/14/2322659.html">2. Linux tcpdump命令详解(61)</a></li><li><a href="https://www.cnblogs.com/ggjucheng/archive/2012/01/08/2316661.html">3. Linux netstat命令详解(59)</a></li><li><a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/14/2287738.html">4. Linux GCC常用命令(52)</a></li><li><a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/16/2290158.html">5. Linux入门——适合初学者(52)</a></li></ul></div>
+</div></div></div></div><script type="text/javascript">loadBlogSideColumn();</script>
+	
+</div>
+<div id="main">
+	
+<div id="post_detail">
+<div class="post">
+	<div class="postTitle">
+		<a id="cb_post_title_url" href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html">C++指针详解</a>
+	</div>
+	
+	<div class="postText">
+		<div id="cnblogs_post_body" class="blogpost-body"><h1><strong><span style="font-size: 18pt;">指针的概念</span></strong></h1>
+<p>指针是一个特殊的变量，它里面存储的数值被解释成为内存里的一个地址。要搞清一个指针需要搞清指针的四方面的内容：指针的类型，指针所指向的类型，指针的值或者叫指针所指向的内存区，还有指针本身所占据的内存区。让我们分别说明。&nbsp;<br><br>先声明几个指针放着做例子：&nbsp;&nbsp;<br><br>例一：&nbsp;&nbsp;<br><br></p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">int</span> *ptr;  <br><span style="color: #0000ff;">char</span> *ptr;  <br><span style="color: #0000ff;">int</span> **ptr;  <br><span style="color: #0000ff;">int</span> (*ptr)[<span style="color: #800080;">3</span>];  <br><span style="color: #0000ff;">int</span> *(*ptr)[<span style="color: #800080;">4</span>];  </pre>
+</div>
+<h1><strong><span style="font-size: 18pt;">指针的类型</span></strong></h1>
+<p>从语法的角度看，你只要把指针声明语句里的指针名字去掉，剩下的部分就是这个指针的类型。这是指针本身所具有的类型。让我们看看例一中各个指针的类型：&nbsp;&nbsp;</p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">int</span> *ptr; <span style="color: #008000;">//</span><span style="color: #008000;">指针的类型是int *  </span><span style="color: #008000;"><br></span><span style="color: #0000ff;">char</span> *ptr; <span style="color: #008000;">//</span><span style="color: #008000;">指针的类型是char *  </span><span style="color: #008000;"><br></span><span style="color: #0000ff;">int</span> **ptr; <span style="color: #008000;">//</span><span style="color: #008000;">指针的类型是 int **  </span><span style="color: #008000;"><br></span><span style="color: #0000ff;">int</span> (*ptr)[<span style="color: #800080;">3</span>]; <span style="color: #008000;">//</span><span style="color: #008000;">指针的类型是 int(*)[3]  </span><span style="color: #008000;"><br></span><span style="color: #0000ff;">int</span> *(*ptr)[<span style="color: #800080;">4</span>]; <span style="color: #008000;">//</span><span style="color: #008000;">指针的类型是 int *(*)[4]  </span></pre>
+</div>
+<p>怎么样？找出指针的类型的方法是不是很简单？&nbsp;&nbsp;</p>
+<h1><strong><span style="font-size: 18pt;">指针所指向的类型</span></strong></h1>
+<p>当你通过指针来访问指针所指向的内存区时，指针所指向的类型决定了编译器将把那片内存区里的内容当做什么来看待。<br><br>从语法上看，你只须把指针声明语句中的指针名字和名字左边的指针声明符*去掉，剩下的就是指针所指向的类型。例如：&nbsp;&nbsp;</p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">int</span> *ptr; <span style="color: #008000;">//</span><span style="color: #008000;">指针所指向的类型是int  </span><span style="color: #008000;"><br></span><span style="color: #0000ff;">char</span> *ptr; <span style="color: #008000;">//</span><span style="color: #008000;">指针所指向的的类型是char  </span><span style="color: #008000;"><br></span><span style="color: #0000ff;">int</span> **ptr; <span style="color: #008000;">//</span><span style="color: #008000;">指针所指向的的类型是 int *  </span><span style="color: #008000;"><br></span><span style="color: #0000ff;">int</span> (*ptr)[<span style="color: #800080;">3</span>]; <span style="color: #008000;">//</span><span style="color: #008000;">指针所指向的的类型是 int()[3]  </span><span style="color: #008000;"><br></span><span style="color: #0000ff;">int</span> *(*ptr)[<span style="color: #800080;">4</span>]; <span style="color: #008000;">//</span><span style="color: #008000;">指针所指向的的类型是 int *()[4]  </span></pre>
+</div>
+<p>在指针的算术运算中，指针所指向的类型有很大的作用。&nbsp;&nbsp;<br><br>指针的类型(即指针本身的类型)和指针所指向的类型是两个概念。当你对C越来越熟悉时，你会发现，把与指针搅和在一起的“类型”这个概念分成“指针的类型”和“指针所指向的类型”两个概念，是精通指针的关键点之一。我看了不少书，发现有些写得差的书中，就把指针的这两个概念搅在一起了，所以看起书来前后矛盾，越看越糊涂。</p>
+<h1><strong><span style="font-size: 18pt;">&nbsp;指针的值</span></strong></h1>
+<p><br>指针的值是指针本身存储的数值，这个值将被编译器当作一个地址，而不是一个一般的数值。在32位程序里，所有类型的指针的值都是一个32位整数，因为32位程序里内存地址全都是32位长。&nbsp;<br><br>指针所指向的内存区就是从指针的值所代表的那个内存地址开始，长度为sizeof(指针所指向的类型)的一片内存区。以后，我们说一个指针的值是XX，就相当于说该指针指向了以XX为首地址的一片内存区域；我们说一个指针指向了某块内存区域，就相当于说该指针的值是这块内存区域的首地址。&nbsp;<br><br>指针所指向的内存区和指针所指向的类型是两个完全不同的概念。在例一中，指针所指向的类型已经有了，但由于指针还未初始化，所以它所指向的内存区是不存在的，或者说是无意义的。&nbsp;<br><br>以后，每遇到一个指针，都应该问问：这个指针的类型是什么？指针指向的类型是什么？该指针指向了哪里？ &nbsp;</p>
+<h1><strong><span style="font-size: 18pt;">指针本身所占据的内存区</span></strong></h1>
+<p>指针本身占了多大的内存？你只要用函数sizeof(指针的类型)测一下就知道了。在32位平台里，指针本身占据了4个字节的长度。<br><br>指针本身占据的内存这个概念在判断一个指针表达式是否是左值时很有用。 　</p>
+<h1><strong><span style="font-size: 18pt;">指针的算术运算</span></strong></h1>
+<p>指针可以加上或减去一个整数。指针的这种运算的意义和通常的数值的加减运算的意义是不一样的。例如：&nbsp;&nbsp;<br>例二：&nbsp;&nbsp;</p>
+<div class="cnblogs_code">
+<pre> <span style="color: #0000ff;">char</span> a[<span style="color: #800080;">20</span>];  <br> <span style="color: #0000ff;">int</span> *ptr=a;  <br>...  <br>...  <br> ptr++;  </pre>
+</div>
+<p><br>在上例中，指针ptr的类型是int*,它指向的类型是int，它被初始化为指向整形变量a。接下来的第3句中，指针ptr被加了1，编译器是这样处理的：它把指针ptr的值加上了sizeof(int)，在32位程序中，是被加上了4。由于地址是用字节做单位的，故ptr所指向的地址由原来的变量a的地址向高地址方向增加了4个字节。<br>由于char类型的长度是一个字节，所以，原来ptr是指向数组a的第0号单元开始的四个字节，此时指向了数组a中从第4号单元开始的四个字节。<br>我们可以用一个指针和一个循环来遍历一个数组，看例子：&nbsp;&nbsp;<br>例三：&nbsp;&nbsp;</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./U017_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #0000ff;">int</span> array[<span style="color: #800080;">20</span>];  <br><span style="color: #0000ff;">int</span> *ptr=array;  <br>...  <br><span style="color: #008000;">//</span><span style="color: #008000;">此处略去为整型数组赋值的代码。  </span><span style="color: #008000;"><br></span>...  <br><span style="color: #0000ff;">for</span>(i=<span style="color: #800080;">0</span>;i&lt;<span style="color: #800080;">20</span>;i++)  <br>{  <br>    (*ptr)++;  <br>    ptr++；  <br>}  </pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./U017_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><br>这个例子将整型数组中各个单元的值加1。由于每次循环都将指针ptr加1，所以每次循环都能访问数组的下一个单元。再看例子：&nbsp;&nbsp;<br><br>例四：&nbsp;&nbsp;<br><br></p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">char</span> a[<span style="color: #800080;">20</span>];  <br><span style="color: #0000ff;">int</span> *ptr = a;  <br>...  <br>...  <br>ptr += <span style="color: #800080;">5</span>;  </pre>
+</div>
+<p><br>在这个例子中，ptr被加上了5，编译器是这样处理的：将指针ptr的值加上5乘sizeof(int)，在32位程序中就是加上了5乘4=20。由于地址的单位是字节，故现在的ptr所指向的地址比起加5后的ptr所指向的地址来说，向高地址方向移动了20个字节。在这个例子中，没加5前的ptr指向数组a的第0号单元开始的四个字节，加5后，ptr已经指向了数组a的合法范围之外了。虽然这种情况在应用上会出问题，但在语法上却是可以的。这也体现出了指针的灵活性。&nbsp;<br><br>如果上例中，ptr是被减去5，那么处理过程大同小异，只不过ptr的值是被减去5乘sizeof(int)，新的ptr指向的地址将比原来的ptr所指向的地址向低地址方向移动了20个字节。&nbsp;<br><br>总结一下，一个指针ptrold加上一个整数n后，结果是一个新的指针ptrnew，ptrnew的类型和ptrold的类型相同，ptrnew所指向的类型和ptrold所指向的类型也相同。ptrnew的值将比ptrold的值增加了n乘sizeof(ptrold所指向的类型)个字节。就是说，ptrnew所指向的内存区将比ptrold所指向的内存区向高地址方向移动了n乘sizeof(ptrold所指向的类型)个字节。一个指针ptrold减去一个整数n后，结果是一个新的指针ptrnew，ptrnew的类型和ptrold的类型相同，ptrnew所指向的类型和ptrold所指向的类型也相同。ptrnew的值将比ptrold的值减少了n乘sizeof(ptrold所指向的类型)个字节，就是说，ptrnew所指向的内存区将比ptrold所指向的内存区向低地址方向移动了n乘sizeof(ptrold所指向的类型)个字节。</p>
+<h1><strong><span style="font-size: 18pt;">运算符&amp;和*</span></strong></h1>
+<p>这里&amp;是取地址运算符，*是...书上叫做“间接运算符”。&amp;a的运算结果是一个指针，指针的类型是a的类型加个*，指针所指向的类型是a的类型，指针所指向的地址嘛，那就是a的地址。*p的运算结果就五花八门了。总之*p的结果是p所指向的东西，这个东西有这些特点：它的类型是p指向的类型，它所占用的地址是p所指向的地址。<br><br>例五：&nbsp;&nbsp;<br><br></p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./U017_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #0000ff;">int</span> a=<span style="color: #800080;">12</span>;  <br><span style="color: #0000ff;">int</span> b;  <br><span style="color: #0000ff;">int</span> *p;  <br><span style="color: #0000ff;">int</span> **ptr;  <br>p=&amp;a;<span style="color: #008000;">//</span><span style="color: #008000;">&amp;a的结果是一个指针，类型是int*，指向的类型是int，指向的地址是a的地址。  </span><span style="color: #008000;"><br></span>*p=<span style="color: #800080;">24</span>;<span style="color: #008000;">//</span><span style="color: #008000;">*p的结果，在这里它的类型是int，它所占用的地址是p所指向的地址，显然，*p就是变量a。</span><span style="color: #008000;"><br></span>ptr=&amp;p;<span style="color: #008000;">//</span><span style="color: #008000;">&amp;p的结果是个指针，该指针的类型是p的类型加个*，在这里是int**。该指针所指向的类型是p的类型，这里是int*。该指针所指向的地址就是指针p自己的地址。 </span><span style="color: #008000;"><br></span>*ptr=&amp;b;<span style="color: #008000;">//</span><span style="color: #008000;">*ptr是个指针，&amp;b的结果也是个指针，且这两个指针的类型和所指向的类型是一样的，所以?amp;b来给*ptr赋值就是毫无问题的了。</span><span style="color: #008000;"><br></span>**ptr=<span style="color: #800080;">34</span>;<span style="color: #008000;">//</span><span style="color: #008000;">*ptr的结果是ptr所指向的东西，在这里是一个指针，对这个指针再做一次*运算，结果就是一个int类型的变量。</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./U017_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><br><br></p>
+<h1><strong><span style="font-size: 18pt;">指针表达式</span></strong></h1>
+<p>一个表达式的最后结果如果是一个指针，那么这个表达式就叫指针表达式。下面是一些指针表达式的例子：&nbsp;&nbsp;<br><br>例六：&nbsp;&nbsp;</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./U017_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #0000ff;">int</span> a,b;  <br><span style="color: #0000ff;">int</span> array[<span style="color: #800080;">10</span>];  <br><span style="color: #0000ff;">int</span> *pa;  <br>pa=&amp;a;<span style="color: #008000;">//</span><span style="color: #008000;">&amp;a是一个指针表达式。  </span><span style="color: #008000;"><br></span><span style="color: #0000ff;">int</span> **ptr=&amp;pa;<span style="color: #008000;">//</span><span style="color: #008000;">&amp;pa也是一个指针表达式。  </span><span style="color: #008000;"><br></span>*ptr=&amp;b;<span style="color: #008000;">//</span><span style="color: #008000;">*ptr和&amp;b都是指针表达式。  </span><span style="color: #008000;"><br></span>pa=array;  <br>pa++;<span style="color: #008000;">//</span><span style="color: #008000;">这也是指针表达式。</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./U017_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><br>例七：&nbsp;&nbsp;</p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">char</span> *arr[<span style="color: #800080;">20</span>];  <br><span style="color: #0000ff;">char</span> **parr=arr;<span style="color: #008000;">//</span><span style="color: #008000;">如果把arr看作指针的话，arr也是指针表达式  </span><span style="color: #008000;"><br></span><span style="color: #0000ff;">char</span> *str;  <br>str=*parr;<span style="color: #008000;">//</span><span style="color: #008000;">*parr是指针表达式  </span><span style="color: #008000;"><br></span>str=*(parr+<span style="color: #800080;">1</span>);<span style="color: #008000;">//</span><span style="color: #008000;">*(parr+1)是指针表达式  </span><span style="color: #008000;"><br></span>str=*(parr+<span style="color: #800080;">2</span>);<span style="color: #008000;">//</span><span style="color: #008000;">*(parr+2)是指针表达式  </span></pre>
+</div>
+<p><br>由于指针表达式的结果是一个指针，所以指针表达式也具有指针所具有的四个要素：指针的类型，指针所指向的类型，指针指向的内存区，指针自身占据的内存。<br><br>好了，当一个指针表达式的结果指针已经明确地具有了指针自身占据的内存的话，这个指针表达式就是一个左值，否则就不是一个左值。 在例七中，&amp;a不是一个左值，因为它还没有占据明确的内存。*ptr是一个左值，因为*ptr这个指针已经占据了内存，其实*ptr就是指针pa，既然pa已经在内存中有了自己的位置，那么*ptr当然也有了自己的位置。</p>
+<h1><strong><span style="font-size: 18pt;">数组和指针的关系</span></strong></h1>
+<p>如果对声明数组的语句不太明白的话，请参阅我前段时间贴出的文章&lt;&lt;如何理解c和c++的复杂类型声明&gt;&gt;。 数组的数组名其实可以看作一个指针。看下例：&nbsp;&nbsp;<br><br>例八：&nbsp;&nbsp;</p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">int</span> array[<span style="color: #800080;">10</span>]={<span style="color: #800080;">0</span>,<span style="color: #800080;">1</span>,<span style="color: #800080;">2</span>,<span style="color: #800080;">3</span>,<span style="color: #800080;">4</span>,<span style="color: #800080;">5</span>,<span style="color: #800080;">6</span>,<span style="color: #800080;">7</span>,<span style="color: #800080;">8</span>,<span style="color: #800080;">9</span>},value;  <br>...  <br>...  <br>value=array[<span style="color: #800080;">0</span>];<span style="color: #008000;">//</span><span style="color: #008000;">也可写成：value=*array;  </span><span style="color: #008000;"><br></span>value=array[<span style="color: #800080;">3</span>];<span style="color: #008000;">//</span><span style="color: #008000;">也可写成：value=*(array+3);  </span><span style="color: #008000;"><br></span>value=array[<span style="color: #800080;">4</span>];<span style="color: #008000;">//</span><span style="color: #008000;">也可写成：value=*(array+4);  </span></pre>
+</div>
+<p><br><br><br>上例中，一般而言数组名array代表数组本身，类型是int [10]，但如果把array看做指针的话，它指向数组的第0个单元，类型是int *，所指向的类型是数组单元的类型即int。因此*array等于0就一点也不奇怪了。同理，array+3是一个指向数组第3个单元的指针，所以*(array+3)等于3。其它依此类推。&nbsp;<br><br>例九：&nbsp;&nbsp;</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./U017_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #0000ff;">char</span> *str[<span style="color: #800080;">3</span>]={  <br><span style="color: #800000;">"</span><span style="color: #800000;">Hello,this is a sample!</span><span style="color: #800000;">"</span>,  <br><span style="color: #800000;">"</span><span style="color: #800000;">Hi,good morning.</span><span style="color: #800000;">"</span>,  <br><span style="color: #800000;">"</span><span style="color: #800000;">Hello world</span><span style="color: #800000;">"</span>  <br>};  <br><span style="color: #0000ff;">char</span> s[<span style="color: #800080;">80</span>]；  <br>strcpy(s,str[<span style="color: #800080;">0</span>]);<span style="color: #008000;">//</span><span style="color: #008000;">也可写成strcpy(s,*str);  </span><span style="color: #008000;"><br></span>strcpy(s,str[<span style="color: #800080;">1</span>]);<span style="color: #008000;">//</span><span style="color: #008000;">也可写成strcpy(s,*(str+1));  </span><span style="color: #008000;"><br></span>strcpy(s,str[<span style="color: #800080;">2</span>]);<span style="color: #008000;">//</span><span style="color: #008000;">也可写成strcpy(s,*(str+2));  </span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./U017_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p><br>上例中，str是一个三单元的数组，该数组的每个单元都是一个指针，这些指针各指向一个字符串。把指针数组名str当作一个指针的话，它指向数组的第0号单元，它的类型是char**，它指向的类型是char *。<br><br>*str也是一个指针，它的类型是char*，它所指向的类型是char，它指向的地址是字符串"Hello,this is a sample!"的第一个字符的地址，即'H'的地址。 str+1也是一个指针，它指向数组的第1号单元，它的类型是char**，它指向的类型是char *。&nbsp;<br><br>*(str+1)也是一个指针，它的类型是char*，它所指向的类型是char，它指向"Hi,good morning."的第一个字符'H'，等等。&nbsp;&nbsp;<br><br>下面总结一下数组的数组名的问题。声明了一个数组TYPE array[n]，则数组名称array就有了两重含义：第一，它代表整个数组，它的类型是TYPE [n]；第二，它是一个指针，该指针的类型是TYPE*，该指针指向的类型是TYPE，也就是数组单元的类型，该指针指向的内存区就是数组第0号单元，该指针自己占有单独的内存区，注意它和数组第0号单元占据的内存区是不同的。该指针的值是不能修改的，即类似array++的表达式是错误的。&nbsp;<br><br>在不同的表达式中数组名array可以扮演不同的角色。&nbsp;&nbsp;<br><br>在表达式sizeof(array)中，数组名array代表数组本身，故这时sizeof函数测出的是整个数组的大小。&nbsp;&nbsp;<br><br>在表达式*array中，array扮演的是指针，因此这个表达式的结果就是数组第0号单元的值。sizeof(*array)测出的是数组单元的大小。&nbsp;&nbsp;<br><br>表达式array+n（其中n=0，1，2，....。）中，array扮演的是指针，故array+n的结果是一个指针，它的类型是TYPE*，它指向的类型是TYPE，它指向数组第n号单元。故sizeof(array+n)测出的是指针类型的大小。&nbsp;<br><br>例十：&nbsp;&nbsp;</p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">int</span> array[<span style="color: #800080;">10</span>];  <br><span style="color: #0000ff;">int</span> (*ptr)[<span style="color: #800080;">10</span>];  <br>ptr=&amp;array;  </pre>
+</div>
+<p><br>上例中ptr是一个指针，它的类型是int (*)[10]，他指向的类型是int [10]，我们用整个数组的首地址来初始化它。在语句ptr=&amp;array中，array代表数组本身。&nbsp;<br><br>本节中提到了函数sizeof()，那么我来问一问，sizeof(指针名称)测出的究竟是指针自身类型的大小呢还是指针所指向的类型的大小？答案是前者。例如：</p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">int</span> (*ptr)[<span style="color: #800080;">10</span>];  </pre>
+</div>
+<p><br>则在32位程序中，有：&nbsp;&nbsp;</p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">sizeof</span>(<span style="color: #0000ff;">int</span>(*)[<span style="color: #800080;">10</span>])==<span style="color: #800080;">4</span>  <br><span style="color: #0000ff;">sizeof</span>(<span style="color: #0000ff;">int</span> [<span style="color: #800080;">10</span>])==<span style="color: #800080;">40</span>  <br><span style="color: #0000ff;">sizeof</span>(ptr)==<span style="color: #800080;">4</span>  </pre>
+</div>
+<p>实际上，sizeof(对象)测出的都是对象自身的类型的大小，而不是别的什么类型的大小。 　</p>
+<h1><strong><span style="font-size: 18pt;">指针和结构类型的关系</span></strong></h1>
+<p>可以声明一个指向结构类型对象的指针。&nbsp;&nbsp;<br><br>例十一：&nbsp;&nbsp;</p>
+<div class="cnblogs_code"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./U017_files/copycode.gif" alt="复制代码"></a></span></div>
+<pre><span style="color: #0000ff;">struct</span> MyStruct  <br>{  <br><span style="color: #0000ff;">int</span> a;  <br><span style="color: #0000ff;">int</span> b;  <br><span style="color: #0000ff;">int</span> c;  <br>}  <br><br>MyStruct ss={<span style="color: #800080;">20</span>,<span style="color: #800080;">30</span>,<span style="color: #800080;">40</span>};<span style="color: #008000;">//</span><span style="color: #008000;">声明了结构对象ss，并把ss的三个成员初始化为20，30和40。</span><span style="color: #008000;"><br></span>MyStruct *ptr=&amp;ss;<span style="color: #008000;">//</span><span style="color: #008000;">声明了一个指向结构对象ss的指针。它的类型是</span><span style="color: #008000;"><br></span>MyStruct*,它指向的类型是MyStruct。<br><span style="color: #0000ff;">int</span> *pstr=(<span style="color: #0000ff;">int</span>*)&amp;ss;<span style="color: #008000;">//</span><span style="color: #008000;">声明了一个指向结构对象ss的指针。但是它的类型和它指向的类型和ptr是不同的。</span></pre>
+<div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./U017_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>请问怎样通过指针ptr来访问ss的三个成员变量？&nbsp;&nbsp;<br><br>答案：&nbsp;&nbsp;</p>
+<div class="cnblogs_code">
+<pre>ptr-&gt;a;  <br>ptr-&gt;b;  <br>ptr-&gt;c;  </pre>
+</div>
+<p><br>又请问怎样通过指针pstr来访问ss的三个成员变量？&nbsp;&nbsp;<br>答案：&nbsp;&nbsp;<br>&nbsp;</p>
+<div class="cnblogs_code">
+<pre>*pstr；<span style="color: #008000;">//</span><span style="color: #008000;">访问了ss的成员a。  </span><span style="color: #008000;"><br></span>*(pstr+<span style="color: #800080;">1</span>);<span style="color: #008000;">//</span><span style="color: #008000;">访问了ss的成员b。  </span><span style="color: #008000;"><br></span>*(pstr+<span style="color: #800080;">2</span>)<span style="color: #008000;">//</span><span style="color: #008000;">访问了ss的成员c。 </span></pre>
+</div>
+<p><br>呵呵，虽然我在我的MSVC++6.0上调式过上述代码，但是要知道，这样使用pstr来访问结构成员是不正规的，为了说明为什么不正规，让我们看看怎样通过指针来访问数组的各个单元：&nbsp;<br>例十二：&nbsp;&nbsp;</p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">int</span> array[<span style="color: #800080;">3</span>]={<span style="color: #800080;">35</span>,<span style="color: #800080;">56</span>,<span style="color: #800080;">37</span>};  <br><span style="color: #0000ff;">int</span> *pa=array;  </pre>
+</div>
+<p>通过指针pa访问数组array的三个单元的方法是：&nbsp;&nbsp;</p>
+<div class="cnblogs_code">
+<pre>*pa;<span style="color: #008000;">//</span><span style="color: #008000;">访问了第0号单元  </span><span style="color: #008000;"><br></span>*(pa+<span style="color: #800080;">1</span>);<span style="color: #008000;">//</span><span style="color: #008000;">访问了第1号单元  </span><span style="color: #008000;"><br></span>*(pa+<span style="color: #800080;">2</span>);<span style="color: #008000;">//</span><span style="color: #008000;">访问了第2号单元  </span></pre>
+</div>
+<p><br>从格式上看倒是与通过指针访问结构成员的不正规方法的格式一样。<br><br>所有的C/C++编译器在排列数组的单元时，总是把各个数组单元存放在连续的存储区里，单元和单元之间没有空隙。但在存放结构对象的各个成员时，在某种编译环境下，可能会需要字对齐或双字对齐或者是别的什么对齐，需要在相邻两个成员之间加若干个“填充字节”，这就导致各个成员之间可能会有若干个字节的空隙。<br><br>所以，在例十二中，即使*pstr访问到了结构对象ss的第一个成员变量a，也不能保证*(pstr+1)就一定能访问到结构成员b。因为成员a和成员b之间可能会有若干填充字节，说不定*(pstr+1)就正好访问到了这些填充字节呢。这也证明了指针的灵活性。要是你的目的就是想看看各个结构成员之间到底有没有填充字节，嘿，这倒是个不错的方法。&nbsp;<br><br>通过指针访问结构成员的正确方法应该是象例十二中使用指针ptr的方法。</p>
+<h1><strong><span style="font-size: 18pt;">指针和函数的关系</span></strong></h1>
+<p>可以把一个指针声明成为一个指向函数的指针。&nbsp;&nbsp;</p>
+<div class="cnblogs_code">
+<pre><span style="color: #0000ff;">int</span> fun1(<span style="color: #0000ff;">char</span>*,<span style="color: #0000ff;">int</span>);  <br><span style="color: #0000ff;">int</span> (*pfun1)(<span style="color: #0000ff;">char</span>*,<span style="color: #0000ff;">int</span>);  <br>pfun1=fun1;  <br>....  <br>....  <br><span style="color: #0000ff;">int</span> a=(*pfun1)(<span style="color: #800000;">"</span><span style="color: #800000;">abcdefg</span><span style="color: #800000;">"</span>,<span style="color: #800080;">7</span>);<span style="color: #008000;">//</span><span style="color: #008000;">通过函数指针调用函数。  </span></pre>
+</div>
+<p>可以把指针作为函数的形参。在函数调用语句中，可以用指针表达式来作为实参。&nbsp;&nbsp;</p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory">分类: <a href="http://www.cnblogs.com/ggjucheng/category/342323.html" target="_blank">C/C++</a></div>
+<div id="EntryTag">标签: <a href="http://www.cnblogs.com/ggjucheng/tag/C%2FC%2B%2B_%E5%9F%BA%E7%A1%80/">C/C++_基础</a></div>
+<div id="blog_post_info"><div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(2286391,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+            <a id="green_channel_follow" onclick="follow(&#39;d3935eec-4025-e111-b422-842b2b196315&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./U017_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./U017_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/ggjucheng/" target="_blank"><img src="./U017_files/u360373.jpg" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/ggjucheng/">ggjucheng</a><br>
+            <a href="http://home.cnblogs.com/u/ggjucheng/followees">关注 - 6</a><br>
+            <a href="http://home.cnblogs.com/u/ggjucheng/followers">粉丝 - 1566</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;d3935eec-4025-e111-b422-842b2b196315&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(2286391,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">29</span>
+    </div>
+    <div class="buryit" onclick="votePost(2286391,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">0</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="http://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286375.html" class="p_n_p_prefix">« </a> 上一篇：<a href="http://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286375.html" title="发布于2011-12-13 17:34">C/C++基本数据类型</a><br><a href="http://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286617.html" class="p_n_p_prefix">» </a> 下一篇：<a href="http://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286617.html" title="发布于2011-12-13 18:03">C++选择语句</a><br></div>
+</div>
+
+
+	</div>
+	
+	<div class="postfoot">
+		posted on <span id="post-date">2011-12-13 17:39</span> <a href="http://www.cnblogs.com/ggjucheng/">ggjucheng</a> 阅读(<span id="post_view_count">119047</span>) 评论(<span id="post_comment_count">24</span>)  <a href="https://i.cnblogs.com/EditPosts.aspx?postid=2286391" rel="nofollow">编辑</a> <a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#" onclick="AddToWz(2286391);return false;">收藏</a>
+	</div>
+</div>
+<script type="text/javascript">var allowComments=true,cb_blogId=104392,cb_entryId=2286391,cb_blogApp=currentBlogApp,cb_blogUserGuid='d3935eec-4025-e111-b422-842b2b196315',cb_entryCreatedDate='2011/12/13 17:39:00';loadViewCount(cb_entryId);var cb_postType=1;</script>
+
+</div><a name="!comments"></a><div id="blog-comments-placeholder"><div id="comments_pager_top"></div>
+<a name="comments"></a>
+<br>
+<div id="comments">
+<h3>评论</h3>
+
+
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#2595533" class="layer">#1楼</a><a name="2595533" id="comment_anchor_2595533"></a>
+					<span>
+						 <span class="comment_date">2013-01-08 16:57</span>
+					</span>
+				<a id="a_comment_author_2595533" href="http://www.cnblogs.com/xiaofu/" target="_blank">BigDataForFuture</a> <a href="http://msg.cnblogs.com/send/BigDataForFuture" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_2595533" class="blog_comment_body">这篇文章当年我也收藏过</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2595533,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2595533,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#2617478" class="layer">#2楼</a><a name="2617478" id="comment_anchor_2617478"></a>
+					<span>
+						 <span class="comment_date">2013-02-17 12:19</span>
+					</span>
+				<a id="a_comment_author_2617478" href="http://www.cnblogs.com/johnwonder/" target="_blank">john23.net</a> <a href="http://msg.cnblogs.com/send/john23.net" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_2617478" class="blog_comment_body">感谢分享</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2617478,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2617478,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_2617478_avatar" style="display:none;">http://pic.cnblogs.com/face/u64521.jpg</span>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#2653236" class="layer">#3楼</a><a name="2653236" id="comment_anchor_2653236"></a>
+					<span>
+						 <span class="comment_date">2013-04-09 16:07</span>
+					</span>
+				<a id="a_comment_author_2653236" href="http://home.cnblogs.com/u/346789/" target="_blank">helion</a> <a href="http://msg.cnblogs.com/send/helion" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_2653236" class="blog_comment_body">受益匪浅啊<br>如果是原创文章的话，博主理解的太透彻了，不过这一句“<br>通过指针访问结构成员的正确方法应该是象例十二中使用指针ptr的方法”是不是应该是 例十一 吧</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2653236,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2653236,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#2919451" class="layer">#4楼</a><a name="2919451" id="comment_anchor_2919451"></a>
+					<span>
+						 <span class="comment_date">2014-04-16 21:22</span>
+					</span>
+				<a id="a_comment_author_2919451" href="http://home.cnblogs.com/u/624690/" target="_blank">starshadow</a> <a href="http://msg.cnblogs.com/send/starshadow" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_2919451" class="blog_comment_body">对函数指针解释不足。但对指针的四个关键点解释地很棒！<br>能让人从内存中清晰，形象的理解指针。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2919451,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2919451,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#2968647" class="layer">#5楼</a><a name="2968647" id="comment_anchor_2968647"></a>
+					<span>
+						 <span class="comment_date">2014-06-20 16:14</span>
+					</span>
+				<a id="a_comment_author_2968647" href="http://home.cnblogs.com/u/644360/" target="_blank">icic520</a> <a href="http://msg.cnblogs.com/send/icic520" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_2968647" class="blog_comment_body">很有用</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(2968647,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(2968647,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3038624" class="layer">#6楼</a><a name="3038624" id="comment_anchor_3038624"></a>
+					<span>
+						 <span class="comment_date">2014-10-03 21:47</span>
+					</span>
+				<a id="a_comment_author_3038624" href="http://www.cnblogs.com/Small-Life/" target="_blank">-琥珀川-</a> <a href="http://msg.cnblogs.com/send/-%E7%90%A5%E7%8F%80%E5%B7%9D-" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3038624" class="blog_comment_body">好有一个问题 <br>这段代码 编译会报错<br>char *str[3]={  <br>"Hello,this is a sample!",  <br>"Hi,good morning.",  <br>"Hello world"  <br>};<br>应该这样lz<br>char const* str[3]={<br>"Hello,this is a sample!",  <br>"Hi,good morning.",  <br>"Hello world"  <br>};<br>希望lz看一下 有问题的话 改过来</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3038624,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3038624,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3038624_avatar" style="display:none;">http://pic.cnblogs.com/face/526770/20130509223913.png</span>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3105906" class="layer">#7楼</a><a name="3105906" id="comment_anchor_3105906"></a>
+					<span>
+						 <span class="comment_date">2015-01-13 12:41</span>
+					</span>
+				<a id="a_comment_author_3105906" href="http://home.cnblogs.com/u/713509/" target="_blank">zheng2015</a> <a href="http://msg.cnblogs.com/send/zheng2015" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3105906" class="blog_comment_body">写的真好。学习了。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3105906,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3105906,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3138004" class="layer">#8楼</a><a name="3138004" id="comment_anchor_3138004"></a>
+					<span>
+						 <span class="comment_date">2015-03-10 09:28</span>
+					</span>
+				<a id="a_comment_author_3138004" href="http://home.cnblogs.com/u/580997/" target="_blank">香煎马鲛鱼</a> <a href="http://msg.cnblogs.com/send/%E9%A6%99%E7%85%8E%E9%A9%AC%E9%B2%9B%E9%B1%BC" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3138004" class="blog_comment_body">学习了~写得很详细易懂</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3138004,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3138004,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3197189" class="layer">#9楼</a><a name="3197189" id="comment_anchor_3197189"></a>
+					<span>
+						 <span class="comment_date">2015-05-31 15:00</span>
+					</span>
+				<a id="a_comment_author_3197189" href="http://www.cnblogs.com/niuyear/" target="_blank">niuworld</a> <a href="http://msg.cnblogs.com/send/niuworld" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3197189" class="blog_comment_body"><a href="http://www.niuyenoah.com/Cplusplus_pointer/" target="_blank">http://www.niuyenoah.com/Cplusplus_pointer/</a><br>这个指针讲得也蛮不错的</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3197189,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3197189,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3197189_avatar" style="display:none;">http://pic.cnblogs.com/face/709046/20141231141244.png</span>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3201773" class="layer">#10楼</a><a name="3201773" id="comment_anchor_3201773"></a>
+					<span>
+						 <span class="comment_date">2015-06-05 22:26</span>
+					</span>
+				<a id="a_comment_author_3201773" href="http://home.cnblogs.com/u/604621/" target="_blank">另一花生</a> <a href="http://msg.cnblogs.com/send/%E5%8F%A6%E4%B8%80%E8%8A%B1%E7%94%9F" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3201773" class="blog_comment_body">哈喽</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3201773,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3201773,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3277158" class="layer">#11楼</a><a name="3277158" id="comment_anchor_3277158"></a>
+					<span>
+						 <span class="comment_date">2015-09-30 10:15</span>
+					</span>
+				<a id="a_comment_author_3277158" href="http://www.cnblogs.com/dishiyicijinqiu/" target="_blank">第十一次进球</a> <a href="http://msg.cnblogs.com/send/%E7%AC%AC%E5%8D%81%E4%B8%80%E6%AC%A1%E8%BF%9B%E7%90%83" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3277158" class="blog_comment_body">请你告诉我例四这个例子，你是怎么测试的？<br>char a[20];  <br>int *ptr = a; <br>第二句代码？难道不会报错吗？误人子弟</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3277158,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3277158,&#39;Bury&#39;,this)">反对(3)</a></div><span id="comment_3277158_avatar" style="display:none;">http://pic.cnblogs.com/face/u296802.jpg?id=08201712</span>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3418357" class="layer">#12楼</a><a name="3418357" id="comment_anchor_3418357"></a>
+					<span>
+						 <span class="comment_date">2016-04-27 09:39</span>
+					</span>
+				<a id="a_comment_author_3418357" href="http://www.cnblogs.com/tobin/" target="_blank">Tobin</a> <a href="http://msg.cnblogs.com/send/Tobin" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3418357" class="blog_comment_body"><a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3277158" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3277158);">@</a>
+第十一次进球<br>确实是会报错。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3418357,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3418357,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3429611" class="layer">#13楼</a><a name="3429611" id="comment_anchor_3429611"></a>
+					<span>
+						 <span class="comment_date">2016-05-12 15:01</span>
+					</span>
+				<a id="a_comment_author_3429611" href="http://www.cnblogs.com/kmsfan/" target="_blank">KMSFan</a> <a href="http://msg.cnblogs.com/send/KMSFan" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3429611" class="blog_comment_body">good</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3429611,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3429611,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3429611_avatar" style="display:none;">http://pic.cnblogs.com/face/567748/20140808145447.png</span>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3431172" class="layer">#14楼</a><a name="3431172" id="comment_anchor_3431172"></a>
+					<span>
+						 <span class="comment_date">2016-05-14 20:51</span>
+					</span>
+				<a id="a_comment_author_3431172" href="http://home.cnblogs.com/u/953985/" target="_blank">边城马良</a> <a href="http://msg.cnblogs.com/send/%E8%BE%B9%E5%9F%8E%E9%A9%AC%E8%89%AF" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3431172" class="blog_comment_body">*ptr=&amp;b;//*ptr是个指针，&amp;b的结果也是个指针，且这两个指针的类型和所指向的类型是一样的，所以?amp;b来给*ptr赋值就是毫无问题的了。<br>这句怎么判定*ptr类型的？</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3431172,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3431172,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3591809" class="layer">#15楼</a><a name="3591809" id="comment_anchor_3591809"></a>
+					<span>
+						 <span class="comment_date">2016-12-29 08:42</span>
+					</span>
+				<a id="a_comment_author_3591809" href="http://www.cnblogs.com/totoror/" target="_blank">疯狂的老爹</a> <a href="http://msg.cnblogs.com/send/%E7%96%AF%E7%8B%82%E7%9A%84%E8%80%81%E7%88%B9" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3591809" class="blog_comment_body"><a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3277158" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3277158);">@</a>
+第十一次进球<br><fieldset class="comment_quote"><legend><a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3277158" title="查看引用原文">引用</a></legend>请你告诉我例四这个例子，你是怎么测试的？<br>char a[20];  <br>int *ptr = a; <br>第二句代码？难道不会报错吗？误人子弟</fieldset><br><br><br>应该是笔误吧，<br><br>之前讲得很清楚了，数据类型的问题。<br>将 char a[20] 换成 int a[20]; 就可以了。<br><br>楼主确实讲得很清晰，不要逮住些问题，就喷不止，你写的程序就没有过bug么？程序永远是思想同频道，实现各显神通。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3591809,&#39;Digg&#39;,this)">支持(2)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3591809,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3613000" class="layer">#16楼</a><a name="3613000" id="comment_anchor_3613000"></a>
+					<span>
+						 <span class="comment_date">2017-02-06 20:43</span>
+					</span>
+				<a id="a_comment_author_3613000" href="http://www.cnblogs.com/KANKOLLE/" target="_blank">やみちゃん大好き</a> <a href="http://msg.cnblogs.com/send/%E3%82%84%E3%81%BF%E3%81%A1%E3%82%83%E3%82%93%E5%A4%A7%E5%A5%BD%E3%81%8D" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3613000" class="blog_comment_body"><a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3277158" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3277158);">@</a>
+第十一次进球<br>抓住别人笔误不放，说明你没什么水平</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3613000,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3613000,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3669068" class="layer">#17楼</a><a name="3669068" id="comment_anchor_3669068"></a>
+					<span>
+						 <span class="comment_date">2017-04-16 11:22</span>
+					</span>
+				<a id="a_comment_author_3669068" href="http://www.cnblogs.com/catherinezyr/" target="_blank">搭错车的小火柴</a> <a href="http://msg.cnblogs.com/send/%E6%90%AD%E9%94%99%E8%BD%A6%E7%9A%84%E5%B0%8F%E7%81%AB%E6%9F%B4" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3669068" class="blog_comment_body">感谢博主大大</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3669068,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3669068,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3669068_avatar" style="display:none;">http://pic.cnblogs.com/face/787426/20150719220147.png</span>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3694026" class="layer">#18楼</a><a name="3694026" id="comment_anchor_3694026"></a>
+					<span>
+						 <span class="comment_date">2017-05-17 09:07</span>
+					</span>
+				<a id="a_comment_author_3694026" href="http://www.cnblogs.com/supy/" target="_blank">翠竹叶飞</a> <a href="http://msg.cnblogs.com/send/%E7%BF%A0%E7%AB%B9%E5%8F%B6%E9%A3%9E" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3694026" class="blog_comment_body">感谢楼主！！</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3694026,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3694026,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3706366" class="layer">#19楼</a><a name="3706366" id="comment_anchor_3706366"></a>
+					<span>
+						 <span class="comment_date">2017-06-03 17:49</span>
+					</span>
+				<a id="a_comment_author_3706366" href="http://home.cnblogs.com/u/1082808/" target="_blank">你的碗</a> <a href="http://msg.cnblogs.com/send/%E4%BD%A0%E7%9A%84%E7%A2%97" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3706366" class="blog_comment_body">写的真的好，很细节，都能让人明白，</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3706366,&#39;Digg&#39;,this)">支持(1)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3706366,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3779381" class="layer">#20楼</a><a name="3779381" id="comment_anchor_3779381"></a>
+					<span>
+						 <span class="comment_date">2017-09-09 18:54</span>
+					</span>
+				<a id="a_comment_author_3779381" href="http://home.cnblogs.com/u/1236088/" target="_blank">苏陌生</a> <a href="http://msg.cnblogs.com/send/%E8%8B%8F%E9%99%8C%E7%94%9F" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3779381" class="blog_comment_body">楼主能不能说一下指向常量的指针、指针常量和指向常量的指针常量的区别啊，看书一脸懵逼</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3779381,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3779381,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3780561" class="layer">#21楼</a><a name="3780561" id="comment_anchor_3780561"></a>
+					<span>
+						 <span class="comment_date">2017-09-11 10:55</span>
+					</span>
+				<a id="a_comment_author_3780561" href="http://www.cnblogs.com/yuan198094/" target="_blank">TFS</a> <a href="http://msg.cnblogs.com/send/TFS" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3780561" class="blog_comment_body">最近由于工作，刚刚学习C++。看到篇博文，感觉不错！非常感谢楼主。<br><br>其实我感到疑惑的一点是对C++ 中指针的指针一类问题的“解引用”的过程。方便指导一下吗？非常感谢！</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3780561,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3780561,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3780561_avatar" style="display:none;">http://pic.cnblogs.com/face/u46477.jpg?id=20131658</span>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3780565" class="layer">#22楼</a><a name="3780565" id="comment_anchor_3780565"></a>
+					<span>
+						 <span class="comment_date">2017-09-11 10:56</span>
+					</span>
+				<a id="a_comment_author_3780565" href="http://www.cnblogs.com/yuan198094/" target="_blank">TFS</a> <a href="http://msg.cnblogs.com/send/TFS" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3780565" class="blog_comment_body">最近由于工作，刚刚学习C++。看到篇博文，感觉不错！非常感谢楼主。<br><br>其实我感到疑惑的一点是对C++ 中指针的指针一类问题的“解引用”的过程。也就是这样格式（**p）<br><br>方便指导一下吗？非常感谢！</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3780565,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3780565,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3780565_avatar" style="display:none;">http://pic.cnblogs.com/face/u46477.jpg?id=20131658</span>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3780578" class="layer">#23楼</a><a name="3780578" id="comment_anchor_3780578"></a>
+					<span>
+						 <span class="comment_date">2017-09-11 11:02</span>
+					</span>
+				<a id="a_comment_author_3780578" href="http://www.cnblogs.com/yuan198094/" target="_blank">TFS</a> <a href="http://msg.cnblogs.com/send/TFS" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3780578" class="blog_comment_body">我运行了一下你的程序：<br><br>int a=12;  <br>int b;  <br>int *p;  <br>int **ptr;  <br>p=&amp;a;<br>*p=24;<br>ptr=&amp;p;  //程序运行到这里。按照我的理解下面输出的地址应该是完全一样的。事实上相反。<br>cout&lt;&lt;p&lt;&lt;endl;   //p 本身就是一个地址<br>cout&lt;&lt;&amp;p&lt;&lt;endl; //对地址进行取址操作，也应该是p的本身地址，但这里有问题。<br>cout&lt;&lt;ptr&lt;&lt;endl;</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3780578,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3780578,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3780578_avatar" style="display:none;">http://pic.cnblogs.com/face/u46477.jpg?id=20131658</span>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+		<div class="post">			
+			<div class="postTitle">
+				<a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3893658" class="layer">#24楼</a><a name="3893658" id="comment_anchor_3893658"></a><span id="comment-maxId" style="display:none;">3893658</span><span id="comment-maxDate" style="display:none;">2018/1/19 16:12:26</span>
+					<span>
+						 <span class="comment_date">2018-01-19 16:12</span>
+					</span>
+				<a id="a_comment_author_3893658" href="http://home.cnblogs.com/u/1321065/" target="_blank">赛布星人</a> <a href="http://msg.cnblogs.com/send/%E8%B5%9B%E5%B8%83%E6%98%9F%E4%BA%BA" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="postText">
+				<div id="comment_body_3893658" class="blog_comment_body"><a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#3780578" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3780578);">@</a>
+TFS<br>cout&lt;&lt;p&lt;&lt;endl; //p 本身就是一个地址<br>cout&lt;&lt;&amp;p&lt;&lt;endl; //对地址进行取址操作，也应该是p的本身地址，但这里有问题。<br>cout&lt;&lt;ptr&lt;&lt;endl;<br><br>不可能一样。<br>ｐ是指针，指向的是他指向的对象的地址。<br>但同时，ｐ是一个对象，他在指向一个地址的同时，他自身还有地址。<br>所以，这两个，不可能一样。<br>通常我们会关注到ｐ指向的地址，如果没有对＆P进行取值的话，很少关注ｐ自己的地址在哪儿。<br>这么说吧，ｐ是一个容器，装了ａ，但是，ｐ也要放进柜子里，他在柜子里还有自己的位置。<br>而ptr就是这个柜子。所以 ptr=&amp;p&lt;&gt;p。<br>p=&amp;a。<br><br>刚开始学，不对之处，请指教。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3893658,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3893658,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+            <div class="commentOpt">
+			&nbsp;&nbsp;<span class="comment_actions"></span>
+            </div>
+		</div>
+		<br>
+	
+</div><div id="comments_pager_bottom"></div></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/ggjucheng/archive/2011/12/13/2286391.html#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank">【推荐】超50万VC++源码: 大型组态工控、电力仿真CAD与GIS源码库！</a><br><a href="http://clickc.admaster.com.cn/c/a105960,b2436453,c1705,i0,m101,8a1,8b2,h" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-DevCloud&#39;)">【推荐】华为云7大明星产品0元免费使用</a><br><a href="https://cloud.tencent.com/product/tac?fromSource=gwzcw.926333.926333.926333" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-腾讯云&#39;)">【推荐】腾讯云如何降低移动开发成本</a><br><a href="http://challenge.xfyun.cn/?ch=bk" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-xfyun&#39;)">【大赛】2018首届“顶天立地”AI开发者大赛</a><br></div>
+<div id="opt_under_post"></div>
+<div id="cnblogs_c1" class="c_ad_block"><a onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;C1&#39;);" href="https://cloud.tencent.com/solution/la?fromSource=gwzcw.926335.926335.926335" target="_blank"><img width="300" height="250" src="./U017_files/24442-20180520213658559-918592692.jpg" alt="腾讯云0518"></a></div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>最新IT新闻</b>:<br> ·  <a href="https://news.cnblogs.com/n/597735/" target="_blank">腾讯携手东华软件 推动传统行业数字化转型升级</a><br> ·  <a href="https://news.cnblogs.com/n/597734/" target="_blank">马化腾：未来腾讯要把最重要的数据存储在贵州</a><br> ·  <a href="https://news.cnblogs.com/n/597733/" target="_blank">蔚来汽车联合创始人：和江淮关系融洽，蔚来汽车的交付很快开始</a><br> ·  <a href="https://news.cnblogs.com/n/597732/" target="_blank">爆料：百度市场公关副总裁王路将离职</a><br> ·  <a href="https://news.cnblogs.com/n/597731/" target="_blank">乐信集团进军汽车金融 “乐买车”只是员工福利</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="cnblogs_c2" class="c_ad_block"><a href="http://click.aliyun.com/m/34770/" target="_blank"><img src="./U017_files/TB1gBPhgZLJ8KJjy0FnXXcFDpXa-468-60.jpg" alt="" style="width: 468px; height: 60px;"></a></div>
+<div id="under_post_kb"><div class="itnews c_ad_block" id="kb_block"><b>最新知识库文章</b>:<br><div id="kb_recent"> ·  <a href="http://kb.cnblogs.com/page/576411/" target="_blank">你可以把编程当做一项托付终身的职业</a><br> ·  <a href="http://kb.cnblogs.com/page/596164/" target="_blank">评审的艺术——谈谈现实中的代码评审</a><br> ·  <a href="http://kb.cnblogs.com/page/577233/" target="_blank">如何高效学习</a><br> ·  <a href="http://kb.cnblogs.com/page/578689/" target="_blank">如何成为优秀的程序员？</a><br> ·  <a href="http://kb.cnblogs.com/page/594930/" target="_blank">菜鸟工程师的超神之路 -- 从校园到职场</a><br></div>» <a href="http://kb.cnblogs.com/" target="_blank">更多知识库文章...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script>
+</div>
+
+
+</div>
+<div class="footer">
+
+<p id="footer">
+	Powered by: 
+	<br>
+	
+	<a id="Footer1_Hyperlink3" name="Hyperlink1" href="http://www.cnblogs.com/" style="font-family:Verdana;font-size:12px;">博客园</a>
+	<br>
+	Copyright © ggjucheng
+</p>
+</div>
+
+
+</body></html>

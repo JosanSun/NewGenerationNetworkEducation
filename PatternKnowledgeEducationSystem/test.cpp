@@ -14,7 +14,7 @@ extern QString currentKid;
 extern QString currentCid;
 
 Test::Test(QWidget *parent)
-    : QWidget(parent), ui(new Ui::Test), timer1(new QTimer(this))
+    : QWidget(parent), ui(new Ui::Test), timer1(new QTimer(this)), timer2(new QTimer(this))
 {
     ui->setupUi(this);
     initUI();
@@ -92,12 +92,12 @@ void Test::init()
         currentTid = query.value(1).toString();
         QPalette pa;
         pa.setColor(QPalette::WindowText, Qt::red);
-        ui->testHourLabel->setText(query.value(2).toString());
-        ui->testHourLabel->setPalette(pa);
+        ui->testSecondLabel->setText(query.value(2).toString());
+        ui->testSecondLabel->setPalette(pa);
         ui->testMinuteLabel->setText(query.value(3).toString());
         ui->testMinuteLabel->setPalette(pa);
-        ui->restHourLabel->setText(query.value(2).toString());
-        ui->restHourLabel->setPalette(pa);
+        ui->restSecondLabel->setText(query.value(2).toString());
+        ui->restSecondLabel->setPalette(pa);
         ui->restMinuteLabel->setText(query.value(3).toString());
         ui->restMinuteLabel->setPalette(pa);
         limitScore = query.value(4).toInt();
@@ -116,11 +116,11 @@ void Test::openDatabase()
     bool ok = this->db.open();
     if (!ok)
     {
-        qDebug() << "Failed to connect database login!";
+        qcout << "Failed to connect database login!";
     }
     else
     {
-        qDebug() << "Success!";
+        qcout << "Success!";
     }
 }
 
@@ -134,17 +134,36 @@ void Test::timeUpdateSlot()
 //更新当前测试剩余时间
 void Test::restTimeUpdateSlot()
 {
-    int alreadyHour = QDateTime::currentDateTime().time().hour() - startTestTime.time().hour();
-    int alreadyMinute = QDateTime::currentDateTime().time().minute() - startTestTime.time().minute();
-    if (alreadyMinute < 0)
+    qint64 secs = startTestTime.secsTo(QDateTime::currentDateTime());
+
+    qcout << secs;
+
+    int minT = secs / 60;
+    int secT = secs % 60;
+
+    int restMinuteTime = 45;
+    int restSecondTime = 0;
+
+    if(secT > 0)
     {
-        alreadyMinute += 60;
-        alreadyHour -= 1;
+        --restMinuteTime;
+        restSecondTime = 60 - secT;
     }
-    int restHour = ui->testHourLabel->text().toInt() - alreadyHour;
-    int restMinute = ui->testMinuteLabel->text().toInt() - alreadyMinute;
-    ui->restHourLabel->setText(QString::number(restHour));
-    ui->restMinuteLabel->setText(QString::number(restMinute));
+
+    restMinuteTime -= minT;
+
+    //    int alreadyMinute = QDateTime::currentDateTime().time().minute() - startTestTime.time().minute();
+    //    int alreadySecond = QDateTime::currentDateTime().time().second() - startTestTime.time().hour();
+    //    if (alreadyMinute < 0)
+    //    {
+    //        alreadyMinute += 60;
+    //        alreadyHour -= 1;
+    //    }
+    //    int restHour = ui->testHourLabel->text().toInt() - alreadyHour;
+    //    int restMinute = ui->testMinuteLabel->text().toInt() - alreadyMinute;
+
+    ui->restMinuteLabel->setText(QString::number(restMinuteTime));
+    ui->restSecondLabel->setText(QString::number(restSecondTime));
 }
 
 //动态显示测试界面
@@ -160,10 +179,11 @@ void Test::startTestSlot()
         delete startButton;
         startButton = nullptr;
     }
-    timer2 = new QTimer(this);
+
+    startTestTime = QDateTime::currentDateTime();
     timer2->start(1000);
     connect(timer2, &QTimer::timeout, this, &Test::restTimeUpdateSlot);
-    startTestTime = QDateTime::currentDateTime();
+
     ui->submitButton->setDisabled(false);
     //ui->scrollArea->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
     //ui->scrollArea->setWidgetResizable(true);
@@ -199,6 +219,10 @@ void Test::startTestSlot()
         QString _question = query.value(1).toString() + "." + query.value(2).toString();
         QLabel *questionLabel = new QLabel;
         label_vec.push_back(questionLabel);
+        //questionLabel->adjustSize();
+        //questionLabel->setWordWrap(true);
+        //questionLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+
         questionLabel->setText(_question);
         questionLabel->setStyleSheet("QLabel{background:yellow}");
         contentLayout->addWidget(questionLabel);
@@ -254,8 +278,10 @@ void Test::startTestSlot()
         allLayout->addLayout(cLayout);
         allLayout->addLayout(dLayout);
     }
-    allLayout->addSpacing(5000);
-    ui->scrollArea->setLayout(allLayout);
+    QWidget* allWidget = new QWidget(ui->scrollArea);
+    allWidget->setLayout(allLayout);
+    //allLayout->addSpacing(5000);
+    ui->scrollArea->setWidget(allWidget);
 }
 
 
@@ -304,16 +330,17 @@ void Test::submitTestSlot()
             break;
         }
 
-        QSqlQuery query(db);
-        query.prepare("select answer,score from testcase where tid=:tid and qid=:qid");
-        query.bindValue(":tid", currentTid);
-        query.bindValue(":qid", it->first);
-        query.exec();
-        while (query.next())
+        QSqlQuery query1(db);
+        query1.prepare("select answer,score from testcase where tid=:tid and qid=:qid");
+        query1.bindValue(":tid", currentTid);
+        query1.bindValue(":qid", it->first);
+        query1.exec();
+        while (query1.next())
         {
-            if (query.value(0).toString() == _answer){
+            if (query1.value(0).toString() == _answer)
+            {
                 //加分
-                score += query.value(1).toInt();
+                score += query1.value(1).toInt();
             }
         }
         ++it;
@@ -328,25 +355,19 @@ void Test::submitTestSlot()
     query.bindValue(":score", score);
     query.exec();
 
-    //更新学习行为记录表中当前用户的最后一条学习记录，修改通过情况
-    QString beginTime;
-    query.prepare("select begin from behavior where sid=:sid and kid=:kid");
-    query.bindValue(":sid", myUser.getSid());
-    query.bindValue(":kid", currentKid);
-    query.exec();
-    while (query.next())
-    {
-        query.last();
-        beginTime = query.value(0).toString();
-        qDebug() << score;
-    }
+    //    //更新学习行为记录表中当前用户的最后一条学习记录，修改通过情况
+    //    QString beginTime;
+    //    query.prepare("select begin from behavior where sid=:sid and kid=:kid");
+    //    query.bindValue(":sid", myUser.getSid());
+    //    query.bindValue(":kid", currentKid);
+    //    query.exec();
+    //    while (query.next())
+    //    {
+    //        query.last();
+    //        beginTime = query.value(0).toString();
+    //        qcout << score;
+    //    }
 
-    //更新学习行为记录表中当前用户的最后一条学习记录，修改通过情况
-    query.prepare("update behavior set pass=0 where sid=:sid and kid=:kid and begin=:begin");
-    query.bindValue(":sid", myUser.getSid());
-    query.bindValue(":kid", currentKid);
-    query.bindValue(":begin", beginTime);
-    query.exec();
     if (score >= limitScore)
     {
         pass = true;
@@ -356,28 +377,67 @@ void Test::submitTestSlot()
         query.bindValue(":kid", currentKid);
         query.exec();
 
+        //更新学习行为记录表中当前用户的最后一条学习记录，修改通过情况
+        query.prepare("insert into behavior(sid,kid,cid,begin,end,pass,note) values(:sid,:kid,:cid,:begin,:end,:pass,:note)");
+        query.bindValue(":sid", myUser.getSid());
+        query.bindValue(":kid", currentKid);
+        query.bindValue(":cid", currentCid);
+        query.bindValue(":begin", startTestTime.toString());
+        query.bindValue(":end", QDateTime::currentDateTime().toString());
+        query.bindValue(":pass", 1);
+        query.bindValue(":note", tr("学习并通过测试用例"));
+        query.exec();
+        //        query.prepare("update behavior set pass=1 where sid=:sid and kid=:kid and begin=:begin");
+        //        query.bindValue(":sid", myUser.getSid());
+        //        query.bindValue(":kid", currentKid);
+        //        query.bindValue(":begin", beginTime);
+        //        query.exec();
+
+        //更新学习路径记录表
+        query.prepare("insert into path(sid,domain,kid,begintime,score) values(:sid,:domain,:kid,:begintime,:score)");
+        query.bindValue(":sid", myUser.getSid());
+        query.bindValue(":domain", currentDomain);
+        query.bindValue(":kid", currentKid);
+        query.bindValue(":begintime", startTestTime.toString());
+        query.bindValue(":score", score);
+        query.exec();
     }
     else
     {
         pass = false;
-        if (_first == "P")
-        {
-            //更新推荐路径表
-            query.prepare("update recpath set state=1 where sid=:sid and kid=:kid");
-            query.bindValue(":sid", myUser.getSid());
-            query.bindValue(":kid", currentKid);
-            query.exec();
-        }
+        //更新推荐路径表
+        query.prepare("update recpath set state=0 where sid=:sid and kid=:kid");
+        query.bindValue(":sid", myUser.getSid());
+        query.bindValue(":kid", currentKid);
+        query.exec();
 
+        //        if (_first == "P")
+        //        {
+        //            //更新推荐路径表
+        //            query.prepare("update recpath set state=1 where sid=:sid and kid=:kid");
+        //            query.bindValue(":sid", myUser.getSid());
+        //            query.bindValue(":kid", currentKid);
+        //            query.exec();
+        //        }
+
+        //更新学习行为记录表中当前用户的最后一条学习记录，修改通过情况
+        //        query.prepare("update behavior set pass=0 where sid=:sid and kid=:kid and begin=:begin");
+        //        query.bindValue(":sid", myUser.getSid());
+        //        query.bindValue(":kid", currentKid);
+        //        query.bindValue(":begin", beginTime);
+        //        query.exec();
+
+        query.prepare("insert into behavior(sid,kid,cid,begin,end,pass,note) values(:sid,:kid,:cid,:begin,:end,:pass,:note)");
+        query.bindValue(":sid", myUser.getSid());
+        query.bindValue(":kid", currentKid);
+        query.bindValue(":cid", currentCid);
+        query.bindValue(":begin", startTestTime.toString());
+        query.bindValue(":end", QDateTime::currentDateTime().toString());
+        query.bindValue(":pass", 1);
+        query.bindValue(":note", tr("正在学习知识点"));
     }
-    //更新学习路径记录表
-    query.prepare("insert into path(sid,domain,kid,begintime,score) values(:sid,:domain,:kid,:begintime,:score)");
-    query.bindValue(":sid", myUser.getSid());
-    query.bindValue(":domain", currentDomain);
-    query.bindValue(":kid", currentKid);
-    query.bindValue(":begintime", beginTime);
-    query.bindValue(":score", score);
-    query.exec();
+
+
 
     QMessageBox::information(this, tr("恭喜"), tr("您已经提交成功！"));
     ui->submitButton->setEnabled(false);
@@ -434,6 +494,8 @@ void Test::submitTestSlot()
     allLayout = new QVBoxLayout;
     QWidget *w = new QWidget;
     QLabel *endLabel = new QLabel(w);
+
+
     if (pass)
     {//如果通过测试
         endLabel->setText(tr("本次考试已经结束，您的分数为： ") + QString::number(score) + tr(" ,恭喜您已通过测试，您要继续学习吗？"));
@@ -473,7 +535,7 @@ void Test::nextKnowledgeSlot()
     while (query.next())
     {
         currentKid = query.value(0).toString();
-        qDebug() << currentKid;
+        qcout << currentKid;
         break;
     }
     if (_first=="P")

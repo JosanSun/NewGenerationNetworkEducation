@@ -32,7 +32,8 @@ private slots:
     void goToTestSlot();
     void updateBehaviorTableSlot();
     //void updateCurrentKidSlot();
-    //void testSlot();
+    //void testSlot();   
+    void on_nextKnowledgeButton_clicked();
 
 private:
     void openDatabase();

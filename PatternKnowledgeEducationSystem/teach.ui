@@ -350,7 +350,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>200</y>
+      <y>240</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -370,6 +370,19 @@
     </property>
     <property name="text">
      <string>讨论区</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="nextKnowledgeButton">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>200</y>
+      <width>100</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>下一个知识点</string>
     </property>
    </widget>
   </widget>

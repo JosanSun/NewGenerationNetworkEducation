@@ -207,3 +207,15 @@ void UserInfoWidget::saveInformationSlot()
 
     QMessageBox::information(this, tr("恭喜"), tr("您的信息已修改并保存成功！"));
 }
+
+void UserInfoWidget::on_learningTestButton_clicked()
+{
+    hide();
+    testWidget = new LearningPatternTest;
+    testWidget->show();
+    connect(testWidget, &LearningPatternTest::closeSignal,
+            [=]()
+            {
+                show();
+            });
+}

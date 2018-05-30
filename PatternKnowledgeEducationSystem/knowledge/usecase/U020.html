@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)http://c.biancheng.net/cpp/biancheng/view/172.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=GBK">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-store, must-revalidate">
+<meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+<meta http-equiv="expires" content="0">
+<link rel="shortcut icon" href="http://c.biancheng.net/cpp/favicon.ico?v=3.993">
+<link href="./U020_files/common.css" rel="stylesheet" type="text/css">
+<title>C++结构体数组_C语言中文网</title>
+<meta name="keywords" content="C++,结构,数组,一个,结构,变量,可以,存放,一组,数据">
+<meta name="description" content="一个结构体变量中可以存放一组数据（如一个学生的学号、姓名、成绩等数据）。如果有10个学生的数据需要参加运算，显然应该用数组，这就是 结构体数组 。结构体数组与以前介绍过的数值型数组的不同之处在于： 每个数组元素都是一个结构体类型的数据，它们都分">
+<link rel="preload" href="./U020_files/f(1).txt" as="script"><script src="./U020_files/f.txt"></script><script src="./U020_files/ca-pub-1879607319104103.js.下载"></script><script type="text/javascript" src="./U020_files/f(1).txt"></script><link type="text/css" rel="stylesheet" href="chrome-extension://pioclpoplcdbaefihamjohnefbikjilc/content.css"></head>
+<body>
+<div id="topbar-wrap">
+<div id="topbar" class="clearfix">
+<ul id="nav-top" class="left clearfix hover-none">
+<li><a href="http://c.biancheng.net/cpp/compiler/">编程软件下载/编译器下载</a></li>
+</ul>
+<ul id="ad-link-top" class="left hover-none">
+<li class="sub-menu" style="color: #D33428;">&nbsp;&nbsp;C语言辅导班<span class="icon">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<ul>
+<li><a href="http://fudao.biancheng.net/c/" target="_blank">普通班(600元)</a></li>
+<li><a href="http://fudao.biancheng.net/c_abroad/" target="_blank">留学生班(2000元)</a></li>
+</ul>
+</li>
+<li class="sub-menu" style="color: #009300;">&nbsp;&nbsp;C++辅导班<span class="icon">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<ul>
+<li><a href="http://fudao.biancheng.net/cpp/" target="_blank">普通班(1000元)</a></li>
+<li><a href="http://fudao.biancheng.net/cpp_abroad/" target="_blank">留学生班(3000元)</a></li>
+</ul>
+</li>
+<li class="sub-menu" style="color: #AD9700;">&nbsp;&nbsp;算法/数据结构辅导班<span class="icon">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<ul>
+<li><a href="http://fudao.biancheng.net/data/" target="_blank">普通班(600元)</a></li>
+<li><a href="http://fudao.biancheng.net/data_abroad/" target="_blank">留学生班(2000元)</a></li>
+</ul>
+</li>
+<li style="color: #D33428;">读者QQ交流群：<span class="qq-qun-number">709109338</span></li>
+</ul>
+<div class="right clearfix" id="user-info"><a href="http://vip.biancheng.net/login.php" target="_blank">登录</a>&nbsp;&nbsp;|&nbsp;<a href="http://vip.biancheng.net/register.php" target="_blank">注册</a></div>
+</div>
+</div>
+<div id="header_wrap" class="clearfix">
+<div id="header" class="hover-none">
+<a id="logo" class="left" href="http://c.biancheng.net/cpp/"><img src="./U020_files/logo.jpg" alt="C语言中文网"></a>
+<ul id="nav-main" class="left clearfix">
+<li><a href="http://c.biancheng.net/cpp/">首页</a></li>
+<li><a href="http://c.biancheng.net/cpp/u/jiaocheng/">C语言教程</a></li>
+<li><a href="http://c.biancheng.net/cpp/u/c20/">C语言和内存</a></li>
+<li><a href="http://c.biancheng.net/cpp/biancheng/cpp/rumen/">C++教程</a></li>
+<li><a href="http://c.biancheng.net/cpp/u/xiangmu/">项目实战</a></li>
+<li class="sub-menu">更多教程<span class="icon">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<ul>
+<li><a href="http://c.biancheng.net/cpp/socket/">Socket编程</a></li>
+<li><a href="http://c.biancheng.net/cpp/windows/">Windows编程</a></li>
+<li><a href="http://c.biancheng.net/cpp/linux/">Linux教程</a></li>
+<li><a href="http://c.biancheng.net/cpp/shell/">Shell教程</a></li>
+<li><a href="http://c.biancheng.net/cpp/u/yuanma/">C语言实例精讲</a></li>
+<li><a href="http://c.biancheng.net/cpp/u/c16/">C语言多文件编程</a></li>
+</ul>
+</li>
+<li class="bubble"><a href="http://vip.biancheng.net/" style="color: #D33428;" target="_blank">VIP会员</a><span class="hot">&nbsp;</span></li>
+<li class="bubble"><a href="http://fudao.biancheng.net/" style="color: #009300;" target="_blank">辅导班</a><span class="sale">&nbsp;</span></li>
+<li><a href="http://c.biancheng.net/cpp/about/dig/" target="_blank">读者评价</a></li>
+</ul>
+</div>
+</div>
+<div id="position" class="clearfix"><a href="http://c.biancheng.net/cpp/">首页</a><span>&nbsp;&nbsp;/&nbsp;&nbsp;</span><a href="http://c.biancheng.net/cpp/biancheng/cpp/">C++</a><span>&nbsp;&nbsp;/&nbsp;&nbsp;</span><a href="http://c.biancheng.net/cpp/biancheng/cpp/jingyan/">C++相关文章</a><span>&nbsp;&nbsp;/&nbsp;&nbsp;</span></div>
+<div id="main" class="clearfix sidebar-on-right">
+<div id="article" class="article">
+<h1>C++结构体数组</h1>
+<div class="art-info clearfix">
+<dl class="follow-us left hover-none"><dt>关注我们：</dt><dd class="weixin"><a href="http://c.biancheng.net/cpp/html/3391.html" target="_blank">微信公众号</a></dd><dd class="weibo"><a href="http://weibo.com/cyuyanzhongwenwang" target="_blank">新浪微博</a></dd><dd class="qq">读者QQ交流群：709109338</dd></dl>
+</div>
+<div class="ad-art-body-top">
+<script async="" src="./U020_files/f(2).txt"></script>
+<ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-1879607319104103" data-ad-slot="1362048227" data-adsbygoogle-status="done"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent;"><ins id="aswift_0_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent;"><iframe width="728" height="90" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;width:728px;height:90px;" src="./U020_files/saved_resource.html"></iframe></ins></ins></ins>
+<script>
+				(adsbygoogle = window.adsbygoogle || []).push({});
+			</script>
+</div>
+<div id="ad-arc-top-diy"><p><a href="http://fudao.biancheng.net/" target="_blank" style="color:#D33428;">C语言中文网推出辅导班啦，包括<span style="color: #008000;">「C语言辅导班、C++辅导班、算法/数据结构辅导班」</span>，全部都是一对一教学：一对一辅导 + 一对一答疑 + 布置作业 + 项目实践 + 永久学习。QQ在线，随时响应！</a></p></div>
+<div id="art-body">一个结构体变量中可以存放一组数据（如一个学生的学号、姓名、成绩等数据）。如果有10个学生的数据需要参加运算，显然应该用数组，这就是<span style="color:#b22222;"><strong>结构体数组</strong></span>。结构体数组与以前介绍过的数值型数组的不同之处在于：<span style="color:#a52a2a;">每个数组元素都是一个结构体类型的数据，它们都分别包括各个成员项。</span><br>
+<br>
+定义结构体数组和定义结构体变量的方法相仿，定义结构体数组时只需声明其为数组即可。如：
+<div class="snippet-container" style="undefined;"><div class="sh_bright snippet-wrap"><div class="snippet-menu sh_sourceCode" style="display: none;"><pre><a class="snippet-copy sh_url" href="http://c.biancheng.net/cpp/biancheng/view/172.html#" style="display: none;">复制</a><a class="snippet-text sh_url" href="http://c.biancheng.net/cpp/biancheng/view/172.html#">纯文本</a><a class="snippet-window sh_url" href="http://c.biancheng.net/cpp/biancheng/view/172.html#">复制</a></pre></div><pre class="cpp sh_cpp snippet-formatted sh_sourceCode"><ol class="snippet-num"><li><span class="sh_keyword">struct</span><span class="sh_normal"> </span><span class="sh_classname">Student</span>  <span class="sh_comment">//声明结构体类型Student</span></li><li><span class="sh_cbracket">{</span></li><li>    <span class="sh_type">int</span> num<span class="sh_symbol">;</span></li><li>    <span class="sh_type">char</span> name<span class="sh_symbol">[</span><span class="sh_number">20</span><span class="sh_symbol">];</span></li><li>    <span class="sh_type">char</span> sex<span class="sh_symbol">;</span></li><li>    <span class="sh_type">int</span> age<span class="sh_symbol">;</span></li><li>    <span class="sh_type">float</span> score<span class="sh_symbol">;</span></li><li>    <span class="sh_type">char</span> addr<span class="sh_symbol">[</span><span class="sh_number">30</span><span class="sh_symbol">];</span></li><li><span class="sh_cbracket">}</span><span class="sh_symbol">;</span></li><li><span class="sh_usertype">Student</span><span class="sh_normal"> </span>stu<span class="sh_symbol">[</span><span class="sh_number">3</span><span class="sh_symbol">];</span>  <span class="sh_comment">//定义Student类型的数组stu</span></li></ol></pre><pre class="snippet-textonly sh_sourceCode" style="display:none;">struct Student  //声明结构体类型Student
+{
+    int num;
+    char name[20];
+    char sex;
+    int age;
+    float score;
+    char addr[30];
+};
+Student stu[3];  //定义Student类型的数组stu</pre></div></div>
+<br>
+也可以直接定义一个结构体数组，如：
+<div class="snippet-container" style="undefined;"><div class="sh_bright snippet-wrap"><div class="snippet-menu sh_sourceCode" style="display:none;"><pre><a class="snippet-copy sh_url" href="http://c.biancheng.net/cpp/biancheng/view/172.html#" style="display: none;">复制</a><a class="snippet-text sh_url" href="http://c.biancheng.net/cpp/biancheng/view/172.html#">纯文本</a><a class="snippet-window sh_url" href="http://c.biancheng.net/cpp/biancheng/view/172.html#">复制</a></pre></div><pre class="cpp sh_cpp snippet-formatted sh_sourceCode"><ol class="snippet-num"><li><span class="sh_keyword">struct</span><span class="sh_normal"> </span><span class="sh_classname">Student</span></li><li><span class="sh_cbracket">{</span></li><li>    <span class="sh_type">int</span> num<span class="sh_symbol">;</span></li><li>    <span class="sh_type">char</span> name<span class="sh_symbol">[</span><span class="sh_number">20</span><span class="sh_symbol">];</span></li><li>    <span class="sh_type">char</span> sex<span class="sh_symbol">;</span></li><li>    <span class="sh_type">int</span> age<span class="sh_symbol">;</span></li><li>    <span class="sh_type">float</span> score<span class="sh_symbol">;</span></li><li>    <span class="sh_type">char</span> addr<span class="sh_symbol">[</span><span class="sh_number">30</span><span class="sh_symbol">];</span></li><li><span class="sh_cbracket">}</span>stu<span class="sh_symbol">[</span><span class="sh_number">3</span><span class="sh_symbol">];</span></li></ol></pre><pre class="snippet-textonly sh_sourceCode" style="display:none;">struct Student
+{
+    int num;
+    char name[20];
+    char sex;
+    int age;
+    float score;
+    char addr[30];
+}stu[3];</pre></div></div>
+或
+<div class="snippet-container" style="undefined;"><div class="sh_bright snippet-wrap"><div class="snippet-menu sh_sourceCode" style="display: none;"><pre><a class="snippet-copy sh_url" href="http://c.biancheng.net/cpp/biancheng/view/172.html#" style="display: none;">复制</a><a class="snippet-text sh_url" href="http://c.biancheng.net/cpp/biancheng/view/172.html#">纯文本</a><a class="snippet-window sh_url" href="http://c.biancheng.net/cpp/biancheng/view/172.html#">复制</a></pre></div><pre class="cpp sh_cpp snippet-formatted sh_sourceCode"><ol class="snippet-num"><li><span class="sh_keyword">struct</span></li><li><span class="sh_cbracket">{</span></li><li>    <span class="sh_type">int</span> num<span class="sh_symbol">;</span></li><li>    <span class="sh_type">char</span> name<span class="sh_symbol">[</span><span class="sh_number">20</span><span class="sh_symbol">];</span></li><li>    <span class="sh_type">char</span> sex<span class="sh_symbol">;</span></li><li>    <span class="sh_type">int</span> age<span class="sh_symbol">;</span></li><li>    <span class="sh_type">float</span> score<span class="sh_symbol">;</span></li><li>    <span class="sh_type">char</span> addr<span class="sh_symbol">[</span><span class="sh_number">30</span><span class="sh_symbol">];</span></li><li><span class="sh_cbracket">}</span>stu<span class="sh_symbol">[</span><span class="sh_number">3</span><span class="sh_symbol">];</span></li></ol></pre><pre class="snippet-textonly sh_sourceCode" style="display:none;">struct
+{
+    int num;
+    char name[20];
+    char sex;
+    int age;
+    float score;
+    char addr[30];
+}stu[3];</pre></div></div>
+<br>
+结构体数组的初始化与其他类型的数组一样，对结构体数组可以初始化。如：
+<div class="snippet-container" style="undefined;"><div class="sh_bright snippet-wrap"><div class="snippet-menu sh_sourceCode" style="display:none;"><pre><a class="snippet-copy sh_url" href="http://c.biancheng.net/cpp/biancheng/view/172.html#" style="display: none;">复制</a><a class="snippet-text sh_url" href="http://c.biancheng.net/cpp/biancheng/view/172.html#">纯文本</a><a class="snippet-window sh_url" href="http://c.biancheng.net/cpp/biancheng/view/172.html#">复制</a></pre></div><pre class="cpp sh_cpp snippet-formatted sh_sourceCode"><ol class="snippet-num"><li><span class="sh_keyword">struct</span><span class="sh_normal"> </span><span class="sh_classname">Student</span></li><li><span class="sh_cbracket">{</span></li><li>    <span class="sh_type">int</span> num<span class="sh_symbol">;</span></li><li>    <span class="sh_type">char</span> name<span class="sh_symbol">[</span><span class="sh_number">20</span><span class="sh_symbol">];</span></li><li>    <span class="sh_type">char</span> sex<span class="sh_symbol">;</span></li><li>    <span class="sh_type">int</span> age<span class="sh_symbol">;</span></li><li>    <span class="sh_type">float</span> score<span class="sh_symbol">;</span></li><li>    <span class="sh_type">char</span> addr<span class="sh_symbol">[</span><span class="sh_number">30</span><span class="sh_symbol">];</span></li><li><span class="sh_cbracket">}</span>stu<span class="sh_symbol">[</span><span class="sh_number">3</span><span class="sh_symbol">]=</span><span class="sh_cbracket">{</span></li><li>    <span class="sh_cbracket">{</span><span class="sh_number">10101</span><span class="sh_symbol">,</span>″<span class="sh_usertype">Li</span><span class="sh_normal"> </span>Lin″<span class="sh_symbol">,</span>    ′M′<span class="sh_symbol">,</span>  <span class="sh_number">18</span><span class="sh_symbol">,</span><span class="sh_number">87.5</span><span class="sh_symbol">,</span>  ″<span class="sh_number">103</span> <span class="sh_usertype">Beijing</span><span class="sh_normal"> </span>Road″<span class="sh_cbracket">}</span><span class="sh_symbol">,</span></li><li>    <span class="sh_cbracket">{</span><span class="sh_number">10102</span><span class="sh_symbol">,</span>″<span class="sh_usertype">Zhang</span><span class="sh_normal"> </span>Fun″<span class="sh_symbol">,</span>′M′，<span class="sh_number">19</span><span class="sh_symbol">,</span><span class="sh_number">99</span><span class="sh_symbol">,</span>    ″<span class="sh_number">130</span> <span class="sh_usertype">Shanghai</span><span class="sh_normal"> </span>Road″<span class="sh_cbracket">}</span><span class="sh_symbol">,</span></li><li>    <span class="sh_cbracket">{</span><span class="sh_number">10104</span><span class="sh_symbol">,</span>″<span class="sh_usertype">Wang</span><span class="sh_normal"> </span>Min″<span class="sh_symbol">,</span>′F′<span class="sh_symbol">,</span>   <span class="sh_number">20</span><span class="sh_symbol">,</span><span class="sh_number">78.5</span><span class="sh_symbol">,</span>  ″<span class="sh_number">1010</span> <span class="sh_usertype">Zhongshan</span><span class="sh_normal"> </span>Road″<span class="sh_cbracket">}</span></li><li><span class="sh_cbracket">}</span><span class="sh_symbol">;</span></li></ol></pre><pre class="snippet-textonly sh_sourceCode" style="display:none;">struct Student
+{
+    int num;
+    char name[20];
+    char sex;
+    int age;
+    float score;
+    char addr[30];
+}stu[3]={
+    {10101,″Li Lin″,    ′M′,  18,87.5,  ″103 Beijing Road″},
+    {10102,″Zhang Fun″,′M′，19,99,    ″130 Shanghai Road″},
+    {10104,″Wang Min″,′F′,   20,78.5,  ″1010 Zhongshan Road″}
+};</pre></div></div>
+<br>
+定义数组stu时，也可以不指定元素个数，即写成以下形式：<br>
+&nbsp; &nbsp; stu[ ]={{…},{…},{…}};<br>
+编译时，系统会根据给出初值的结构体常量的个数来确定数组元素的个数。一个结构体常量应包括结构体中全部成员的值。<br>
+<br>
+当然，数组的初始化也可以用以下形式：<br>
+&nbsp; &nbsp; Student stu[ ]={{…},{…},{…}}; &nbsp;//已事先声明了结构体类型Student<br>
+由上可以看到，结构体数组初始化的一般形式是在所定义的数组名的后面加上 ={初值表列};
+<h2>
+结构体数组应用举例</h2>
+下面举一个简单的例子来说明结构体数组的定义和引用。<br>
+<br>
+【例7.2】对候选人得票的统计程序。设有3个候选人，最终只能有1人当选为领导。今有10个人参加投票，从键盘先后输入这10个人所投的候选人的名字，要求最后输出这3个候选人的得票结果。<br>
+<br>
+可以定义一个候选人结构体数组，包括3个元素，在每个元素中存放有关的数据。程序如下：
+<div class="snippet-container" style="undefined;"><div class="sh_bright snippet-wrap"><div class="snippet-menu sh_sourceCode" style="display: none;"><pre><a class="snippet-copy sh_url" href="http://c.biancheng.net/cpp/biancheng/view/172.html#" style="display: none;">复制</a><a class="snippet-text sh_url" href="http://c.biancheng.net/cpp/biancheng/view/172.html#">纯文本</a><a class="snippet-window sh_url" href="http://c.biancheng.net/cpp/biancheng/view/172.html#">复制</a></pre></div><pre class="cpp sh_cpp snippet-formatted sh_sourceCode"><ol class="snippet-num"><li><span class="sh_preproc">#include</span> <span class="sh_string">&lt;iostream&gt;</span></li><li><span class="sh_keyword">using</span> <span class="sh_keyword">namespace</span> std<span class="sh_symbol">;</span></li><li><span class="sh_keyword">struct</span><span class="sh_normal"> </span><span class="sh_classname">Person</span> <span class="sh_comment">//声明结构体类型Person</span></li><li><span class="sh_cbracket">{</span></li><li>   <span class="sh_type">char</span> name<span class="sh_symbol">[</span><span class="sh_number">20</span><span class="sh_symbol">];</span></li><li>   <span class="sh_type">int</span> count<span class="sh_symbol">;</span></li><li><span class="sh_cbracket">}</span><span class="sh_symbol">;</span></li><li><span class="sh_type">int</span> <span class="sh_function">main</span><span class="sh_symbol">(</span> <span class="sh_symbol">)</span></li><li><span class="sh_cbracket">{</span></li><li>   <span class="sh_comment">//定义Person类型的数组，内容为3个候选人的姓名和当前的得票数</span></li><li>   <span class="sh_usertype">Person</span><span class="sh_normal"> </span>leader<span class="sh_symbol">[</span><span class="sh_number">3</span><span class="sh_symbol">]=</span><span class="sh_cbracket">{</span><span class="sh_string">"Li"</span><span class="sh_symbol">,</span><span class="sh_number">0</span><span class="sh_symbol">,</span><span class="sh_string">"Zhang"</span><span class="sh_symbol">,</span><span class="sh_number">0</span><span class="sh_symbol">,</span><span class="sh_string">"Fun"</span><span class="sh_symbol">,</span><span class="sh_number">0</span><span class="sh_cbracket">}</span><span class="sh_symbol">;</span></li><li>   <span class="sh_type">int</span> i<span class="sh_symbol">,</span>j<span class="sh_symbol">;</span></li><li>   <span class="sh_type">char</span> leader_name<span class="sh_symbol">[</span><span class="sh_number">20</span><span class="sh_symbol">];</span> <span class="sh_comment">//leader_name为投票人所选的人的姓名</span></li><li>   <span class="sh_keyword">for</span><span class="sh_symbol">(</span>i<span class="sh_symbol">=</span><span class="sh_number">0</span><span class="sh_symbol">;</span>i<span class="sh_symbol">&lt;</span><span class="sh_number">10</span><span class="sh_symbol">;</span>i<span class="sh_symbol">++)</span></li><li>   <span class="sh_cbracket">{</span></li><li>      cin<span class="sh_symbol">&gt;&gt;</span>leader_name<span class="sh_symbol">;</span> <span class="sh_comment">//先后输入10张票上所写的姓名</span></li><li>      <span class="sh_keyword">for</span><span class="sh_symbol">(</span>j<span class="sh_symbol">=</span><span class="sh_number">0</span><span class="sh_symbol">;</span>j<span class="sh_symbol">&lt;</span><span class="sh_number">3</span><span class="sh_symbol">;</span>j<span class="sh_symbol">++)</span> <span class="sh_comment">//将票上姓名与3个候选人的姓名比较</span></li><li>         <span class="sh_comment">//如果与某一候选人的姓名相同，就给他加一票</span></li><li>         <span class="sh_keyword">if</span><span class="sh_symbol">(</span><span class="sh_function">strcmp</span><span class="sh_symbol">(</span>leader_name<span class="sh_symbol">,</span>leader<span class="sh_symbol">[</span>j<span class="sh_symbol">].</span>name<span class="sh_symbol">)==</span><span class="sh_number">0</span><span class="sh_symbol">)</span> leader<span class="sh_symbol">[</span>j<span class="sh_symbol">].</span>count<span class="sh_symbol">++;</span></li><li>   <span class="sh_cbracket">}</span></li><li>   cout<span class="sh_symbol">&lt;&lt;</span>endl<span class="sh_symbol">;</span></li><li>   <span class="sh_keyword">for</span><span class="sh_symbol">(</span>i<span class="sh_symbol">=</span><span class="sh_number">0</span><span class="sh_symbol">;</span>i<span class="sh_symbol">&lt;</span><span class="sh_number">3</span><span class="sh_symbol">;</span>i<span class="sh_symbol">++)</span> <span class="sh_comment">//输出3个候选人的姓名与最后得票数</span></li><li>   <span class="sh_cbracket">{</span></li><li>      cout<span class="sh_symbol">&lt;&lt;</span>leader<span class="sh_symbol">[</span>i<span class="sh_symbol">].</span>name<span class="sh_symbol">&lt;&lt;</span><span class="sh_string">":"</span><span class="sh_symbol">&lt;&lt;</span>leader<span class="sh_symbol">[</span>i<span class="sh_symbol">].</span>count<span class="sh_symbol">&lt;&lt;</span>endl<span class="sh_symbol">;</span></li><li>   <span class="sh_cbracket">}</span></li><li>   <span class="sh_keyword">return</span> <span class="sh_number">0</span><span class="sh_symbol">;</span></li><li><span class="sh_cbracket">}</span></li></ol></pre><pre class="snippet-textonly sh_sourceCode" style="display:none;">#include &lt;iostream&gt;
+using namespace std;
+struct Person //声明结构体类型Person
+{
+   char name[20];
+   int count;
+};
+int main( )
+{
+   //定义Person类型的数组，内容为3个候选人的姓名和当前的得票数
+   Person leader[3]={"Li",0,"Zhang",0,"Fun",0};
+   int i,j;
+   char leader_name[20]; //leader_name为投票人所选的人的姓名
+   for(i=0;i&lt;10;i++)
+   {
+      cin&gt;&gt;leader_name; //先后输入10张票上所写的姓名
+      for(j=0;j&lt;3;j++) //将票上姓名与3个候选人的姓名比较
+         //如果与某一候选人的姓名相同，就给他加一票
+         if(strcmp(leader_name,leader[j].name)==0) leader[j].count++;
+   }
+   cout&lt;&lt;endl;
+   for(i=0;i&lt;3;i++) //输出3个候选人的姓名与最后得票数
+   {
+      cout&lt;&lt;leader[i].name&lt;&lt;":"&lt;&lt;leader[i].count&lt;&lt;endl;
+   }
+   return 0;
+}</pre></div></div>
+运行情况如下：<br>
+Zhang↙ (每次输入一个候选人的姓名)<br>
+Li↙<br>
+Fun↙<br>
+Li↙<br>
+Zhang↙<br>
+Li↙<br>
+Zhang↙<br>
+Li↙<br>
+Fun↙<br>
+Wang↙<br>
+Li:4 &nbsp;(输出3个候选人的姓名与最后得票数)<br>
+Zhang:3<br>
+Fun:2<br>
+<br>
+程序定义一个全局的结构体数组leader，它有3个元素，每一元素包含两个成员，即name(姓名)和count(得票数)。在定义数组时使之初始化，使3位候选人的票数都先置零。<br>
+<br>
+在这个例子中，也可以不用字符数组而用string方法的字符串变量来存放姓名数据，程序可修改如下：
+<div class="snippet-container" style="undefined;"><div class="sh_bright snippet-wrap"><div class="snippet-menu sh_sourceCode" style="display: none;"><pre><a class="snippet-copy sh_url" href="http://c.biancheng.net/cpp/biancheng/view/172.html#" style="display: none;">复制</a><a class="snippet-text sh_url" href="http://c.biancheng.net/cpp/biancheng/view/172.html#">纯文本</a><a class="snippet-window sh_url" href="http://c.biancheng.net/cpp/biancheng/view/172.html#">复制</a></pre></div><pre class="cpp sh_cpp snippet-formatted sh_sourceCode"><ol class="snippet-num"><li><span class="sh_preproc">#include</span> <span class="sh_string">&lt;iostream&gt;</span></li><li><span class="sh_preproc">#include</span> <span class="sh_string">&lt;string&gt;</span></li><li><span class="sh_keyword">using</span> <span class="sh_keyword">namespace</span> std<span class="sh_symbol">;</span></li><li><span class="sh_keyword">struct</span><span class="sh_normal"> </span><span class="sh_classname">Person</span></li><li><span class="sh_cbracket">{</span></li><li>   <span class="sh_usertype">string</span><span class="sh_normal"> </span>name<span class="sh_symbol">;</span><span class="sh_comment">//成员name为字符串变量</span></li><li>   <span class="sh_type">int</span> count<span class="sh_symbol">;</span></li><li><span class="sh_cbracket">}</span><span class="sh_symbol">;</span></li><li><span style="display:none;">&nbsp;</span></li><li><span class="sh_type">int</span> <span class="sh_function">main</span><span class="sh_symbol">(</span> <span class="sh_symbol">)</span></li><li><span class="sh_cbracket">{</span></li><li>   <span class="sh_usertype">Person</span><span class="sh_normal"> </span>leader<span class="sh_symbol">[</span><span class="sh_number">3</span><span class="sh_symbol">]=</span><span class="sh_cbracket">{</span><span class="sh_string">"Li"</span><span class="sh_symbol">,</span><span class="sh_number">0</span><span class="sh_symbol">,</span><span class="sh_string">"Zhang"</span><span class="sh_symbol">,</span><span class="sh_number">0</span><span class="sh_symbol">,</span><span class="sh_string">"Fun"</span><span class="sh_symbol">,</span><span class="sh_number">0</span><span class="sh_cbracket">}</span><span class="sh_symbol">;</span></li><li>   <span class="sh_type">int</span> i<span class="sh_symbol">,</span>j<span class="sh_symbol">;</span></li><li>   <span class="sh_usertype">string</span><span class="sh_normal"> </span>leader_name<span class="sh_symbol">;</span><span class="sh_comment">// leader_name为字符串变量</span></li><li>   <span class="sh_keyword">for</span><span class="sh_symbol">(</span>i<span class="sh_symbol">=</span><span class="sh_number">0</span><span class="sh_symbol">;</span>i<span class="sh_symbol">&lt;</span><span class="sh_number">10</span><span class="sh_symbol">;</span>i<span class="sh_symbol">++)</span></li><li>   <span class="sh_cbracket">{</span></li><li>      cin<span class="sh_symbol">&gt;&gt;</span>leader_name<span class="sh_symbol">;</span></li><li>      <span class="sh_keyword">for</span><span class="sh_symbol">(</span>j<span class="sh_symbol">=</span><span class="sh_number">0</span><span class="sh_symbol">;</span>j<span class="sh_symbol">&lt;</span><span class="sh_number">3</span><span class="sh_symbol">;</span>j<span class="sh_symbol">++)</span></li><li>      <span class="sh_keyword">if</span><span class="sh_symbol">(</span>leader_name<span class="sh_symbol">==</span>leader<span class="sh_symbol">[</span>j<span class="sh_symbol">].</span>name<span class="sh_symbol">)</span> leader<span class="sh_symbol">[</span>j<span class="sh_symbol">].</span>count<span class="sh_symbol">++</span><span class="sh_comment">//用“==”进行比较</span></li><li>   <span class="sh_cbracket">}</span></li><li>   cout<span class="sh_symbol">&lt;&lt;</span>endl<span class="sh_symbol">;</span></li><li>   <span class="sh_keyword">for</span><span class="sh_symbol">(</span>i<span class="sh_symbol">=</span><span class="sh_number">0</span><span class="sh_symbol">;</span>i<span class="sh_symbol">&lt;</span><span class="sh_number">3</span><span class="sh_symbol">;</span>i<span class="sh_symbol">++)</span></li><li>   <span class="sh_cbracket">{</span></li><li>      cout<span class="sh_symbol">&lt;&lt;</span>leader<span class="sh_symbol">[</span>i<span class="sh_symbol">].</span>name<span class="sh_symbol">&lt;&lt;</span><span class="sh_string">":"</span><span class="sh_symbol">&lt;&lt;</span>leader<span class="sh_symbol">[</span>i<span class="sh_symbol">].</span>count<span class="sh_symbol">&lt;&lt;</span>endl<span class="sh_symbol">;</span></li><li>   <span class="sh_cbracket">}</span></li><li>   <span class="sh_keyword">return</span> <span class="sh_number">0</span><span class="sh_symbol">;</span></li><li><span class="sh_cbracket">}</span></li></ol></pre><pre class="snippet-textonly sh_sourceCode" style="display:none;">#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+struct Person
+{
+   string name;//成员name为字符串变量
+   int count;
+};
+
+int main( )
+{
+   Person leader[3]={"Li",0,"Zhang",0,"Fun",0};
+   int i,j;
+   string leader_name;// leader_name为字符串变量
+   for(i=0;i&lt;10;i++)
+   {
+      cin&gt;&gt;leader_name;
+      for(j=0;j&lt;3;j++)
+      if(leader_name==leader[j].name) leader[j].count++//用“==”进行比较
+   }
+   cout&lt;&lt;endl;
+   for(i=0;i&lt;3;i++)
+   {
+      cout&lt;&lt;leader[i].name&lt;&lt;":"&lt;&lt;leader[i].count&lt;&lt;endl;
+   }
+   return 0;
+}</pre></div></div>
+运行情况与前相同。显然后一个程序节省内存空间，使用更方便,易读性更好。但是 有些C++系统不能对包含string成员的结构体变量初始化，需要作一些修改才能运行， 读者可上机试一下。</div>
+<div id="ad-arc-bottom-diy"><div><p><a href="http://fudao.biancheng.net/" target="_blank" style="color:#D33428;">C语言中文网推出辅导班啦，包括<span style="color: #008000;">「C语言辅导班、C++辅导班、算法/数据结构辅导班」</span>，全部都是一对一教学：一对一辅导 + 一对一答疑 + 布置作业 + 项目实践 + 永久学习。QQ在线，随时响应！</a></p><p style="margin-top:8px; padding-top:8px; border-top: 1px dashed #aaa;"><a class="col-link" href="http://c.biancheng.net/cpp/html/3464.html" target="_blank">为什么你总是被拉进各种购物群和电影群，原来这是一个小黑产！</a></p></div></div>
+<div id="ad-bottom-weixin" class="clearfix">
+<div class="left" style="width: 535px;">
+<p><span class="col-red">编程帮</span>，一个分享编程知识的公众号。跟着<a class="col-link" href="http://c.biancheng.net/cpp/about/author/" target="_blank">站长</a>一起学习，每天都有进步。</p>
+<p>通俗易懂，深入浅出，一篇文章只讲一个知识点。</p>
+<p>文章不深奥，不需要钻研，在公交、在地铁、在厕所都可以阅读，随时随地涨姿势。</p>
+<p>文章不涉及代码，不烧脑细胞，人人都可以学习。</p>
+<p>当你决定关注「编程帮」，你已然超越了90%的程序员！</p>
+</div>
+<div class="right" style="width: 150px;">
+<img width="150" src="./U020_files/erweima_biancheng.png" alt="编程帮二维码"><br>
+<span class="col-green">微信扫描二维码关注</span>
+</div>
+</div>
+<div class="art-info clearfix">
+<dl class="follow-us left hover-none"><dt>关注我们：</dt><dd class="weixin"><a href="http://c.biancheng.net/cpp/html/3391.html" target="_blank">微信公众号</a></dd><dd class="weibo"><a href="http://weibo.com/cyuyanzhongwenwang" target="_blank">新浪微博</a></dd><dd class="qq">读者QQ交流群：709109338</dd></dl>
+</div>
+</div>
+<div id="sidebar" class="sidebar">
+<div id="ad-sidebar-top" class="ad-google">
+<script async="" src="./U020_files/f(2).txt"></script>
+<ins class="adsbygoogle" style="display:inline-block;width:250px;height:250px" data-ad-client="ca-pub-1879607319104103" data-ad-slot="9494111365" data-adsbygoogle-status="done"><ins id="aswift_1_expand" style="display:inline-table;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:250px;background-color:transparent;"><ins id="aswift_1_anchor" style="display:block;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:250px;background-color:transparent;"><iframe width="250" height="250" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;width:250px;height:250px;" src="./U020_files/saved_resource(1).html"></iframe></ins></ins></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+<dl class="arc-list arc-c">
+<dt class="clearfix"><h4><span>本站精品教程</span></h4></dt>
+<dd><a href="http://c.biancheng.net/cpp/u/jiaocheng/">C语言教程</a></dd>
+<dd><a href="http://c.biancheng.net/cpp/biancheng/cpp/rumen/">C++教程</a></dd>
+<dd><a href="http://c.biancheng.net/cpp/u/c20/">C语言和内存</a></dd>
+<dd><a href="http://c.biancheng.net/cpp/u/c16/">C语言多文件编程（模块化开发）</a></dd>
+<dd><a href="http://c.biancheng.net/cpp/socket/">C/C++ socket编程（网络编程）</a></dd>
+<dd><a href="http://c.biancheng.net/cpp/linux/">Linux教程</a></dd>
+<dd><a href="http://c.biancheng.net/cpp/shell/">Shell教程</a></dd>
+<dd><a href="http://c.biancheng.net/cpp/windows/">Windows编程</a></dd>
+<dd><a href="http://data.biancheng.net/">数据结构与算法教程（更新中）</a></dd>
+</dl>
+<div class="sticker-sidebar">
+<p style="margin-bottom:8px; padding-bottom: 8px;border-bottom: 1px dashed #aaa;">
+<a class="col-link" href="http://c.biancheng.net/cpp/html/3464.html" target="_blank">为什么你总是被拉进各种购物群和电影群，原来这是一个小黑产！</a>
+</p>
+<p>
+读者QQ交流群：<b class="col-green qq-qun-number">709109338</b><br>
+验证消息：严长生（<span class="col-red">记得填写哦</span>）<br>
+<span style="display:inline-block; line-height:26px; vertical-align:top;">一键加群：</span>
+<a class="qq-qun-link" style="display:inline-block; line-height:0px;" target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=96d5ac796ff5f621c605efddb3309201c34479d6eafb4b730d3cef840e230462"><img height="22" border="0" src="./U020_files/group.png" alt="C语言中文网交流群" title="C语言中文网交流群"></a>
+</p>
+</div>
+<div id="weixin-sidebar">
+<img width="250" src="./U020_files/erweima_biancheng_sidebar.png" alt="编程帮二维码">
+<p><span class="col-green">编程帮</span>，一个分享编程知识的公众号，跟着<a class="col-link" href="http://c.biancheng.net/cpp/about/author/" target="_blank">站长</a>一起学习。</p>
+</div>
+<iframe id="weibo-sidebar" width="100%" height="400" class="share_self" frameborder="0" scrolling="no" src="./U020_files/index.html"></iframe>
+</div>
+</div>
+<div id="footer-wrap" class="clearfix">
+<div id="footer" class="clearfix">
+<div class="left" style="_width: 600px;">
+<ul id="nav-bottom" class="clearfix">
+<li>
+<a href="http://c.biancheng.net/cpp/html/1013.html" target="_blank" rel="nofollow">关于C语言中文网</a>
+<span class="blank">|</span>
+</li>
+<li>
+<a href="http://c.biancheng.net/cpp/about/author/" target="_blank" rel="nofollow">关于站长</a>
+<span class="blank">|</span>
+</li>
+<li>
+<a href="http://c.biancheng.net/cpp/about/tutorial/" target="_blank" rel="nofollow">如何才能完成一部教程</a>
+<span class="blank">|</span>
+</li>
+<li>
+<a href="http://c.biancheng.net/cpp/html/1014.html" target="_blank" rel="nofollow">联系我们</a>
+<span class="blank">|</span>
+</li>
+<li>
+<a href="http://c.biancheng.net/cpp/sitemap/" target="_blank" rel="nofollow">网站地图</a>
+<span class="blank">|</span>
+</li>
+<li>
+<a href="http://m.biancheng.net/" target="_blank" rel="nofollow">手机版网站</a>
+</li>
+</ul>
+<p>
+精美而实用的网站，关注编程技术，追求极致，让您轻松愉快的学习。<br>
+Copyright &#169;2011-2015 biancheng.net, All Rights Reserved，陕ICP备15000209号
+</p>
+</div>
+<img id="logo-bottom" class="right" src="./U020_files/logo_bottom.jpg" alt="底部Logo">
+</div>
+</div>
+<div id="qq-qun-float">
+<div class="box">
+<div class="filler">
+<p class="header">
+<img width="60" height="60" src="./U020_files/qq.png" alt="C语言中文网交流群"><br>
+<span style="font-size: 18px; color: #f9f9f9;">读者QQ交流群</span>
+</p>
+<p style="font-size: 20px;"><span class="col-green qq-qun-number">709109338</span></p>
+<p style="padding: 0px;">验证消息：<span class="col-red">严长生</span></p>
+<p><a class="qq-qun-link" style="display:inline-block; line-height:0px;" target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=96d5ac796ff5f621c605efddb3309201c34479d6eafb4b730d3cef840e230462"><img height="22" border="0" src="./U020_files/group.png" alt="C语言中文网交流群" title="C语言中文网交流群"></a></p>
+<span class="btn-close" id="btn-close-qq-qun">×</span>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+    var cmsPath = '/cpp', // CMS安装目录，不带 /
+        cmsTemplets = '/cpp/templets/new', // 模板目录，不带 /
+        cmsTempletsVer = 3.993;  // 版本号
+</script>
+<script src="./U020_files/jquery.min.js.下载" type="text/javascript"></script>
+<script src="./U020_files/common.js.下载" type="text/javascript"></script>
+<span id="cnzz-wrap">
+<script type="text/javascript">
+        var cnzz = {};
+
+        cnzz.positionHref = $("#position").children('a')[1];
+        cnzz.positionHref && ( cnzz.positionHref = cnzz.positionHref.getAttribute('href') );
+        cnzz.protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+        cnzz.webName = 'c';
+
+        cnzz.webIdObj = {
+            'c': '3875484',
+            'cpp': '4153548',
+            'swift': '5937701',
+            'shell': '5809059',
+            'danpianji': '5867261'
+        };
+
+        if(cnzz.positionHref) if( /^\/cpp\/biancheng/.test(cnzz.positionHref) ){
+            cnzz.webName = 'cpp';
+        }else if( /^\/cpp\/swift/.test(cnzz.positionHref) ){
+            cnzz.webName = 'swift';
+        }else if( /^\/cpp\/shell/.test(cnzz.positionHref) ){
+            cnzz.webName = 'shell';
+        }else if( /^\/cpp\/danpianji/.test(cnzz.positionHref) ){
+            cnzz.webName = 'danpianji';
+        }
+
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_"+ cnzz.webIdObj[cnzz.webName] +"'%3E%3C/span%3E%3Cscript src='" + cnzz.protocol + "s6.cnzz.com/stat.php%3Fid%3D"+ cnzz.webIdObj[cnzz.webName] +"' type='text/javascript'%3E%3C/script%3E"));
+    </script><span id="cnzz_stat_icon_4153548"><a href="http://www.cnzz.com/stat/website.php?web_id=4153548" target="_blank" title="站长统计">站长统计</a></span><script src="./U020_files/stat.php" type="text/javascript"></script><script src="./U020_files/core.php" charset="utf-8" type="text/javascript"></script>
+</span><iframe id="google_osd_static_frame_4450859244109" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;" src="./U020_files/saved_resource(2).html"></iframe>
+<script type="text/javascript">
+// 当前文章ID
+window.thisArtId = 2144;
+</script>
+
+</body></html>

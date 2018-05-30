@@ -128,7 +128,7 @@ void Usecase::init()
     }
     else if (_form == "html")
     {
-        path.replace(0, 1, "file:///E:/MyCode/qt/NewGenerationNetworkEducation/PatternKnowledgeEducationSystem");
+        path.replace(0, 1, "file:///E:/MyCode/qt/github/NewGenerationNetworkEducation/PatternKnowledgeEducationSystem");
         qcout << path;
         QUrl url(path);
         ui->textBrowser->setSource(url);
@@ -140,7 +140,7 @@ void Usecase::init()
         qcout << path;   //../knowledge/usecase/U008.swf输出是这个
         // 无法使用相对路径
         // path.replace(0, 1, "../PatternKnowledgeEducationSystem");
-        path.replace(0, 1, "E:/MyCode/qt/NewGenerationNetworkEducation/PatternKnowledgeEducationSystem");
+        path.replace(0, 1, "E:/MyCode/qt/github/NewGenerationNetworkEducation/PatternKnowledgeEducationSystem");
         qcout << path;
 
         //BUG:这个会不停的运行，然后占据着  使得不能触发按钮点击事件

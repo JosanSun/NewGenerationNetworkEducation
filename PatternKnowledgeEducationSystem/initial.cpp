@@ -65,22 +65,22 @@ void Initial::init()
     mMove=false;//mouse moving
     timer->start(1000);
 
-    QSqlQuery query;
-    query.exec("select * from student where name='" + QString::fromStdString(myUser.getName()) + "'");
-    while (query.next())
-    {
-        myUser.setSid(query.value(0).toInt());
-        myUser.setSex(query.value(3).toString().toStdString());
-        myUser.setAge(query.value(4).toInt());
-        myUser.setEducation(query.value(5).toString().toStdString());
-        //获得用户的认知模型setModel()
-    }
-    query.prepare("select * from behavior where sid=:sid");
+    QSqlQuery query(db);
+//    query.exec("select * from student where name='" + QString::fromStdString(myUser.getName()) + "'");
+//    while (query.next())
+//    {
+//        myUser.setSid(query.value(0).toInt());
+//        myUser.setSex(query.value(3).toString().toStdString());
+//        myUser.setAge(query.value(4).toInt());
+//        myUser.setEducation(query.value(5).toString().toStdString());
+//        //获得用户的认知模型setModel()
+//    }
+    query.prepare("select * from behavior where sid=:sid order by end desc");
     query.bindValue(":sid", myUser.getSid());
     query.exec();
     if (query.first())
-    {//用户在系统中有历史学习数据
-        query.last();
+    {
+        //用户在系统中有历史学习数据
         QString _kid = query.value(1).toString();
         currentKid = _kid;
         QString _first = _kid.left(1);
@@ -162,7 +162,7 @@ void Initial::openDatabase()
 
 void Initial::showFirstKnowledge()
 {
-    QSqlQuery query;
+    QSqlQuery query(db);
     query.prepare("select kid from recpath where sid=:sid and state=0 and orders=1");
     query.bindValue(":sid", myUser.getSid());
     query.exec();
@@ -193,7 +193,8 @@ void Initial::goToTeachWindowSlot()
 {
     QString _lastPoint = ui->lastPointnameLabel->text();
     if (_lastPoint == tr("无"))
-    {//用户无历史学习数据
+    {
+        //用户无历史学习数据
         QMessageBox msgBox;
         msgBox.setText(tr("提示"));
         msgBox.setInformativeText(tr("您是新用户，系统已为您推荐学习路线，是否开始学习？"));
@@ -207,12 +208,13 @@ void Initial::goToTeachWindowSlot()
             showFirstKnowledge();
             break;
         case QMessageBox::Cancel:
-            break;
+            return;
         }
     }
     else
-    {//在系统中检测到用户的历史学习数据
-        QSqlQuery query;
+    {
+        //在系统中检测到用户的历史学习数据
+        QSqlQuery query(db);
         query.prepare("select pass from behavior where sid=:sid and kid=:kid");
         query.bindValue(":sid", myUser.getSid());
         query.bindValue(":kid", currentKid);

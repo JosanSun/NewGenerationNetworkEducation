@@ -9,6 +9,8 @@
 #include <QTimer>
 #include <QSqlDatabase>
 
+#include "helper/learningpatterntest.h"
+
 namespace Ui {
 class UserInfoWidget;
 }
@@ -25,6 +27,7 @@ private slots:
     void updateTimeSlot();
     void modifyInformationSlot();
     void saveInformationSlot();
+    void on_learningTestButton_clicked();
 
 private:
     void openDatabase();
@@ -40,6 +43,7 @@ private:
     QWidget *behaviorWidget;
     QTableView *pathTableView;
     QTableView *behaviorTableView;
+    LearningPatternTest* testWidget = nullptr;
     QTimer *timer = nullptr;
 };
 
