@@ -1,16 +1,24 @@
 ﻿# Change Log
 # All notable changes to this project will be documented in this file.
 
+## [2.1.4] 2018-05-30
+### Added
+- 完成UI的合并工作
+- 继续增加教学案例和测试案例
+- 增加学习特征调查问卷【演示用】
+### ToDoList
+- 对于PPT，swf，html的文件打开方式，仍然是绝对路径的方式
+
 ## [2.1.3] 2018-05-28
-### UI修改
+### Added
+- 优化所罗门调查问卷
+### Changed
+- UI修改
+
 
 ## [2.1.2] 2018-05-13
 ### Fixed
 - 去掉除flash相关的warning警告。
-### ToDoList
-- 优化userinfowidget的界面
-- 修改knowledge部分。以及usecase部分
-- 对于PPT，swf，html的文件打开方式，仍然是绝对路径的方式。
 
 ## [2.1.1] 2018-05-04
 ### Added
@@ -19,10 +27,6 @@
 - 将所有的ui, 统一改为指针
 - 将所有的类名统一改为大写的方式
 - 将头文件统一改为标准写法
-### ToDoList
-- 优化userinfowidget的界面
-- 修改knowledge部分。以及usecase部分
-- 对于PPT，swf，html的文件打开方式，仍然是绝对路径的方式。
 
 ## [2.1] 2018-04-21
 ### Fixed
