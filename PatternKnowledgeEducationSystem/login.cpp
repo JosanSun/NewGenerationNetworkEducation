@@ -181,17 +181,18 @@ void Login::loginSlot()
         {
             if (query.value(2).toString() == _password)
             {
-                //对全局myUser进行部分初始化
+                //对全局myUser进行初始化
                 myUser.setName(_username.toStdString());
                 myUser.setPassword(_password.toStdString());
                 myUser.setSid(query.value(0).toInt());
-                myUser.setAge(query.value(3).toInt());
-                myUser.setEducation(query.value(4).toString().toStdString());
+                myUser.setSex(query.value(3).toString().toStdString());
+                myUser.setAge(query.value(4).toInt());
+                myUser.setEducation(query.value(5).toString().toStdString());
                 CogModel tmp;
-                tmp.setCogApproach(query.value(5).toString().toStdString());
-                tmp.setCogStrategy(query.value(6).toString().toStdString());
-                tmp.setCogExperience(query.value(7).toString().toStdString());
-                tmp.setMetaCogAbility(query.value(8).toString().toStdString());
+                tmp.setCogApproach(query.value(6).toString().toStdString());
+                tmp.setCogStrategy(query.value(7).toString().toStdString());
+                tmp.setCogExperience(query.value(8).toString().toStdString());
+                tmp.setMetaCogAbility(query.value(9).toString().toStdString());
                 myUser.setModel(tmp);
 
                 string curCogApproach = myUser.getModel().getCogApproach();

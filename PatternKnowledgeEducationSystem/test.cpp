@@ -421,6 +421,9 @@ void Test::submitTestSlot()
         query.bindValue(":kid", currentKid);
         query.exec();
 
+        qcout << myUser.getSid();
+        qcout << currentKid;
+
         //更新学习行为记录表中当前用户的最后一条学习记录，修改通过情况
         query.prepare("insert into behavior(sid,kid,cid,begin,end,pass,note) values(:sid,:kid,:cid,:begin,:end,:pass,:note)");
         query.bindValue(":sid", myUser.getSid());

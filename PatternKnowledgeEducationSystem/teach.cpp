@@ -77,7 +77,6 @@ void Teach::initUI()
     setWindowModality(Qt::ApplicationModal);
     setAttribute(Qt::WA_DeleteOnClose);
 
-//<<<<<<< HEAD
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);//无边框且最小化任务栏还原
 
     QPalette palette(this->palette());
@@ -91,10 +90,6 @@ void Teach::initUI()
 
     ui->currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
     ui->usernameLabel->setText(QString::fromStdString(myUser.getName()));
-//=======
-    ui->currentTimeLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd \nhh:mm:ss dddd"));
-    ui->usernameLabel->setText(QString::fromStdString(myUser.getName()));
-//>>>>>>> bf8d45bb619f2b1bf161c1692e40e41bf9d5bf70
 }
 
 //初始化教学界面
@@ -119,16 +114,59 @@ void Teach::init()
             //显示当前知识的description信息
             QString _descFileName = query.value(3).toString();
             _descFileName.replace(0, 1, "../PatternKnowledgeEducationSystem");
-            // qcout << _descFileName;
+            qcout << _descFileName;
             QFile _descFile(_descFileName);
-            if (!_descFile.open(QIODevice::ReadOnly | QIODevice::Text))
-                return;
-            QTextStream out(&_descFile);
-            while (!out.atEnd())
+            // QIODevice::Text 会改变原来文件的换行方式，不推荐这种打开方式
+            if(!_descFile.open(QIODevice::ReadOnly))
             {
-                //知识点描述窗口
-                ui->descriptionTextBrowser->setText(out.readAll());
+                QMessageBox::warning(this, tr("网络教学系统"),
+                                     tr("Cannot read file %1.\n%2.")
+                                     .arg(_descFile.fileName())
+                                     .arg(_descFile.errorString()));
+                return;
             }
+            //qcout << _descFile.readAll();
+            ui->descriptionTextBrowser->clear();
+
+            QTime t1, t2, t3, t4;
+            t1 = QTime::currentTime();
+            const QByteArray data = _descFile.readAll();
+            t2 = QTime::currentTime();
+            qcout << t1.msecsTo(t2);
+            QTextCodec::ConverterState state;
+            QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+            const QString text = codec->toUnicode(data.constData(), data.size(), &state);
+            //qcout << text;
+            t3 = QTime::currentTime();
+            qcout << t2.msecsTo(t3);
+            if (state.invalidChars > 0)
+            {
+                // Not a UTF-8 text - using system default locale
+                QTextCodec * codec1 = QTextCodec::codecForLocale();
+                qcout << codec1->name();
+                if (!codec1)
+                    return ;
+                qcout << "invalidChars > 0";
+                ui->descriptionTextBrowser->setText(codec1->toUnicode(data));
+            }
+            else
+            {
+                qcout << "invalidChars = 0";
+                ui->descriptionTextBrowser->setText(text);
+            }
+            t4 = QTime::currentTime();
+            qcout << t3.msecsTo(t4);
+
+//            if (!_descFile.open(QIODevice::ReadOnly | QIODevice::Text))
+//                return;
+//            // QTextStream out(&_descFile);
+//            qcout << out.readAll();
+//            out.seek(0);
+//            while (!out.atEnd())
+//            {
+//                //知识点描述窗口
+//                ui->descriptionTextBrowser->setText(out.readAll());
+//            }
             //领域知识按钮---查找与显示
             //显示当前知识的领域信息  领域信息以,相分隔
             QString _domain = query.value(2).toString();

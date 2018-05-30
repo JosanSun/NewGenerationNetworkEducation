@@ -108,7 +108,7 @@ void Usecase::init()
         // QIODevice::Text 会改变原来文件的换行方式，不推荐这种打开方式
         if(!inFile.open(QIODevice::ReadOnly))
         {
-            QMessageBox::warning(this, tr("TextEditor"),
+            QMessageBox::warning(this, tr("网络教学系统"),
                                  tr("Cannot read file %1.\n%2.")
                                  .arg(inFile.fileName())
                                  .arg(inFile.errorString()));

@@ -119,8 +119,11 @@ void UserInfoWidget::init()
     pathmodel->setHeaderData(2, Qt::Horizontal, tr("开始学习时间"));
     pathmodel->setHeaderData(3, Qt::Horizontal, tr("得分"));
     pathTableView->setModel(pathmodel);
-    pathTableView->horizontalHeader()->setStretchLastSection(true);
-    pathTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    // 使得tableview的单元格的内容可以自适应内容大小
+    pathTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    //pathTableView->horizontalHeader()->setStretchLastSection(true);
+    // pathTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    //pathTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     pathTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     if (!haveBehaviorTab)
@@ -128,6 +131,7 @@ void UserInfoWidget::init()
         behaviorWidget = new QWidget();
         behaviorTableView = new QTableView(behaviorWidget);
         behaviorTableView->setGeometry(8, 8, 521, 271);
+        // behaviorTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
         ui->tabWidget->addTab(behaviorWidget, tr("用户学习记录表"));
         haveBehaviorTab = 1;
     }
@@ -145,8 +149,9 @@ void UserInfoWidget::init()
     behaviormodel->setHeaderData(3, Qt::Horizontal, tr("结束学习时间"));
     behaviormodel->setHeaderData(4, Qt::Horizontal, tr("笔记记录"));
     behaviorTableView->setModel(behaviormodel);
-    behaviorTableView->horizontalHeader()->setStretchLastSection(true);
-    behaviorTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    behaviorTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+//    behaviorTableView->horizontalHeader()->setStretchLastSection(true);
+//    behaviorTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     behaviorTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
 

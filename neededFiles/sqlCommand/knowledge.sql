@@ -59,6 +59,67 @@ INSERT INTO `about` VALUES ('P002', '0', 'B009,B011');
 INSERT INTO `about` VALUES ('P003', '0', 'B010,B013');
 
 -- ----------------------------
+-- Table structure for patterntest
+-- ----------------------------
+DROP TABLE IF EXISTS `patterntest`;
+CREATE TABLE `patterntest` (
+  `qid` int(255) NOT NULL AUTO_INCREMENT,
+  `content` varchar(255) NOT NULL,
+  `a` varchar(255) NOT NULL,
+  `b` varchar(255) NOT NULL,
+  PRIMARY KEY (`qid`)
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of patterntest
+-- ----------------------------
+INSERT INTO `patterntest` VALUES ('1', '为了较好地理解某些事物，我首先', '试试看', '深思熟虑');
+INSERT INTO `patterntest` VALUES ('2', '我办事喜欢', '讲究实际', '标新立异');
+INSERT INTO `patterntest` VALUES ('3', '当我回想以前做过的事，我的脑海中大多会出现', '一幅画面', '一些话语');
+INSERT INTO `patterntest` VALUES ('4', '我往往会', '明了事物的细节但不明其总体结构', '明了事物的总体结构但不明其细节');
+INSERT INTO `patterntest` VALUES ('5', '在学习某些东西时, 我不禁会', '谈论它', '思考它');
+INSERT INTO `patterntest` VALUES ('6', '如果我是一名教师，我比较喜欢教', '关于事实和实际情况的课程关于思想和理论方面的课程关于事实和实际情况的课程', '关于思想和理论方面的课程');
+INSERT INTO `patterntest` VALUES ('7', '我比较偏爱的获取新信息的媒体是', '图画、图解、图形及图象', '书面指导和言语信息');
+INSERT INTO `patterntest` VALUES ('8', '一旦我了解了', '事物的所有部分, 我就能把握其整体', '事物的整体，我就知道其构成部分');
+INSERT INTO `patterntest` VALUES ('9', '在学习小组中遇到难题时，我通常会', '挺身而出，畅所欲言', '往后退让，倾听意见');
+INSERT INTO `patterntest` VALUES ('10', '我发现比较容易学习的是', '事实性内容', '概念性内容');
+INSERT INTO `patterntest` VALUES ('11', '在阅读一本带有许多插图的书时，我一般会', '仔细观察插图', '集中注意文字');
+INSERT INTO `patterntest` VALUES ('12', '当我解决数学题时，我常常', '思考如何一步一步求解', '先看解答，然后设法得出解题步骤');
+INSERT INTO `patterntest` VALUES ('13', '在我修课的班级中，', '我通常结识许多同学', '我认识的同学寥寥无几');
+INSERT INTO `patterntest` VALUES ('14', '在阅读非小说类作品时，我偏爱', '那些能告诉我新事实和教我怎么做的东西', '那些能启发我思考的东西');
+INSERT INTO `patterntest` VALUES ('15', '我喜欢的教师是', '在黑板上画许多图解的人', '花许多时间讲解的人');
+INSERT INTO `patterntest` VALUES ('16', '当我在分析故事或小说时，', '我想到各种情节并试图把他们结合起来去构想主题', '当我读完时只知道主题是什么，然后我得回头去寻找有关情节');
+INSERT INTO `patterntest` VALUES ('17', '当我做家庭作业时，我比较喜欢', '一开始就立即做解答', '首先设法理解题意');
+INSERT INTO `patterntest` VALUES ('18', '我记得最牢是', '看到的东西', '听到的东西');
+INSERT INTO `patterntest` VALUES ('19', '我比较喜欢', '确定性的想法', '推论性的想法');
+INSERT INTO `patterntest` VALUES ('20', '我特别喜欢教师', '向我条理分明地呈示材料', '先给我一个概貌，再将材料与其他论题相联系');
+INSERT INTO `patterntest` VALUES ('21', '我喜欢', '在小组中学习', '独自学习');
+INSERT INTO `patterntest` VALUES ('22', '我更喜欢被认为是：', '对工作细节很仔细', '对工作很有创造力');
+INSERT INTO `patterntest` VALUES ('23', '当要我到一个新的地方去时，我喜欢', '要一幅地图', '要书面指南');
+INSERT INTO `patterntest` VALUES ('24', '我学习时', '总是按部就班，我相信只要努力，终有所得', '我有时完全糊涂，然后恍然大悟');
+INSERT INTO `patterntest` VALUES ('25', '我办事时喜欢', '试试看', '想好再做');
+INSERT INTO `patterntest` VALUES ('26', '当我阅读趣闻时, 我喜欢作者', '以开门见山的方式叙述', '以新颖有趣的方式叙述');
+INSERT INTO `patterntest` VALUES ('27', '当我在上课时看到一幅图, 我通常会清晰地记着', '那幅图', '教师对那幅图的解说');
+INSERT INTO `patterntest` VALUES ('28', '当我思考一大段信息资料时，我通常', '注意细节而忽视概貌', '先了解概貌而后深入细节');
+INSERT INTO `patterntest` VALUES ('29', '我最容易记住', '我做过的事', '我想过的许多事');
+INSERT INTO `patterntest` VALUES ('30', '当我执行一项任务是，我喜欢', '掌握一种方法', '想出多种方法');
+INSERT INTO `patterntest` VALUES ('31', '当有人向我展示资料时，我喜欢', '图表', '概括其结果的文字');
+INSERT INTO `patterntest` VALUES ('32', '当我写文章时，我通常', '先思考和着手写文章的开头，然后循序渐进。', '先思考和写作文章的不同部分，然后加以整理');
+INSERT INTO `patterntest` VALUES ('33', '当我必须参加小组合作课题时，我要', '大家首先“集思广益”，人人贡献主意', '各人分头思考，然后集中起来比较各种想法');
+INSERT INTO `patterntest` VALUES ('34', '当我要赞扬他人时，我说他是', '很敏感的', '想象力丰富的');
+INSERT INTO `patterntest` VALUES ('35', '当我在聚会时与人见过面，我通常会记得', '他们的模样', '他们的自我介绍');
+INSERT INTO `patterntest` VALUES ('36', '当我学习新的科目时, 我喜欢', '全力以赴，尽量学得多学得好', '试图建立该科目与其他有关科目的联系');
+INSERT INTO `patterntest` VALUES ('37', '我通常被他人认为是', '外向的', '保守的');
+INSERT INTO `patterntest` VALUES ('38', '我喜欢的课程内容主要是', '具体材料（事实、数据）', '抽象材料 (概念、理论)');
+INSERT INTO `patterntest` VALUES ('39', '在娱乐方面，我喜欢', '看电视', '看书');
+INSERT INTO `patterntest` VALUES ('40', '有些教师讲课时先给出一个提纲，这种提纲对我', '有所帮助', '很有帮助');
+INSERT INTO `patterntest` VALUES ('41', '我认为只给合作的群体打一个分数的想法', '吸引我', '不吸引我');
+INSERT INTO `patterntest` VALUES ('42', '当我长时间地从事计算工作时', '我喜欢重复我的步骤并仔细地检查我的工作', '我认为检查工作非常无聊，我是在逼迫自己这么干');
+INSERT INTO `patterntest` VALUES ('43', '我能画下我去过的地方', '很容易且相当精确', '很困难且没有许多细节');
+INSERT INTO `patterntest` VALUES ('44', '当在小组中解决问题时，我更可能是', '思考解决问题的步骤', '思考可能的结果及其在更广泛的领域内的应用');
+
+
+-- ----------------------------
 -- Table structure for behavior
 -- ----------------------------
 DROP TABLE IF EXISTS `behavior`;

@@ -220,7 +220,7 @@ QPushButton#buttonClose:pressed
 </string>
         </property>
         <property name="text">
-         <string>上次学习到：</string>
+         <string>正在学习：</string>
         </property>
        </widget>
        <widget class="QLabel" name="lastPointnameLabel">
