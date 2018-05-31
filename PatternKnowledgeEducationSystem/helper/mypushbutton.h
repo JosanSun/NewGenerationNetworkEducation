@@ -16,8 +16,14 @@ public:
     void mousePressEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
 
+    QString getInfo();
+    void setInfo(const QString& str);
+
 signals:
     void clicked(QString);
+
+private:
+    QString info;
 };
 
 #endif // MYPUSHBUTTON_H

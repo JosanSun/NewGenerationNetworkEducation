@@ -27,6 +27,7 @@ public:
 
 signals:
     void closeSignal();
+    void nextKnow();
 
 protected:
     //mouse func
@@ -47,12 +48,16 @@ private slots:
     //void updateCurrentKidSlot();
     //void testSlot();   
     void on_nextKnowledgeButton_clicked();
+    QString nextKnowledge(const QString cur);
+    QString getFirstKnowledge();
+    QString getKnowledgeName(QString kid);
 
 private:
     void openDatabase();
     void initUI();
     void init();
     void openXml(QString);
+    void showPriorAndNext();
 
 private:
     Ui::Teach* ui;

@@ -19,3 +19,14 @@ void MyPushButton::mouseReleaseEvent(QMouseEvent * /* e */)
         myLabelPressed = 0;
     }
 }
+
+
+QString MyPushButton::getInfo()
+{
+    return info;
+}
+
+void MyPushButton::setInfo(const QString &str)
+{
+    info = str;
+}

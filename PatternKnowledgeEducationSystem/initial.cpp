@@ -304,6 +304,15 @@ void Initial::goToTeachWindowSlot()
     teachWindow = new Teach();
     teachWindow->show();
     connect(teachWindow, &Teach::destroyed, this, &Initial::updateCurrentKidSlot);
+    connect(teachWindow, &Teach::nextKnow, this, &Initial::again);
+}
+
+void Initial::again()
+{
+    teachWindow = new Teach();
+    teachWindow->show();
+    connect(teachWindow, &Teach::destroyed, this, &Initial::updateCurrentKidSlot);
+    connect(teachWindow, &Teach::nextKnow, this, &Initial::again);
 }
 
 //测试模块

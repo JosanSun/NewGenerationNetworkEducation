@@ -39,6 +39,7 @@ private slots:
     void goToTestWindowSlot();
     void goToUserWindowSlot();
     void updateCurrentKidSlot();
+    void again();
 
 private:
     void initUI();

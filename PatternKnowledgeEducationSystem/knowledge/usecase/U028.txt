@@ -1,0 +1,51 @@
+C++引用及常引用
+
+一、变量的引用：
+
+引用：就是某一变量（目标）的一个别名，对引用的操作与对变量直接操作完全一样。
+
+引用的声明方法：类型标识符 &引用名=目标变量名；
+
+ 例：char ch;
+
+       char &rp=ch;
+
+ 1)引用仅是变量的别名，而不是实实在在地定义了一个变量，因此引用本身并不占用内存，而是和目标变量共同指向目标变量的内存地址.
+
+ 2）表达式中的取地址符&不再是取变量的地址，而是用来表示该变量是引用类型的变量。
+
+ 3)定义一个引用时，必须对其初始化。
+
+ 示例代码：
+
+#include <stdio.h>
+#include <iostream>
+using namespace std;
+ 
+//c++中的引用实例
+void fun(int &x){
+     printf("形式参数的值为：%d\n",x);
+     printf("形式参数的地址为：%d\n",&x);
+     x+=10;
+}
+void fun2(int *num){
+  printf("形式参数的值为：%d\n",*num);
+  printf("形式参数的地址值为：%d\n",num); //2686724
+  printf("形式参数的地址为：%d\n",&num);  //2686704 这个和
+  *num =(*num)+10;
+ 
+}
+ 
+int main(void){
+   int num = 4,a=3;
+ 
+    printf("实参num的值为：%d\n",num);
+    printf("实参num的地址为：%d\n",&num);//都是一样的
+    fun(num);
+   cout<<"num的值为："<<num<<endl; //14 num的值改啦
+ 
+   fun2(&a);
+   printf("实参a的值为：%d\n",a);
+   printf("实参a的地址为：%d\n",&a);//
+   return 0;
+}

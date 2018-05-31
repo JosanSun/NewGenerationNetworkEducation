@@ -1,0 +1,57 @@
+C++实现动态多维数组
+
+在C++中多维数组是利用数组的数组来实现的，即
+
+int *ia = new int[n];
+
+可以动态创建包含n个元素的数组，如果把每个元素换成数组就成为多维数组了，
+
+int (*ia)[10];
+ia = new int[10][10];
+
+不能使用int* ia[10]来声明多维数组，此时表示的是包含10个指向int*元素的数组，上面创建的数组需要指定第二维后面元素的大小，为了创建不定大小的动态多维数组，我们需要使用一下方式创建：
+
+    int **arr = new int*[n];
+
+    for (int i = 0; i < n; ++i)
+    {
+        arr[i] = new int[m];
+    }
+
+不能使用int ** ia = new int[n][m]的方式创建多维数组。
+
+删除多维数组的时候需要先把每个元素进行删除，然后再删除最外面的数组，代码如下：
+
+    for (int i = 0; i < n; ++i)
+    {
+        delete[] arr[i];
+    }
+    delete[] arr;
+
+完整的使用动态多维数组的代码如下：
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int n;
+    cout << "Please input a number: ";
+    cin >> n;
+    cout << endl;
+    int **arr = new int*[n];
+
+    for (int i = 0; i < n; ++i)
+    {
+        arr[i] = new int[n];
+    }
+
+    for (int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < n; ++j)
+        {
+            cout << i + j<<" ";
+            arr[i][j] = i*j;
+        }
+        cout << endl;
+    }

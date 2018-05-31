@@ -107,12 +107,12 @@ void Teach::init()
     qcout << currentKid;
     if (_first == "B")
     {
-        //当前知识点是基本知识节点
+        // 当前知识点是基本知识节点
         query.exec("select * from bk where bid='" + currentKid + "'");
         while (query.next())
         {
             ui->pointnameLabel->setText(query.value(1).toString());
-            //显示当前知识的description信息
+            // 显示当前知识的description信息
             QString _descFileName = query.value(3).toString();
             _descFileName.replace(0, 1, "../PatternKnowledgeEducationSystem");
             qcout << _descFileName;
@@ -202,157 +202,7 @@ void Teach::init()
             connect(usecaseButton, pfn2, this, &Teach::openUsecaseSlot);
             ++inx;
         }
-        //显示当前知识的前驱后继
-        query.exec("select * from about where kid='" + currentKid + "'");
-        while (query.next())
-        {
-            if (query.value(1).toInt() == 0)
-            {
-                //前驱
-                QString _about = query.value(2).toString();
-                QString _sep = ",";
-                int inx = 1;
-                int pos = _about.indexOf(_sep);
-                while (pos != -1)
-                {
-                    MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
-                    QString buttonText = "";
-                    QString _aboutKid = _about.left(pos);
-                    QString _singleKid = _aboutKid.left(4);
-                    while (!_singleKid.isEmpty())
-                    {
-                        QString _first = _singleKid.left(1);
-                        if (_first == "B")
-                        {
-                            QSqlQuery query(db);
-                            query.exec("select title from bk where bid='" + _singleKid + "'");
-                            while (query.next())
-                            {
-                                buttonText += query.value(0).toString();
-                            }
-                        }
-                        else if (_first == "P")
-                        {
-                            QSqlQuery query(db);
-                            query.exec("select title from pk where kid='" + _aboutKid + "'");
-                            while (query.next())
-                            {
-                                buttonText += query.value(0).toString();
-                            }
-                        }
-                        _aboutKid = _aboutKid.remove(0, 4);
-                        _singleKid = _aboutKid.left(4);
-                    }
-                    aboutKnowButton->setText(buttonText);
-                    aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 310, 80, 23);
-                    _about = _about.remove(0, pos + 1);
-                    ++inx;
-                    pos = _about.indexOf(_sep);
-                }
-                //处理最后一个前驱
-                MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
-                QString buttonText = "";
-                QString _singleKid = _about.left(4);
-                while (!_singleKid.isEmpty())
-                {
-                    QString _first = _singleKid.left(1);
-                    if (_first == "B"){
-                        QSqlQuery query1(db);
-                        query1.exec("select title from bk where bid='" + _singleKid + "'");
-                        while (query1.next()){
-                            buttonText += query1.value(0).toString();
-                        }
-                    }
-                    else if (_first == "P"){
-                        QSqlQuery query1(db);
-                        query1.exec("select title from pk where pid='" + _singleKid + "'");
-                        while (query1.next()){
-                            buttonText += query1.value(0).toString();
-                        }
-                    }
-                    _about = _about.remove(0, 4);
-                    _singleKid = _about.left(4);
-                }
-                aboutKnowButton->setText(buttonText);
-                aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 310, 80, 23);
-            }
-            else if (query.value(1).toInt() == 1)
-            {
-                //后继
-                QString _about = query.value(2).toString();
-                QString _sep = ",";
-                int inx = 1;
-                int pos = _about.indexOf(_sep);
-                while (pos != -1)
-                {
-                    MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
-                    QString buttonText = "";
-                    QString _aboutKid = _about.left(pos);
-                    QString _singleKid = _aboutKid.left(4);
-                    while (!_singleKid.isEmpty())
-                    {
-                        QString _first = _singleKid.left(1);
-                        if (_first == "B")
-                        {
-                            QSqlQuery query(db);
-                            query.exec("select title from bk where bid='" + _singleKid + "'");
-                            while (query.next())
-                            {
-                                buttonText += query.value(0).toString();
-                            }
-                        }
-                        else if (_first == "P")
-                        {
-                            QSqlQuery query(db);
-                            query.exec("select title from pk where kid='" + _aboutKid + "'");
-                            while (query.next())
-                            {
-                                buttonText += query.value(0).toString();
-                            }
-                        }
-                        _aboutKid = _aboutKid.remove(0, 4);
-                        _singleKid = _aboutKid.left(4);
-                    }
-                    aboutKnowButton->setText(buttonText);
-                    aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 350, 80, 23);
-                    _about = _about.remove(0, pos + 1);
-                    ++inx;
-                    pos = _about.indexOf(_sep);
-                }
-                //处理最后一个后继
-                MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
-                QString buttonText = "";
-                QString _singleKid = _about.left(4);
-                while (!_singleKid.isEmpty())
-                {
-                    QString _first = _singleKid.left(1);
-                    if (_first == "B")
-                    {
-                        QSqlQuery query1(db);
-                        query1.exec("select title from bk where bid='" + _singleKid + "'");
-                        while (query1.next())
-                        {
-                            buttonText += query1.value(0).toString();
-                        }
-                    }
-                    else if (_first == "P")
-                    {
-                        QSqlQuery query1(db);
-                        query1.exec("select title from pk where pid='" + _singleKid + "'");
-                        while (query1.next())
-                        {
-                            buttonText += query1.value(0).toString();
-                        }
-                    }
-                    _about = _about.remove(0, 4);
-                    _singleKid = _about.left(4);
-                }
-                aboutKnowButton->setText(buttonText);
-                aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 350, 80, 23);
-            }
-        }
     }
-    //跟上面"B"类似
     else if (_first == "P")
     {
         //当前知识节点是模式知识节点
@@ -403,158 +253,131 @@ void Teach::init()
             connect(usecaseButton, pfn5, this, &Teach::openUsecaseSlot);
             ++inx;
         }
+    }
+    showPriorAndNext();
+}
 
-        //显示当前知识的前驱后继
-        query.exec("select * from about where kid='" + currentKid + "'");
-        while (query.next())
+void Teach::showPriorAndNext()
+{
+    QSqlQuery query(db);
+    //显示当前知识的前驱后继
+    query.exec("select * from about where kid='" + currentKid + "'");
+    int nPrior = 0;
+    int nNext = 0;
+    while (query.next())
+    {
+        if (query.value(1).toInt() == 0)
         {
-            if (query.value(1).toInt() == 0)
-            {//前驱
-                QString _about = query.value(2).toString();
-                QString _sep = ",";
-                int inx = 1;
-                int pos = _about.indexOf(_sep);
-                while (pos != -1)
-                {
-                    MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
-                    QString buttonText = "";
-                    QString _aboutKid = _about.left(pos);
-                    QString _singleKid = _aboutKid.left(4);
-                    while (!_singleKid.isEmpty())
-                    {
-                        QString _first = _singleKid.left(1);
-                        if (_first == "B")
-                        {
-                            QSqlQuery query(db);
-                            query.exec("select title from bk where bid='" + _singleKid + "'");
-                            while (query.next())
-                            {
-                                buttonText += query.value(0).toString();
-                            }
-                        }
-                        else if (_first == "P")
-                        {
-                            QSqlQuery query(db);
-                            query.exec("select title from pk where kid='" + _aboutKid + "'");
-                            while (query.next()){
-                                buttonText += query.value(0).toString();
-                            }
-                        }
-                        _aboutKid = _aboutKid.remove(0, 4);
-                        _singleKid = _aboutKid.left(4);
-                    }
-                    aboutKnowButton->setText(buttonText);
-                    aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 310, 80, 23);
-                    _about = _about.remove(0, pos + 1);
-                    ++inx;
-                    pos = _about.indexOf(_sep);
-                }
-                MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
-                QString buttonText = "";
-
-                QString _singleKid = _about.left(4);
+            //前驱
+            QString _about = query.value(2).toString();
+            QString _sep = ",";
+            qcout << _about;
+            int inx = 1;
+            int pos = _about.indexOf(_sep);
+            QString _aboutKid;
+            QString _singleKid;
+            do
+            {
+                _aboutKid = _about.left(4);
+                _singleKid = _aboutKid.left(4);
+                qcout << _singleKid;
                 while (!_singleKid.isEmpty())
                 {
-                    QString _first = _singleKid.left(1);
-                    if (_first == "B")
-                    {
-                        QSqlQuery query1(db);
-                        query1.exec("select title from bk where bid='" + _singleKid + "'");
-                        while (query1.next())
-                        {
-                            buttonText += query1.value(0).toString();
-                        }
-                    }
-                    else if (_first == "P")
-                    {
-                        QSqlQuery query1(db);
-                        query1.exec("select title from pk where pid='" + _singleKid + "'");
-                        while (query1.next())
-                        {
-                            buttonText += query1.value(0).toString();
-                        }
-                    }
-                    _about = _about.remove(0, 4);
-                    _singleKid = _about.left(4);
-                }
-                aboutKnowButton->setText(buttonText);
-                aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 310, 80, 23);
-            }
-            else if (query.value(1).toInt() == 1)
-            {//后继
-                QString _about = query.value(2).toString();
-                QString _sep = ",";
-                int inx = 1;
-                int pos = _about.indexOf(_sep);
-                while (pos != -1)
-                {
+                    QString buttonText = getKnowledgeName(_singleKid);
+                    qcout << _singleKid;
                     MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
-                    QString buttonText = "";
-                    QString _aboutKid = _about.left(pos);
-                    QString _singleKid = _aboutKid.left(4);
-                    while (!_singleKid.isEmpty())
-                    {
-                        QString _first = _singleKid.left(1);
-                        if (_first == "B")
-                        {
-                            QSqlQuery query(db);
-                            query.exec("select title from bk where bid='" + _singleKid + "'");
-                            while (query.next())
-                            {
-                                buttonText += query.value(0).toString();
-                            }
-                        }
-                        else if (_first == "P")
-                        {
-                            QSqlQuery query(db);
-                            query.exec("select title from pk where kid='" + _aboutKid + "'");
-                            while (query.next())
-                            {
-                                buttonText += query.value(0).toString();
-                            }
-                        }
-                        _aboutKid = _aboutKid.remove(0, 4);
-                        _singleKid = _aboutKid.left(4);
-                    }
                     aboutKnowButton->setText(buttonText);
-                    aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 350, 80, 23);
+                    aboutKnowButton->setInfo(_singleKid);
+                    aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 310, 80, 23);
+                    ++nPrior;
+                    connect(aboutKnowButton, &MyPushButton::clicked,
+                            [=]()
+                    {
+                        currentKid = aboutKnowButton->getInfo();
+                        emit nextKnow();
+                        this->close();
+                    });
+
+                    if(pos == -1)
+                    {
+                        break;
+                    }
                     _about = _about.remove(0, pos + 1);
+                    qcout << _about;
                     ++inx;
                     pos = _about.indexOf(_sep);
+                    _aboutKid = _about.left(pos);
+                    _singleKid = _aboutKid.left(4);
+                    qcout << pos;
                 }
-                MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
-                QString buttonText = "";
+            }while (pos != -1);
+        }
+        else if (query.value(1).toInt() == 1)
+        {
 
-                QString _singleKid = _about.left(4);
-                while (!_singleKid.isEmpty()){
-                    QString _first = _singleKid.left(1);
-                    if (_first == "B")
+            //后继
+            QString _about = query.value(2).toString();
+            QString _sep = ",";
+            qcout << _about;
+            int inx = 1;
+            int pos = _about.indexOf(_sep);
+            QString _aboutKid;
+            QString _singleKid;
+            do
+            {
+                _aboutKid = _about.left(pos);
+                _singleKid = _aboutKid.left(4);
+                qcout << _singleKid;
+                while (!_singleKid.isEmpty())
+                {
+                    QString buttonText = getKnowledgeName(_singleKid);
+                    qcout << _singleKid;
+                    MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
+                    aboutKnowButton->setText(buttonText);
+                    aboutKnowButton->setInfo(_singleKid);
+                    aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 350, 80, 23);
+                    ++nNext;
+                    connect(aboutKnowButton, &MyPushButton::clicked,
+                            [=]()
                     {
-                        QSqlQuery query1(db);
-                        query1.exec("select title from bk where bid='" + _singleKid + "'");
-                        while (query1.next())
-                        {
-                            buttonText += query1.value(0).toString();
-                        }
-                    }
-                    else if (_first == "P")
+                        currentKid = aboutKnowButton->getInfo();
+                        emit nextKnow();
+                        this->close();
+                    });
+
+                    if(pos == -1)
                     {
-                        QSqlQuery query1(db);
-                        query1.exec("select title from pk where pid='" + _singleKid + "'");
-                        while (query1.next())
-                        {
-                            buttonText += query1.value(0).toString();
-                        }
+                        break;
                     }
-                    _about = _about.remove(0, 4);
-                    _singleKid = _about.left(4);
+                    _about = _about.remove(0, pos + 1);
+                    qcout << _about;
+                    ++inx;
+                    pos = _about.indexOf(_sep);
+                    _aboutKid = _about.left(pos);
+                    _singleKid = _aboutKid.left(4);
+                    qcout << pos;
                 }
-                aboutKnowButton->setText(buttonText);
-                aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 350, 80, 23);
-            }
+            }while (pos != -1);
         }
     }
+    qcout << nPrior <<" : "<<
+             nNext;
+    if(0 == nPrior)
+    {
+        qcout << 1;
+        MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
+        aboutKnowButton->setText(tr("无前驱"));
+        aboutKnowButton->setGeometry(110, 310, 80, 23);
+    }
+    if(0 == nNext)
+    {
+        qcout << 1;
+        MyPushButton *aboutKnowButton = new MyPushButton(ui->groupBox_2);
+        aboutKnowButton->setText(tr("无后继"));
+        aboutKnowButton->setGeometry(110, 350, 80, 23);
+    }
 }
+
 
 //重写鼠标函数实现窗口自由移动
 void Teach::mousePressEvent(QMouseEvent *event)
@@ -700,23 +523,6 @@ void Teach::openUsecaseSlot(QString casename)
 {
     QSqlQuery query(db);
     currentCid = casename;
-//    query.prepare("insert into behavior(sid,kid,cid,begin,end,pass,note) "
-//                  "values(:sid,:kid,:cid,:begin,:end,:pass,:note)");
-//    query.bindValue(":sid", myUser.getSid());
-//    query.bindValue(":kid", currentKid);
-//    query.bindValue(":cid", currentCid);
-//    query.bindValue(":begin", QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss"));
-//    query.bindValue(":end", QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss"));
-//    query.bindValue(":pass", 0);
-//    query.bindValue(":note", tr("学习教学案例"));
-//    if(!query.exec())
-//    {
-//        qcout << query.lastError();
-//    }
-//    else
-//    {
-//        qcout << "Sql executes sucessfully!";
-//    }
 
     QString _form = casename.remove(0, 5);
     if (_form == "ppt")
@@ -744,35 +550,24 @@ void Teach::openUsecaseSlot(QString casename)
         QDesktopServices::openUrl(QUrl(path, QUrl::TolerantMode));
     }
     else
-    {//否则进入案例播放界面
+    {
+        //否则进入案例播放界面
         usecaseWindow = new Usecase();
         usecaseWindow->show();
-        connect(usecaseWindow, &Usecase::destroyed, this, &Teach::updateBehaviorTableSlot);
+        //connect(usecaseWindow, &Usecase::destroyed, this, &Teach::updateBehaviorTableSlot);
     }
 }
 
 //重新播放案例
 void Teach::playAgainSlot()
 {
-    //首先记录上次学习的案例的结束时间以及通过情况
-//    QSqlQuery query(db);
-//    query.prepare("update behavior set end=:end,pass=0 where sid=:sid and kid=:kid and cid=:cid");
-//    query.bindValue(":end", QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss"));
-//    query.bindValue(":sid", myUser.getSid());
-//    query.bindValue(":kid", currentKid);
-//    query.bindValue(":cid", currentCid);
-//    query.exec();
     //重新播放刚刚的实例
     openUsecaseSlot(currentCid);
 }
 
+// 智能推荐教学案例
 void Teach::changeCaseSlot()
 {
-    qcout << 1;
-    for(auto x:caseNames)
-    {
-        qcout << x;
-    }
     if(caseNames.empty())
     {
         QMessageBox::information(this, tr("错误"), tr("这个知识点没有教学案例，请联系管理员！"));
@@ -782,7 +577,27 @@ void Teach::changeCaseSlot()
     {
         int sz = static_cast<int>(caseNames.size());
         int idx = rand() % sz;
-        openUsecaseSlot(caseNames[idx]);
+
+        int num = 0;
+        while(num < sz)
+        {
+            QString casename = caseNames[idx];
+            QString _form = casename.remove(0, 5);
+            if (_form == "ppt" || _form == "swf")
+            {
+                ++num;
+                idx = (idx + 1) % sz;
+            }
+            else
+            {
+                openUsecaseSlot(caseNames[idx]);
+                break;
+            }
+        }
+        if(num == sz)
+        {
+            openUsecaseSlot(caseNames[0]);
+        }
     }
 }
 
@@ -795,63 +610,11 @@ void Teach::goToDiscussionSlot()
 //进入测试模块
 void Teach::goToTestSlot()
 {
-    QSqlQuery query(db);
-//    //首先记录上次学习的案例的结束时间以及通过情况
-//    query.prepare("update behavior set end=:end,pass=0,note=:note where sid=:sid and kid=:kid and cid=:cid");
-//    query.bindValue(":end", QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss"));
-//    query.bindValue(":note", tr("学完教学案例"));
-//    query.bindValue(":sid", myUser.getSid());
-//    query.bindValue(":kid", currentKid);
-//    query.bindValue(":cid", currentCid);
-//    if(!query.exec())
-//    {
-//       qcout << query.lastError();
-//    }
-//    else
-//    {
-//        qcout << "Sql executes sucessfully!";
-//    }
-
-//    query.prepare("insert into behavior(sid,kid,cid,begin,end,pass,note) values(:sid,:kid,:cid,:begin,:end,:pass,:note)");
-//    query.bindValue(":sid", myUser.getSid());
-//    query.bindValue(":kid", currentKid);
-//    query.bindValue(":cid", currentCid);
-//    query.bindValue(":begin", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
-//    query.bindValue(":end", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
-//    query.bindValue(":pass", 0);
-//    query.bindValue(":note", tr("直接测试"));
-//    if(!query.exec())
-//    {
-//       qcout << query.lastError();
-//    }
-//    else
-//    {
-//        qcout << "Sql executes sucessfully!";
-//    }
-
     //进入测试
     testWindow = new Test();
     testWindow->show();
     connect(testWindow, &Test::destroyed, this, &Teach::close);
 }
-
-////更新当前知识节点
-//void Teach::updateCurrentKidSlot(){
-//	QSqlQuery query;
-//	QString _first = currentKid.left(1);
-//	if (_first == "B"){
-//		query.exec("select title from bk where bid='" + currentKid + "'");
-//		while (query.next()){
-//			ui->pointnameLabel->setText(query.value(0).toString());
-//		}
-//	}
-//	else if (_first == "P"){
-//		query.exec("select title from pk where pid='" + currentKid + "'");
-//		while (query.next()){
-//			ui->pointnameLabel->setText(query.value(0).toString());
-//		}
-//	}
-//}
 
 //更新行为记录表
 void Teach::updateBehaviorTableSlot()
@@ -869,29 +632,119 @@ void Teach::updateBehaviorTableSlot()
 //下一个知识节点
 void Teach::on_nextKnowledgeButton_clicked()
 {
-    QString beforeKid = currentKid;
+    currentKid = nextKnowledge(currentKid);
+    if(currentKid == "error")
+    {
+        QMessageBox::critical(this, tr("网络教学"), tr("数据库操作出错！"));
+    }
+    else if(currentKid == "over")
+    {
+        QMessageBox::information(this, tr("网络教学"), tr("恭喜，您已经学完所有知识！"));
+    }
+    else
+    {
+        qcout << currentKid;
+        emit nextKnow();
+        this->close();
+    }
+}
+
+QString Teach::nextKnowledge(const QString cur)
+{
+    int tmpOrders;
+    QString nextRetKnowledge;
+    QSqlQuery query(db);
+    query.prepare("select orders from recpath where sid=:sid and kid=:kid");
+    query.bindValue(":sid", myUser.getSid());
+    query.bindValue(":kid", cur);
+    if(!query.exec())
+    {
+        qcout << query.lastError();
+        return "error";
+    }
+    else
+    {
+        if(query.next())
+        {
+            tmpOrders = query.value(0).toInt();
+            ++tmpOrders;
+        }
+        QSqlQuery query1(db);
+        query1.prepare("select kid from recpath where sid=:sid and orders=:orders");
+        query1.bindValue(":sid", myUser.getSid());
+        query1.bindValue(":orders", tmpOrders);
+        if(!query1.exec())
+        {
+            qcout << query1.lastError();
+            return "error";
+        }
+        else
+        {
+            if(query1.next())
+            {
+                nextRetKnowledge = query1.value(0).toString();
+            }
+            else
+            {
+                nextRetKnowledge = getFirstKnowledge();
+            }
+        }
+    }
+    return nextRetKnowledge;
+}
+
+QString Teach::getFirstKnowledge()
+{
     QSqlQuery query(db);
     query.prepare("select kid from recpath where sid=:sid and state=0 order by orders");
     query.bindValue(":sid", myUser.getSid());
-    query.exec();
-    while (query.next())
+    if(!query.exec())
     {
-        currentKid = query.value(0).toString();
-        qcout << currentKid;
-        break;
+        qcout << query.lastError();
+        return "error";
     }
-    QString _first = beforeKid.left(1);
-    if (_first=="P")
+    else
     {
-        query.prepare("update recpath set state=0 where sid=:sid and kid=:kid");
-        query.bindValue(":sid", myUser.getSid());
-        query.bindValue(":kid", beforeKid);
-        query.exec();
+        qcout << "Sql executes sucessfully!";
+        if(query.next())
+        {
+            return query.value(0).toString();
+        }
+        else
+        {
+            return "over";
+        }
     }
-    this->close();
+}
+
+QString Teach::getKnowledgeName(QString kid)
+{
+    QString buttonText;
+    QString _first = kid.left(1);
+    if (_first == "B")
+    {
+        QSqlQuery query(db);
+        query.exec("select title from bk where bid='" + kid + "'");
+        while (query.next())
+        {
+            buttonText = query.value(0).toString();
+        }
+    }
+    else if (_first == "P")
+    {
+        QSqlQuery query(db);
+        query.exec("select title from pk where pid='" + kid + "'");
+        while (query.next())
+        {
+            buttonText = query.value(0).toString();
+        }
+    }
+
+    return buttonText;
 }
 
 void Teach::closeEvent(QCloseEvent * /* ev */)
 {
     emit closeSignal();
 }
+

@@ -17,8 +17,6 @@ Registor::Registor(QWidget *parent)
 
     mMove = false;//mouse moving
 
-    //connect(ui->cancelButton, &QPushButton::clicked, this, &Registor::close);                    // 关闭注册界面
-
     connect(ui->buttonClose, &QPushButton::clicked, this, &Registor::close);              // 点击关闭
     connect(ui->buttonMin, &QPushButton::clicked, this, &Registor::showMinimized);        // 点击最小化
 }

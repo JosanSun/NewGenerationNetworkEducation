@@ -331,12 +331,20 @@ void Login::registorSlot()
         QString _age = regWindow->getAge();
         QString _education = regWindow->getEducation();
 
-        query.prepare("insert into student(name,password,sex,age,education) values(:name,:password,:sex,:age,:education)");
+        query.prepare("insert into student(name,password,sex,age,education,"
+                      "interactfeature,emotionfeature,perceptionfeature,knowledgebasis)"
+                      "values(:name,:password,:sex,:age,:education"
+                      ":interactfeature,:emotionfeature,:perceptionfeature,:knowledgebasis)");
         query.bindValue(":name", _username);
         query.bindValue(":password", _password);
         query.bindValue(":sex", _sex);
         query.bindValue(":age", _age);
         query.bindValue(":education", _education);
+        query.bindValue(":interactfeature", tr("0.5,0.5"));
+        query.bindValue(":emotionfeature", tr("0.33,0.33,0.33"));
+        query.bindValue(":perceptionfeature", tr("0.25,0.25,0.25,0.25"));
+        query.bindValue(":knowledgebasis", tr("6"));
+
         if(!query.exec())
         {
             qcout << query.lastError();

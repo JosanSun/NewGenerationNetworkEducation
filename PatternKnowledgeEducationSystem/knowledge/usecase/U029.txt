@@ -1,0 +1,37 @@
+C++中的常引用
+
+什么是常引用（两种初始化方法）
+首先进一步理解引用： int &a=b 相当于 int *const a=b。即引用是一个指针常量（又称常指针，即一个常量，其类型是指针）。 
+每当编译器遇到引用变量a，就会自动执行 * 操作。 
+而常引用：const int &a=b就相当于 const int * const a=b。不仅仅是a这个地址不可修改，而且其指向的内存空间也不可修改。
+
+什么是常引用.之一（引用变量）
+参考以下代码：
+
+ #include<iostream>
+using namespace std;
+
+void main()
+{
+    //（1）变量初始化，再const引用 变量
+    int b = 10;
+    const int &a = b;
+    b = 11;//b是可以修改的，但是a不能修改
+    printf("a=%d,b=%d\n", a, b);
+    system("pause");
+}
+
+什么是常引用.之二（引用常量）
+参考以下代码：
+
+  #include<iostream>
+using namespace std;
+
+void main()
+{
+    //（2）const引用 常量
+    const int &c = 15;
+    //编译器会给常量15开辟一片内存，并将引用名作为这片内存的别名
+    //int &d=15//err
+    system("pause");
+}
