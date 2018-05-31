@@ -154,9 +154,7 @@ void Registor::closeEvent(QCloseEvent * /* ev */)
     emit closeSignal();
 }
 
-void Registor::on_registerButton_clicked()
+void Registor::on_registorButton_clicked()
 {
     emit registerUser();
 }
-
-

@@ -23,11 +23,15 @@ public:
     UserInfoWidget(QWidget *parent = 0);
     ~UserInfoWidget();
 
+signals:
+    void closeSignal();
+
 protected:
     //mouse func
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
+    virtual void closeEvent(QCloseEvent* ev);
 
 private slots:
     void updateTimeSlot();
@@ -43,12 +47,15 @@ private:
 private:
     Ui::UserInfoWidget* ui;
     QSqlDatabase db;
-    bool havePathTab;
-    bool haveBehaviorTab;
+    bool havePathTab      = false;
+    bool haveBehaviorTab  = false;
+    bool haveLearnCharact = false;
     QWidget *pathWidget;
     QWidget *behaviorWidget;
+    QWidget *learnWidget;
     QTableView *pathTableView;
     QTableView *behaviorTableView;
+    QTableView *learnTableView;
     LearningPatternTest* testWidget = nullptr;
     QTimer *timer = nullptr;
     //mouse moving

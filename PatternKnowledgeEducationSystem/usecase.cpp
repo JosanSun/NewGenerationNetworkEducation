@@ -29,7 +29,6 @@ Usecase::Usecase(QWidget *parent)
     connect(ui->buttonClose, &QPushButton::clicked, this, &Usecase::close);                                 // 点击关闭
     connect(ui->buttonMin, &QPushButton::clicked, this, &Usecase::showMinimized);                           // 点击最小化
     connect(timer, &QTimer::timeout, this, &Usecase::updateTimeSlot);                   // 更新系统时间
-    connect(ui->testButton, &QPushButton::clicked, this, &Usecase::goToTestWindowSlot);  // 进入测试模块
 }
 
 Usecase::~Usecase()
@@ -88,6 +87,7 @@ void Usecase::initUI()
 void Usecase::init()
 {
     openDatabase();
+    startTime = QDateTime::currentDateTime();
     mMove=false;//mouse moving
     QString casename = currentCid;
     QSqlQuery query(db);
@@ -215,29 +215,29 @@ void Usecase::updateTimeSlot()
 }
 
 //进入测试模块
-void Usecase::goToTestWindowSlot()
-{
-    qcout << "This can be run ";
-}
-
 void Usecase::on_testButton_clicked()
 {
-    note = ui->textEdit->toPlainText();
-
     QSqlQuery query(db);
-    //首先记录上次学习的案例的结束时间以及通过情况
-    query.prepare("update behavior set end=:end,pass=0,note=:note where sid=:sid and kid=:kid and cid=:cid");
-    query.bindValue(":end", QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss"));
-    query.bindValue(":note", note);
+    // 首先记录上次学习的案例的结束时间以及通过情况
+    query.prepare("insert into behavior(sid,kid,cid,begin,end,pass,note) values(:sid,:kid,:cid,:begin,:end,:pass,:note)");
     query.bindValue(":sid", myUser.getSid());
     query.bindValue(":kid", currentKid);
     query.bindValue(":cid", currentCid);
-    query.exec();
+    query.bindValue(":begin", startTime.toString("yyyy-MM-dd hh:mm:ss"));
+    query.bindValue(":end", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
+    query.bindValue(":pass", 0);
+    query.bindValue(":note", tr("学习完教学用例"));
+    if(!query.exec())
+    {
+       qcout << query.lastError();
+    }
+    else
+    {
+        qcout << "Sql executes sucessfully!";
+    }
 
-    qcout << "This can be run    ";
     testWindow = new Test();
     testWindow->show();
     connect(testWindow, &Test::destroyed, this, &Usecase::close);
-
     this->close();
 }

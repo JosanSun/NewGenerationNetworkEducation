@@ -6,6 +6,7 @@
 #include <QtSql>
 #include <QSqlDatabase>
 #include <QTimer>
+#include <QDateTime>
 
 #include "test.h"
 
@@ -29,7 +30,6 @@ protected:
 
 private slots:
     void updateTimeSlot();
-    void goToTestWindowSlot();
     void on_testButton_clicked();
 
 private:
@@ -45,6 +45,7 @@ private:
     //mouse moving
     bool        mMove;
     QPoint      mPos;
+    QDateTime   startTime;
 };
 
 #endif // USECASE_H

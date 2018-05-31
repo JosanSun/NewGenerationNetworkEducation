@@ -5,6 +5,7 @@
 
 #include "learningpatterntest.h"
 #include "ui_learningpatterntest.h"
+#include "myheaders.h"
 
 #define qcout qDebug()
 
@@ -51,11 +52,11 @@ void LearningPatternTest::openDatabase()
     bool ok = this->db.open();
     if (!ok)
     {
-        qDebug() << "Failed to connect database login!";
+        qcout << "Failed to connect database login!";
     }
     else
     {
-        qDebug() << "Success!";
+        qcout << "Success!";
     }
 }
 

@@ -6,9 +6,12 @@
 #include <QtSql>
 #include <QSqlDatabase>
 #include <QTableView>
+#include <vector>
 
 #include "usecase.h"
 #include "test.h"
+
+using std::vector;
 
 namespace Ui{
 class Teach;
@@ -22,11 +25,15 @@ public:
     Teach(QWidget *parent = 0);
     ~Teach();
 
+signals:
+    void closeSignal();
+
 protected:
     //mouse func
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
+    virtual void closeEvent(QCloseEvent* ev);
 
 private slots:
     void timeUpdateSlot();
@@ -60,6 +67,7 @@ private:
     //mouse moving
     bool        mMove;
     QPoint      mPos;
+    vector<QString> caseNames;
 };
 
 #endif // TEACH_H

@@ -24,14 +24,17 @@ public:
     Knowledge(QWidget *parent = 0);
     ~Knowledge();
 
-protected:
-    virtual void mousePressEventK(QMouseEvent *event);
-    virtual void mouseMoveEventK(QMouseEvent *event);
+signals:
+    void closeSignal();
 
-    //mouse func
+protected:
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
-    virtual void mouseReleaseEvent(QMouseEvent *event);
+    virtual void closeEvent(QCloseEvent* ev);
+//    //mouse func
+//    virtual void mousePressEvent(QMouseEvent *event);
+//    virtual void mouseMoveEvent(QMouseEvent *event);
+//    virtual void mouseReleaseEvent(QMouseEvent *event);
 
 private slots:
     //根据用户学习轨迹变换节点颜色

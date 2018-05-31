@@ -5,6 +5,7 @@
 #include "userinfowidget.h"
 #include "ui_userinfowidget.h"
 #include "helper/user.h"
+#include "helper/myheaders.h"
 
 extern User myUser; //全局用户变量
 
@@ -44,11 +45,11 @@ void UserInfoWidget::openDatabase()
     bool ok = db.open();
     if (!ok)
     {
-        qDebug() << "Failed to connect database login!";
+        qcout << "Failed to connect database login!";
     }
     else
     {
-        qDebug() << "Success!";
+        qcout << "Success!";
     }
 }
 
@@ -133,8 +134,9 @@ void UserInfoWidget::init()
         behaviorTableView->setGeometry(8, 8, 521, 271);
         // behaviorTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
         ui->tabWidget->addTab(behaviorWidget, tr("用户学习记录表"));
-        haveBehaviorTab = 1;
+        haveBehaviorTab = true;
     }
+
     //显示用户学习记录表
     QSqlQueryModel *behaviormodel = new QSqlQueryModel;
     QString sqlString2 = "select b.title,a.cid,a.begin,a.end,a.note from behavior a join ";
@@ -155,9 +157,33 @@ void UserInfoWidget::init()
     behaviorTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
 
+    if (!haveLearnCharact)
+    {
+        //如果当前没有用户学习特征记录表 则new一个
+        learnWidget = new QWidget();
+        learnTableView = new QTableView(learnWidget);
+        learnTableView->setGeometry(8, 8, 521, 271);
+        ui->tabWidget->addTab(learnWidget, tr("用户学习特征模型"));
+        haveLearnCharact = true;
+    }
+    //显示用户学习路径表
+    QSqlQueryModel *learnModel = new QSqlQueryModel;
+    QString sqlString3 = "select knowledgebasis,interactfeature,emotionfeature,perceptionfeature from student where sid = ";
+    sqlString3 += QString::number(myUser.getSid());
+    qcout << sqlString3;
+
+    learnModel->setQuery(sqlString3, db);
+    learnModel->setHeaderData(0, Qt::Horizontal, tr("已有知识基础"));
+    learnModel->setHeaderData(1, Qt::Horizontal, tr("社会互动特征"));
+    learnModel->setHeaderData(2, Qt::Horizontal, tr("情感和意动类型特征"));
+    learnModel->setHeaderData(3, Qt::Horizontal, tr("感知类型特征"));
+    learnTableView->setModel(learnModel);
+    // 使得tableview的单元格的内容可以自适应内容大小
+    learnTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    learnTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+
     timer->start(1000);
-    havePathTab = false;
-    haveBehaviorTab = false;
 }
 
 //重写鼠标函数实现窗口自由移动
@@ -266,4 +292,9 @@ void UserInfoWidget::on_learningTestButton_clicked()
             {
                 show();
             });
+}
+
+void UserInfoWidget::closeEvent(QCloseEvent* /* ev */)
+{
+    emit closeSignal();
 }

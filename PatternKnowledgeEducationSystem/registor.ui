@@ -571,7 +571,7 @@ QComboBox::dowm-arrow
         <bool>true</bool>
        </property>
        <property name="currentText">
-        <string/>
+        <string>男</string>
        </property>
        <item>
         <property name="text">
@@ -662,7 +662,7 @@ QComboBox::drop-down
         <bool>true</bool>
        </property>
        <property name="currentText">
-        <string/>
+        <string>小学</string>
        </property>
        <item>
         <property name="text">

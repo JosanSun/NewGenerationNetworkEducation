@@ -24,7 +24,7 @@ public:
     Initial(QWidget *parent = 0);
     ~Initial();
 
-    void setCurrentUserId(const QString& userId);
+//    void setCurrentUserId(const QString& userId);
 
 protected:
     //mouse func
@@ -45,6 +45,8 @@ private:
     void openDatabase();
     void init();
     void showFirstKnowledge();
+    QString nextKnowledge(QString cur);
+    void updateCurrentLearnLabel();
 
 private:
     Ui::Initial* ui;

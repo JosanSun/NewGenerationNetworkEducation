@@ -8,6 +8,7 @@
 #include <QtXml>
 #include <QDomDocument>
 #include <QDesktopServices>
+#include <cstdlib>
 
 #include "teach.h"
 #include "ui_teach.h"
@@ -17,7 +18,7 @@
 
 extern User myUser;
 extern QString currentKid;
-QString currentCid;
+extern QString currentCid;
 extern QString note;
 
 Teach::Teach(QWidget *parent)
@@ -29,12 +30,12 @@ Teach::Teach(QWidget *parent)
 
     connect(ui->buttonClose, &QPushButton::clicked, this, &Teach::close);                                 // 点击关闭
     connect(ui->buttonMin, &QPushButton::clicked, this, &Teach::showMinimized);                           // 点击最小化
-    connect(timer, &QTimer::timeout, this, &Teach::timeUpdateSlot);                         //更新系统时间
-    connect(ui->playAgainButton, &QPushButton::clicked, this, &Teach::playAgainSlot);        //重新播放案例
-    connect(ui->changeCaseButton, &QPushButton::clicked, this, &Teach::changeCaseSlot);      //更换案例
-    connect(ui->discussionButton, &QPushButton::clicked, this, &Teach::goToDiscussionSlot);  //进入讨论区
-    connect(ui->beginTestButton, &QPushButton::clicked, this, &Teach::goToTestSlot);         //进入测试模块
-    connect(ui->quitButton, &QPushButton::clicked, this, &Teach::close);                     //关闭系统
+    connect(timer, &QTimer::timeout, this, &Teach::timeUpdateSlot);                                       // 更新系统时间
+    connect(ui->playAgainButton, &QPushButton::clicked, this, &Teach::playAgainSlot);                     // 重新播放案例
+    connect(ui->changeCaseButton, &QPushButton::clicked, this, &Teach::changeCaseSlot);                   // 更换案例
+    connect(ui->discussionButton, &QPushButton::clicked, this, &Teach::goToDiscussionSlot);               // 进入讨论区
+    connect(ui->beginTestButton, &QPushButton::clicked, this, &Teach::goToTestSlot);                      // 进入测试模块
+    connect(ui->quitButton, &QPushButton::clicked, this, &Teach::close);                                  // 关闭系统
 }
 
 Teach::~Teach()
@@ -192,7 +193,9 @@ void Teach::init()
         {
             MyPushButton *usecaseButton = new MyPushButton(ui->groupBox_2);
             usecaseButton->setGeometry(110 + 100 * (inx - 1), 270, 80, 23);
-            usecaseButton->setText(query.value(1).toString());
+            QString caseName = query.value(1).toString();
+            usecaseButton->setText(caseName);
+            caseNames.push_back(caseName);
             //点击案例按钮，触发打开案例界面
             void (MyPushButton::*pfn2)(QString) = MyPushButton::clicked;
             //connect(usecaseButton, pfn2, this, SLOT(openUsecaseSlot(QString)));
@@ -393,7 +396,9 @@ void Teach::init()
         {
             MyPushButton *usecaseButton = new MyPushButton(ui->groupBox_2);
             usecaseButton->setGeometry(110 + 100 * (inx - 1), 270, 80, 23);
-            usecaseButton->setText(query.value(1).toString());
+            QString caseName = query.value(1).toString();
+            usecaseButton->setText(caseName);
+            caseNames.push_back(caseName);
             void (MyPushButton::*pfn5)(QString) = MyPushButton::clicked;
             connect(usecaseButton, pfn5, this, &Teach::openUsecaseSlot);
             ++inx;
@@ -695,23 +700,23 @@ void Teach::openUsecaseSlot(QString casename)
 {
     QSqlQuery query(db);
     currentCid = casename;
-    query.prepare("insert into behavior(sid,kid,cid,begin,end,pass,note) "
-                  "values(:sid,:kid,:cid,:begin,:end,:pass,:note)");
-    query.bindValue(":sid", myUser.getSid());
-    query.bindValue(":kid", currentKid);
-    query.bindValue(":cid", currentCid);
-    query.bindValue(":begin", QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss"));
-    query.bindValue(":end", QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss"));
-    query.bindValue(":pass", 0);
-    query.bindValue(":note", tr("学习教学案例"));
-    if(!query.exec())
-    {
-        qcout << query.lastError();
-    }
-    else
-    {
-        qcout << "Sql executes sucessfully!";
-    }
+//    query.prepare("insert into behavior(sid,kid,cid,begin,end,pass,note) "
+//                  "values(:sid,:kid,:cid,:begin,:end,:pass,:note)");
+//    query.bindValue(":sid", myUser.getSid());
+//    query.bindValue(":kid", currentKid);
+//    query.bindValue(":cid", currentCid);
+//    query.bindValue(":begin", QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss"));
+//    query.bindValue(":end", QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss"));
+//    query.bindValue(":pass", 0);
+//    query.bindValue(":note", tr("学习教学案例"));
+//    if(!query.exec())
+//    {
+//        qcout << query.lastError();
+//    }
+//    else
+//    {
+//        qcout << "Sql executes sucessfully!";
+//    }
 
     QString _form = casename.remove(0, 5);
     if (_form == "ppt")
@@ -737,7 +742,6 @@ void Teach::openUsecaseSlot(QString casename)
         // path这种绝对路径可以打开file:///E:/MyCode/qt/github/NewGenerationNetworkEducation/PatternKnowledgeEducationSystem/knowledge/usecase/U002.ppsx
         // 如何更改为相对路径呢？   已解决！
         QDesktopServices::openUrl(QUrl(path, QUrl::TolerantMode));
-        //记录用户behavior
     }
     else
     {//否则进入案例播放界面
@@ -751,37 +755,34 @@ void Teach::openUsecaseSlot(QString casename)
 void Teach::playAgainSlot()
 {
     //首先记录上次学习的案例的结束时间以及通过情况
-    QSqlQuery query(db);
-    query.prepare("update behavior set end=:end,pass=0 where sid=:sid and kid=:kid and cid=:cid");
-    query.bindValue(":end", QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss"));
-    query.bindValue(":sid", myUser.getSid());
-    query.bindValue(":kid", currentKid);
-    query.bindValue(":cid", currentCid);
-    query.exec();
+//    QSqlQuery query(db);
+//    query.prepare("update behavior set end=:end,pass=0 where sid=:sid and kid=:kid and cid=:cid");
+//    query.bindValue(":end", QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss"));
+//    query.bindValue(":sid", myUser.getSid());
+//    query.bindValue(":kid", currentKid);
+//    query.bindValue(":cid", currentCid);
+//    query.exec();
     //重新播放刚刚的实例
     openUsecaseSlot(currentCid);
 }
 
 void Teach::changeCaseSlot()
 {
-    QSqlQuery query(db);
-    //首先记录上次学习的案例的结束时间以及通过情况
-    query.prepare("update behavior set end=:end,pass=0 where sid=:sid and kid=:kid and cid=:cid");
-    query.bindValue(":end", QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss"));
-    query.bindValue(":sid", myUser.getSid());
-    query.bindValue(":kid", currentKid);
-    query.bindValue(":cid", currentCid);
-    query.exec();
-    //更换案例
-    query.prepare("select cid from teach where kid=:kid and cid not in (select cid from behavior where sid=:sid and kid=:kid)");
-    query.bindValue(":kid", currentKid);
-    query.bindValue(":sid", myUser.getSid());
-    query.exec();
-    while (query.next())
+    qcout << 1;
+    for(auto x:caseNames)
     {
-        currentCid = query.value(0).toString();
-        openUsecaseSlot(query.value(0).toString());
-        break;
+        qcout << x;
+    }
+    if(caseNames.empty())
+    {
+        QMessageBox::information(this, tr("错误"), tr("这个知识点没有教学案例，请联系管理员！"));
+        return ;
+    }
+    else
+    {
+        int sz = static_cast<int>(caseNames.size());
+        int idx = rand() % sz;
+        openUsecaseSlot(caseNames[idx]);
     }
 }
 
@@ -794,39 +795,39 @@ void Teach::goToDiscussionSlot()
 //进入测试模块
 void Teach::goToTestSlot()
 {
-    QSqlQuery query;
-    //首先记录上次学习的案例的结束时间以及通过情况
-    query.prepare("update behavior set end=:end,pass=0,note=:note where sid=:sid and kid=:kid and cid=:cid");
-    query.bindValue(":end", QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss"));
-    query.bindValue(":note", tr("学完教学案例"));
-    query.bindValue(":sid", myUser.getSid());
-    query.bindValue(":kid", currentKid);
-    query.bindValue(":cid", currentCid);
-    if(!query.exec())
-    {
-       qcout << query.lastError();
-    }
-    else
-    {
-        qcout << "Sql executes sucessfully!";
-    }
+    QSqlQuery query(db);
+//    //首先记录上次学习的案例的结束时间以及通过情况
+//    query.prepare("update behavior set end=:end,pass=0,note=:note where sid=:sid and kid=:kid and cid=:cid");
+//    query.bindValue(":end", QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss"));
+//    query.bindValue(":note", tr("学完教学案例"));
+//    query.bindValue(":sid", myUser.getSid());
+//    query.bindValue(":kid", currentKid);
+//    query.bindValue(":cid", currentCid);
+//    if(!query.exec())
+//    {
+//       qcout << query.lastError();
+//    }
+//    else
+//    {
+//        qcout << "Sql executes sucessfully!";
+//    }
 
-    query.prepare("insert into behavior(sid,kid,cid,begin,end,pass,note) values(:sid,:kid,:cid,:begin,:end,:pass,:note)");
-    query.bindValue(":sid", myUser.getSid());
-    query.bindValue(":kid", currentKid);
-    query.bindValue(":cid", currentCid);
-    query.bindValue(":begin", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
-    query.bindValue(":end", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
-    query.bindValue(":pass", 0);
-    query.bindValue(":note", tr("进行测试"));
-    if(!query.exec())
-    {
-       qcout << query.lastError();
-    }
-    else
-    {
-        qcout << "Sql executes sucessfully!";
-    }
+//    query.prepare("insert into behavior(sid,kid,cid,begin,end,pass,note) values(:sid,:kid,:cid,:begin,:end,:pass,:note)");
+//    query.bindValue(":sid", myUser.getSid());
+//    query.bindValue(":kid", currentKid);
+//    query.bindValue(":cid", currentCid);
+//    query.bindValue(":begin", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
+//    query.bindValue(":end", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
+//    query.bindValue(":pass", 0);
+//    query.bindValue(":note", tr("直接测试"));
+//    if(!query.exec())
+//    {
+//       qcout << query.lastError();
+//    }
+//    else
+//    {
+//        qcout << "Sql executes sucessfully!";
+//    }
 
     //进入测试
     testWindow = new Test();
@@ -888,4 +889,9 @@ void Teach::on_nextKnowledgeButton_clicked()
         query.exec();
     }
     this->close();
+}
+
+void Teach::closeEvent(QCloseEvent * /* ev */)
+{
+    emit closeSignal();
 }

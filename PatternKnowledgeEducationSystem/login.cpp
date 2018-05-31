@@ -8,7 +8,7 @@
 
 #include "login.h"
 #include "ui_login.h"
-
+#include "helper/myheaders.h"
 
 User myUser;
 
@@ -99,7 +99,14 @@ void Login::updateCogModel(CogModel &model)
     query.bindValue(":cogApproach", QString(model.getCogApproach().data()));
     query.bindValue(":cogStrategy", QString(model.getCogStrategy().data()));
     query.bindValue(":sid", myUser.getSid());
-    query.exec();
+    if(!query.exec())
+    {
+        qcout << query.lastError();
+    }
+    else
+    {
+        qcout << "Sql executes sucessfully!";
+    }
 }
 
 
@@ -143,12 +150,12 @@ void Login::openDatabase()
     bool ok = db.open();
     if (!ok)
     {
-        qDebug() << "Failed to connect database login!";
+        qcout << "Failed to connect database login!";
         QMessageBox::critical(this, tr("严重错误"), tr("系统数据库初始化失败！"));
     }
     else
     {
-        qDebug() << "Success!";
+        qcout << "Success!";
     }
 }
 
@@ -171,13 +178,14 @@ void Login::loginSlot()
     QSqlQuery query;
     query.prepare("select * from student where name=:name");
     query.bindValue(":name", _username);
-    query.exec();
-    /*if (ui->customRadioButton->isChecked()){*///普通用户登录
-    if (query.first())
-    {//查询结果集不为空
-        //返回上一个查询结果
-        query.previous();
-        while (query.next())
+    if(!query.exec())
+    {
+        qcout << query.lastError();
+    }
+    else
+    {
+        qcout << "Sql executes sucessfully!";
+        if(query.next())
         {
             if (query.value(2).toString() == _password)
             {
@@ -256,20 +264,18 @@ void Login::loginSlot()
                 ui->passwordtext->clear();
             }
         }
+        else
+        {
+            //结果集为空
+            QMessageBox::information(this, tr("错误！"), tr("您还不是系统用户！请您先注册！"));
+            ui->usernamebox->clear();
+            ui->passwordtext->clear();
+            //调用registorSlot()槽函数
+            registorSlot();
+        }
     }
-    else
-    {//结果集为空
-        QMessageBox::information(this, tr("错误！"), tr("您还不是系统用户！请您先注册！"));
-        ui->usernamebox->clear();
-        ui->passwordtext->clear();
-        //调用registorSlot()槽函数
-        registorSlot();
-    }
-    //}
-    //else if (ui->adminRadioButton->isChecked()){//管理员登录
-
-    //}
 }
+
 
 //进入注册模块
 void Login::registorSlot()
@@ -289,12 +295,20 @@ void Login::registorSlot()
         }
 
         QSqlQuery query;
-        query.exec("select * from student where name='" + _username + "'");
-        if (query.first())
-        {//注册的用户已存在
-            QMessageBox::information(this, tr("注意！"), tr("此账号已被注册，请重新输入用户名"));
-            regWindow->resetUserName();
-            return;
+        if(!query.exec("select * from student where name='" + _username + "'"))
+        {
+            qcout << query.lastError();
+            return ;
+        }
+        else
+        {
+            qcout << "Sql executes sucessfully!";
+            if (query.first())
+            {//注册的用户已存在
+                QMessageBox::information(this, tr("注意！"), tr("此账号已被注册，请重新输入用户名"));
+                regWindow->resetUserName();
+                return;
+            }
         }
 
         //未注册过开始注册
@@ -323,7 +337,15 @@ void Login::registorSlot()
         query.bindValue(":sex", _sex);
         query.bindValue(":age", _age);
         query.bindValue(":education", _education);
-        query.exec();
+        if(!query.exec())
+        {
+            qcout << query.lastError();
+            return ;
+        }
+        else
+        {
+            qcout << "Sql executes sucessfully!";
+        }
 
         QMessageBox::information(this, tr("恭喜！"), tr("您已经注册成功！请登录！"));
         regWindow->close();

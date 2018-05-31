@@ -37,16 +37,14 @@ signals:
     void closeSignal();
 
 protected:
-    void closeEvent(QCloseEvent* ev);
+    virtual void closeEvent(QCloseEvent* ev);
     //mouse func
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
 
 private slots:
-    //void sendRegisterSignal();
-    //void cancel();
-    void on_registerButton_clicked();
+    void on_registorButton_clicked();
 
 private:
     void initUI();

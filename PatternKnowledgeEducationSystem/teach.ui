@@ -379,38 +379,13 @@
              <string notr="true">QPushButton
 {
     color:white;
-    background-color:rgb(14 , 150 , 254);
+    background-color:rgb(150 , 14 , 254);
     border-radius:5px;
 }
 </string>
             </property>
             <property name="text">
-             <string>更换案例</string>
-            </property>
-            <property name="flat">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="discussionButton">
-            <property name="minimumSize">
-             <size>
-              <width>75</width>
-              <height>23</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QPushButton
-{
-    color:white;
-    background-color:rgb(14 , 150 , 254);
-    border-radius:5px;
-}
-</string>
-            </property>
-            <property name="text">
-             <string>讨论区</string>
+             <string>案例推荐</string>
             </property>
             <property name="flat">
              <bool>true</bool>
@@ -429,7 +404,7 @@
              <string notr="true">QPushButton
 {
     color:white;
-    background-color:rgb(14 , 150 , 254);
+    background-color:rgb(150 , 14 , 254);
     border-radius:5px;
 }
 </string>
@@ -461,6 +436,31 @@
             </property>
             <property name="text">
              <string>开始测试</string>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="discussionButton">
+            <property name="minimumSize">
+             <size>
+              <width>75</width>
+              <height>23</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton
+{
+    color:white;
+    background-color:rgb(14 , 150 , 254);
+    border-radius:5px;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>返回主界面</string>
             </property>
             <property name="flat">
              <bool>true</bool>

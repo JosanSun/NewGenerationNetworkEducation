@@ -20,11 +20,15 @@ public:
     Test(QWidget *parent = 0);
     ~Test();
 
+signals:
+    void closeSignal();
+
 protected:
     //mouse func
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent *event);
+    virtual void closeEvent(QCloseEvent* ev);
 
 private slots:
     void timeUpdateSlot();

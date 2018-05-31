@@ -5,6 +5,7 @@
 
 #include "patterntest.h"
 #include "ui_patterntest.h"
+#include "myheaders.h"
 
 #define qcout qDebug()
 
@@ -40,11 +41,11 @@ void PatternTest::openDatabase()
     bool ok = this->db.open();
     if (!ok)
     {
-        qDebug() << "Failed to connect database login!";
+        qcout << "Failed to connect database login!";
     }
     else
     {
-        qDebug() << "Success!";
+        qcout << "Success!";
     }
 }
 

@@ -649,14 +649,6 @@ void Test::nextKnowledgeSlot()
             QMessageBox::information(this, tr("教学系统"), tr("恭喜你，成功学完所有知识点！"));
         }
     }
-
-//    if (_first=="P")
-//    {
-//        query.prepare("update recpath set state=0 where sid=:sid and kid=:kid");
-//        query.bindValue(":sid", myUser.getSid());
-//        query.bindValue(":kid", beforeKid);
-//        query.exec();
-//    }
     this->close();
 }
 
@@ -664,4 +656,9 @@ void Test::nextKnowledgeSlot()
 void Test::againKnowledgeSlot()
 {
     this->close();
+}
+
+void Test::closeEvent(QCloseEvent* /* ev */)
+{
+    emit closeSignal();
 }
