@@ -25,12 +25,8 @@ public:
     ~Knowledge();
 
 protected:
-    //mouse func
     virtual void mousePressEvent(QMouseEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
-    virtual void mouseReleaseEvent(QMouseEvent *event);
-    void mousePressEventK(QMouseEvent *event);
-    void mouseMoveEventK(QMouseEvent * /* event */);
 
 private slots:
     //根据用户学习轨迹变换节点颜色
@@ -79,9 +75,6 @@ private:
     vector<QString> learningTrack;
     vector<Node> nodesInPic;
     map<QString, int> nodesAttributesMap;
-    //mouse moving
-    bool        mMove;
-    QPoint      mPos;
 };
 
 #endif // KNOWLEDGE_H
