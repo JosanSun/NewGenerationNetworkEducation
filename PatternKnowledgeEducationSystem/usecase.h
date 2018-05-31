@@ -36,6 +36,7 @@ private:
     void openDatabase();
     void initUI();
     void init();
+    void updateBehaviorTable();
 
 private:
     Ui::Usecase* ui;

@@ -330,6 +330,40 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="showRecStructModel">
+            <property name="minimumSize">
+             <size>
+              <width>111</width>
+              <height>31</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>幼圆</family>
+              <pointsize>11</pointsize>
+              <weight>50</weight>
+              <italic>false</italic>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton
+{
+    color:white;
+    background-color:rgb(14 , 150 , 254);
+    border-radius:5px;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>认知结构模型</string>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="modifyButton">
             <property name="minimumSize">
              <size>

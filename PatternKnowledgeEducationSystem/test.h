@@ -42,6 +42,7 @@ private:
     void initUI();
     void init();
     void openDatabase();
+    void updateUserInfo();
 
 private:
     Ui::Test* ui;

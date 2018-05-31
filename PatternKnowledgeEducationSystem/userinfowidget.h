@@ -50,12 +50,15 @@ private:
     bool havePathTab      = false;
     bool haveBehaviorTab  = false;
     bool haveLearnCharact = false;
+    bool haveCogStruct    = false;
     QWidget *pathWidget;
     QWidget *behaviorWidget;
     QWidget *learnWidget;
+    QWidget *cogWidget;
     QTableView *pathTableView;
     QTableView *behaviorTableView;
     QTableView *learnTableView;
+    QTableView *cogTableView;
     LearningPatternTest* testWidget = nullptr;
     QTimer *timer = nullptr;
     //mouse moving

@@ -117,6 +117,8 @@ void Initial::init()
         {
             // 用户没有历史学习数据
             ui->lastPointnameLabel->setText(tr("无"));
+            qcout << "di";
+            getInitRecPath();
         }
     }
 
@@ -355,6 +357,68 @@ void Initial::updateCurrentKidSlot()
             ui->lastPointnameLabel->setText(query.value(0).toString());
         }
     }
+}
+
+// 自动获取默认学习路径
+void Initial::getInitRecPath()
+{
+    QSqlQuery query(db);
+    query.prepare("INSERT INTO `recpath`(sid, domain, kid, orders, state) VALUES (:sid, '数据表示,C++', 'B001', 1, 0)");
+    query.bindValue(":sid", QString::number(myUser.getSid()));
+    qcout << QString::number(myUser.getSid());
+    if(!query.exec())
+    {
+        qcout << query.lastError();
+    }
+    else
+    {
+        qcout << "sql";
+    }
+    query.prepare("INSERT INTO `recpath` VALUES (:sid, '数据表示,C++', 'B002', 2, 0)");
+    query.bindValue(":sid", QString::number(myUser.getSid()));
+    query.exec();
+    query.prepare("INSERT INTO `recpath` VALUES (:sid, '数据结构,C++', 'B003', 3, 0)");
+    query.bindValue(":sid", QString::number(myUser.getSid()));
+    query.exec();
+    query.prepare("INSERT INTO `recpath` VALUES (:sid, '数据结构,C++', 'B004', 5, 0)");
+    query.bindValue(":sid", QString::number(myUser.getSid()));
+    query.exec();
+    query.prepare("INSERT INTO `recpath` VALUES (:sid, '数据结构,C++', 'B005', 6, 0)");
+    query.bindValue(":sid", QString::number(myUser.getSid()));
+    query.exec();
+    query.prepare("INSERT INTO `recpath` VALUES (:sid, '数据表示,C++', 'B006', 9, 0)");
+    query.bindValue(":sid", QString::number(myUser.getSid()));
+    query.exec();
+    query.prepare("INSERT INTO `recpath` VALUES (:sid, '数据表示,C++', 'B007', 13, 0)");
+    query.bindValue(":sid", QString::number(myUser.getSid()));
+    query.exec();
+    query.prepare("INSERT INTO `recpath` VALUES (:sid, '数据结构,C++', 'B008', 7, 0)");
+    query.bindValue(":sid", QString::number(myUser.getSid()));
+    query.exec();
+    query.prepare("INSERT INTO `recpath` VALUES (:sid, '数据表示,C++', 'B009', 10, 0)");
+    query.bindValue(":sid", QString::number(myUser.getSid()));
+    query.exec();
+    query.prepare("INSERT INTO `recpath` VALUES (:sid, '数据结构,C++', 'B010', 14, 0)");
+    query.bindValue(":sid", QString::number(myUser.getSid()));
+    query.exec();
+    query.prepare("INSERT INTO `recpath` VALUES (:sid, '数据结构,C++', 'B011', 12, 0)");
+    query.bindValue(":sid", QString::number(myUser.getSid()));
+    query.exec();
+    query.prepare("INSERT INTO `recpath` VALUES (:sid, '数据结构,C++', 'B012', 8, 0)");
+    query.bindValue(":sid", QString::number(myUser.getSid()));
+    query.exec();
+    query.prepare("INSERT INTO `recpath` VALUES (:sid, '数据表示,C++', 'B013', 16, 0)");
+    query.bindValue(":sid", QString::number(myUser.getSid()));
+    query.exec();
+    query.prepare("INSERT INTO `recpath` VALUES (:sid, '数据表示,C++', 'P001', 4, 0)");
+    query.bindValue(":sid", QString::number(myUser.getSid()));
+    query.exec();
+    query.prepare("INSERT INTO `recpath` VALUES (:sid, '数据表示,C++', 'P002', 11, 0)");
+    query.bindValue(":sid", QString::number(myUser.getSid()));
+    query.exec();
+    query.prepare("INSERT INTO `recpath` VALUES (:sid, '数据表示,C++', 'P003', 15, 0)");
+    query.bindValue(":sid", QString::number(myUser.getSid()));
+    query.exec();
 }
 
 //// 解决全局变量myUser

@@ -9,4 +9,6 @@
 #define qcout qDebug() << "[" << __FILE__ << ":" << __LINE__ << "]"
 #endif
 
+#define TEST 0
+
 #endif // MYHEADERS_H

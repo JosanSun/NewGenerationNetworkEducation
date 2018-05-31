@@ -42,7 +42,17 @@ SOURCES += main.cpp\
     helper/user.cpp \
     userinfowidget.cpp \
     helper/learnpatterntest.cpp \
-    helper/patterntest.cpp
+    helper/patterntest.cpp \
+    helper/cell.cpp \
+    helper/customsplashscreen.cpp \
+    helper/finddialog.cpp \
+    helper/gotocelldialog.cpp \
+    helper/mainwindow.cpp \
+    helper/sortdialog.cpp \
+    helper/spreadsheet.cpp \
+    k-means.cpp \
+    route.cpp \
+    helper/route.cpp
 
 HEADERS  += \
     helper/attribution.h \
@@ -62,7 +72,18 @@ HEADERS  += \
     userinfowidget.h \
     stable.h \
     helper/learningpatterntest.h \
-    helper/patterntest.h
+    helper/patterntest.h \
+    helper/cell.h \
+    helper/customsplashscreen.h \
+    helper/finddialog.h \
+    helper/gotocelldialog.h \
+    helper/mainwindow.h \
+    helper/sortdialog.h \
+    helper/spreadsheet.h \
+    helper/decisiontree.h \
+    k-means.h \
+    colfilter.h \
+    helper/route.h
 
 FORMS    += \
     helper/attribution.ui \
@@ -75,7 +96,9 @@ FORMS    += \
     login.ui \
     userinfowidget.ui \
     helper/learningpatterntest.ui \
-    helper/patterntest.ui
+    helper/patterntest.ui \
+    helper/gotocelldialog.ui \
+    helper/sortdialog.ui
 
 # CONFIG += qaxcontainer  为了使dynamicCall等  ActiveQt\qaxwidget.h 下的相关文件有效
 

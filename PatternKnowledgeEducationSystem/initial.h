@@ -48,6 +48,7 @@ private:
     void showFirstKnowledge();
     QString nextKnowledge(QString cur);
     void updateCurrentLearnLabel();
+    void getInitRecPath();
 
 private:
     Ui::Initial* ui;

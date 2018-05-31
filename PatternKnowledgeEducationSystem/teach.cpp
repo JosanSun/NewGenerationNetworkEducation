@@ -15,6 +15,9 @@
 #include "helper/user.h"
 #include "helper/mypushbutton.h"
 #include "helper/myheaders.h"
+#include "helper/decisiontree.h"
+#include "windows.h"
+#include "helper/route.h"
 
 extern User myUser;
 extern QString currentKid;
@@ -565,9 +568,97 @@ void Teach::playAgainSlot()
     openUsecaseSlot(currentCid);
 }
 
+// 初始化决策树
+void initDecsionTree()
+{
+    QLabel* showLabel;
+    showLabel = new QLabel(QObject::tr("Normal text file"));
+    showLabel->setAlignment(Qt::AlignRight);
+    showLabel->setMinimumSize(showLabel->sizeHint());
+    // showLabel->setMargin(2); // 设定边界值
+    showLabel->setIndent(50);   // 设定初始值
+
+    // 树的深度
+    QLabel* sizeLinesLabel;
+    QTextEdit* textEdit = new QTextEdit;
+    sizeLinesLabel = new QLabel(QObject::tr("length : %1  lines : %2")
+                                .arg(textEdit->document()->characterCount() - 1)
+                                .arg(textEdit->document()->lineCount()));
+    sizeLinesLabel->setAlignment(Qt::AlignLeft);
+    sizeLinesLabel->setMinimumSize(sizeLinesLabel->sizeHint());
+
+    QLabel* rowColumnLabel;
+    rowColumnLabel = new QLabel(QObject::tr("Ln : 1   Col : 1"));
+    rowColumnLabel->setAlignment(Qt::AlignLeft);
+    rowColumnLabel->setMinimumSize(rowColumnLabel->sizeHint());
+
+
+    enum EndOfLineText
+    {
+        Windows1, Unix1, Mac1
+    };
+    enum EndOfLine
+    {
+        Windows, Unix, Mac, Default
+    };
+    EndOfLineText endLineFormat = EndOfLineText::Windows1;
+    EndOfLine lineFormat;
+    QLabel* endOfLineModeLabel;
+    if(endLineFormat == EndOfLineText::Windows1)
+    {
+        lineFormat = EndOfLine::Windows;
+        endOfLineModeLabel = new QLabel(QObject::tr("Windows (CR LF)"));
+    }
+    else if(endLineFormat == EndOfLineText::Unix1)
+    {
+        lineFormat = EndOfLine::Unix;
+        endOfLineModeLabel = new QLabel(QObject::tr("Unix (LF)"));
+    }
+    else if(endLineFormat == EndOfLineText::Mac1)
+    {
+        lineFormat = EndOfLine::Mac;
+        endOfLineModeLabel = new QLabel(QObject::tr("Macintosh (CR)"));
+    }
+    else
+    {
+        lineFormat = EndOfLine::Default;
+        endOfLineModeLabel = new QLabel(QObject::tr("Unix (LF)"));
+    }
+    endOfLineModeLabel->setAlignment(Qt::AlignLeft);
+    endOfLineModeLabel->setMinimumSize(endOfLineModeLabel->sizeHint());
+
+    QLabel* insertModeLabel;
+    insertModeLabel = new QLabel(QObject::tr("INS"));
+    //    if(textEdit->overwriteMode())
+    //    {
+    //        insertModeLabel->setText("OVR");
+    //    }
+    //    else
+    //    {
+    //        insertModeLabel->setText("INS");
+    //    }
+    insertModeLabel->setAlignment(Qt::AlignLeft);
+    insertModeLabel->setMinimumSize(insertModeLabel->sizeHint());
+}
+
+// 动态更新决策树
+void dynamicUpdateDecsionTree()
+{
+    if(currentKid == "overLearning")
+    {
+        initDecsionTree();
+    }
+
+    Tree* tree = new Tree;
+    tree->update();
+}
+
 // 智能推荐教学案例
 void Teach::changeCaseSlot()
 {
+    // 先动态更新决策树
+    dynamicUpdateDecsionTree();
+    // 然后根据决策树选择教学案例
     if(caseNames.empty())
     {
         QMessageBox::information(this, tr("错误"), tr("这个知识点没有教学案例，请联系管理员！"));
@@ -601,10 +692,10 @@ void Teach::changeCaseSlot()
     }
 }
 
-//进入讨论区模块
+//返回主界面
 void Teach::goToDiscussionSlot()
 {
-
+    close();
 }
 
 //进入测试模块
@@ -629,9 +720,20 @@ void Teach::updateBehaviorTableSlot()
     query.exec();
 }
 
+// 遍历
+void searcheNet()
+{
+    AntNet* net = new AntNet;
+    // 更新网
+    net->update();
+}
+
 //下一个知识节点
 void Teach::on_nextKnowledgeButton_clicked()
 {
+    // 蚁群算法搜索网络
+    searcheNet();
+
     currentKid = nextKnowledge(currentKid);
     if(currentKid == "error")
     {

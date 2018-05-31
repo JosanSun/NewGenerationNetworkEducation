@@ -5,10 +5,12 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QPalette>
+#include <QSplashScreen>
 
 #include "login.h"
 #include "ui_login.h"
 #include "helper/myheaders.h"
+#include "windows.h"
 
 User myUser;
 
@@ -189,6 +191,8 @@ void Login::loginSlot()
         {
             if (query.value(2).toString() == _password)
             {
+
+
                 //对全局myUser进行初始化
                 myUser.setName(_username.toStdString());
                 myUser.setPassword(_password.toStdString());
@@ -232,8 +236,28 @@ void Login::loginSlot()
                         connect(patternTestWindow, &PatternTest::closeSignal,
                                 [=]()
                         {
+                            // 程序启动动画
+                            QSplashScreen *splash = new QSplashScreen;
+                            splash->setPixmap(QPixmap(":/images/splash.png")); // splash picture
+                            splash->show();
+                            Qt::Alignment topRight = Qt::AlignRight | Qt::AlignTop;
+                            splash->showMessage(QObject::tr("Setting up the main window..."),
+                                                topRight, Qt::black);
+                            Sleep(2000);
+                            splash->showMessage(QObject::tr("Loading modules..."),
+                                                topRight, Qt::black);
+                            Sleep(2000);
+                            splash->showMessage(QObject::tr("Establishing database connections..."),
+                                                topRight, Qt::black);
+                            Sleep(2000);
+                            // splash运行的时候，无法操作mainWindow.
+
                             initWindow = new Initial();
                             // initWindow->setCurrentUserId(query.value(0).toString());   // 这个用来解决全局变量的设定
+
+                            splash->finish(initWindow);
+                            delete splash;
+
                             initWindow->show();
                             //关闭登录窗口
                             this->close();
@@ -245,18 +269,34 @@ void Login::loginSlot()
                         model.setCogApproach("活跃型");
                         model.setCogStrategy("复述策略");
                         updateCogModel(model);
-
                         initWindow = new Initial();
-                        initWindow->show();
                         this->close();
                     }
                 }
                 else
                 {
                     initWindow = new Initial();
-                    initWindow->show();
                     this->close();
                 }
+
+                // 程序启动动画
+                QSplashScreen *splash = new QSplashScreen;
+                splash->setPixmap(QPixmap(":/images/splash.png")); // splash picture
+                splash->show();
+                Qt::Alignment topRight = Qt::AlignRight | Qt::AlignTop;
+                splash->showMessage(QObject::tr("Setting up the main window..."),
+                                    topRight, Qt::black);
+                Sleep(2000);
+                splash->showMessage(QObject::tr("Loading modules..."),
+                                    topRight, Qt::black);
+                Sleep(2000);
+                splash->showMessage(QObject::tr("Establishing database connections..."),
+                                    topRight, Qt::black);
+                Sleep(2000);
+                // splash运行的时候，无法操作mainWindow.
+                splash->finish(initWindow);
+                delete splash;
+                initWindow->show();
             }
             else
             {
@@ -333,7 +373,7 @@ void Login::registorSlot()
 
         query.prepare("insert into student(name,password,sex,age,education,"
                       "interactfeature,emotionfeature,perceptionfeature,knowledgebasis)"
-                      "values(:name,:password,:sex,:age,:education"
+                      "values(:name,:password,:sex,:age,:education,"
                       ":interactfeature,:emotionfeature,:perceptionfeature,:knowledgebasis)");
         query.bindValue(":name", _username);
         query.bindValue(":password", _password);

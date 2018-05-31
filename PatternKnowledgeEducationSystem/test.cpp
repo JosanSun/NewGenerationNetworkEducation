@@ -20,11 +20,11 @@ Test::Test(QWidget *parent)
     initUI();
     init();
 
-    connect(ui->buttonClose, &QPushButton::clicked, this, &Test::close);                                 // 点击关闭
-    connect(ui->buttonMin, &QPushButton::clicked, this, &Test::showMinimized);                           // 点击最小化
-    connect(timer1, &QTimer::timeout, this, &Test::timeUpdateSlot);//更新系统时间
-    connect(ui->submitButton, &QPushButton::clicked, this, &Test::submitTestSlot);      //提交测试
-    connect(startButton, &QPushButton::clicked, this, &Test::startTestSlot);            //点击开始测试按钮进入测试
+    connect(ui->buttonClose, &QPushButton::clicked, this, &Test::close);                // 点击关闭
+    connect(ui->buttonMin, &QPushButton::clicked, this, &Test::showMinimized);          // 点击最小化
+    connect(timer1, &QTimer::timeout, this, &Test::timeUpdateSlot);                     // 更新系统时间
+    connect(ui->submitButton, &QPushButton::clicked, this, &Test::submitTestSlot);      // 提交测试
+    connect(startButton, &QPushButton::clicked, this, &Test::startTestSlot);            // 点击开始测试按钮进入测试
 }
 
 Test::~Test()
@@ -430,24 +430,10 @@ void Test::submitTestSlot()
         }
     }
 
-
-
-    //    //更新学习行为记录表中当前用户的最后一条学习记录，修改通过情况
-    //    QString beginTime;
-    //    query.prepare("select begin from behavior where sid=:sid and kid=:kid");
-    //    query.bindValue(":sid", myUser.getSid());
-    //    query.bindValue(":kid", currentKid);
-    //    query.exec();
-    //    while (query.next())
-    //    {
-    //        query.last();
-    //        beginTime = query.value(0).toString();
-    //        qcout << score;
-    //    }
-
     if (score >= limitScore)
     {
         pass = true;
+        updateUserInfo();
         //更新推荐路径表
         query.prepare("update recpath set state=1 where sid=:sid and kid=:kid");
         query.bindValue(":sid", myUser.getSid());
@@ -472,7 +458,7 @@ void Test::submitTestSlot()
         query.bindValue(":begin", startTestTime.toString("yyyy-MM-dd hh:mm:ss"));
         query.bindValue(":end", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
         query.bindValue(":pass", 1);
-        query.bindValue(":note", tr("学习并通过测试用例"));
+        query.bindValue(":note", tr("通过测试用例"));
         if(!query.exec())
         {
            qcout << query.lastError();
@@ -481,11 +467,6 @@ void Test::submitTestSlot()
         {
             qcout << "Sql executes sucessfully!";
         }
-        //        query.prepare("update behavior set pass=1 where sid=:sid and kid=:kid and begin=:begin");
-        //        query.bindValue(":sid", myUser.getSid());
-        //        query.bindValue(":kid", currentKid);
-        //        query.bindValue(":begin", beginTime);
-        //        query.exec();
 
         //更新学习路径记录表
         query.prepare("insert into path(sid,domain,kid,begintime,score) values(:sid,:domain,:kid,:begintime,:score)");
@@ -512,22 +493,6 @@ void Test::submitTestSlot()
         query.bindValue(":kid", currentKid);
         query.exec();
 
-        //        if (_first == "P")
-        //        {
-        //            //更新推荐路径表
-        //            query.prepare("update recpath set state=1 where sid=:sid and kid=:kid");
-        //            query.bindValue(":sid", myUser.getSid());
-        //            query.bindValue(":kid", currentKid);
-        //            query.exec();
-        //        }
-
-        //更新学习行为记录表中当前用户的最后一条学习记录，修改通过情况
-        //        query.prepare("update behavior set pass=0 where sid=:sid and kid=:kid and begin=:begin");
-        //        query.bindValue(":sid", myUser.getSid());
-        //        query.bindValue(":kid", currentKid);
-        //        query.bindValue(":begin", beginTime);
-        //        query.exec();
-
         query.prepare("insert into behavior(sid,kid,cid,begin,end,pass,note) values(:sid,:kid,:cid,:begin,:end,:pass,:note)");
         query.bindValue(":sid", myUser.getSid());
         query.bindValue(":kid", currentKid);
@@ -535,7 +500,7 @@ void Test::submitTestSlot()
         query.bindValue(":begin", startTestTime.toString("yyyy-MM-dd hh:mm:ss"));
         query.bindValue(":end", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
         query.bindValue(":pass", 1);
-        query.bindValue(":note", tr("正在学习知识点"));
+        query.bindValue(":note", tr("未能通过测试%1").arg(currentKid));
     }
 
 
@@ -661,4 +626,132 @@ void Test::againKnowledgeSlot()
 void Test::closeEvent(QCloseEvent* /* ev */)
 {
     emit closeSignal();
+}
+
+void Test::updateUserInfo()
+{
+    QSqlQuery query(db);
+    static int j = 0;
+    ++j;
+    int i = j / 2;
+    if(i % 5 == 1)
+    {
+        //更新用户信息
+        query.prepare("update student set cogApproach=:cogApproach, cogStrategy=:cogStrategy, cogExperience=:cogExperience, "
+                      "metaCogAbility=:metaCogAbility, interactfeature=:interactfeature, emotionfeature=:emotionfeature, "
+                      "perceptionfeature=:perceptionfeature, knowledgebasis=:knowledgebasis  where sid=:sid");
+        query.bindValue(":cogApproach", QString(myUser.getModel().getCogApproach().data()));
+        query.bindValue(":cogStrategy", tr("组织策略"));
+        query.bindValue(":cogExperience", tr("[1:0.67,64.32,0.42]"));
+        query.bindValue(":metaCogAbility", tr("[1,1, 85, 0.2],0.33"));
+        query.bindValue(":interactfeature", tr("0.42,0.58"));
+        query.bindValue(":emotionfeature", tr("0.18,0.41,0.51"));
+        query.bindValue(":perceptionfeature", tr("0.3,0.25,0.3,0.15"));
+        query.bindValue(":knowledgebasis", 6.5);
+        query.bindValue(":sid", myUser.getSid());
+        if(!query.exec())
+        {
+           qcout << query.lastError();
+        }
+        else
+        {
+            qcout << "Sql executes sucessfully!";
+        }
+    }
+    else if(i % 5 == 2)
+    {
+        //更新用户信息
+        query.prepare("update student set cogApproach=:cogApproach, cogStrategy=:cogStrategy, cogExperience=:cogExperience, "
+                      "metaCogAbility=:metaCogAbility, interactfeature=:interactfeature, emotionfeature=:emotionfeature, "
+                      "perceptionfeature=:perceptionfeature, knowledgebasis=:knowledgebasis  where sid=:sid");
+        query.bindValue(":cogApproach", tr("语言型"));
+        query.bindValue(":cogStrategy", QString(myUser.getModel().getCogStrategy().data()));
+        query.bindValue(":cogExperience", tr("[1,0.67,74.32,0.45],[2,0.5,64.50,0.5]"));
+        query.bindValue(":metaCogAbility", tr("[1,1,85,0.2],[2,0.25,35,0.2],0.33"));
+        query.bindValue(":interactfeature", tr("0.38,0.62"));
+        query.bindValue(":emotionfeature", tr("0.16,0.45,0.39"));
+        query.bindValue(":perceptionfeature", tr("0.3,0.3,0.35,0.05"));
+        query.bindValue(":knowledgebasis", 7);
+        query.bindValue(":sid", myUser.getSid());
+        if(!query.exec())
+        {
+           qcout << query.lastError();
+        }
+        else
+        {
+            qcout << "Sql executes sucessfully!";
+        }
+    }
+    else if(i % 5 == 3)
+    {
+        //更新用户信息
+        query.prepare("update student set cogApproach=:cogApproach, cogStrategy=:cogStrategy, cogExperience=:cogExperience, "
+                      "metaCogAbility=:metaCogAbility, interactfeature=:interactfeature, emotionfeature=:emotionfeature, "
+                      "perceptionfeature=:perceptionfeature, knowledgebasis=:knowledgebasis  where sid=:sid");
+        query.bindValue(":cogApproach", tr("语言型"));
+        query.bindValue(":cogStrategy", QString(myUser.getModel().getCogStrategy().data()));
+        query.bindValue(":cogExperience", tr("[1,1,84.32,0.57],[2,0.75,74.50,0.6],[3,0.5,64,0.72]"));
+        query.bindValue(":metaCogAbility", tr("[1,1,86,0.6],[2,1,75,0.5],[3,0.25,50,0.3],0.67"));
+        query.bindValue(":interactfeature", tr("0.35,0.65"));
+        query.bindValue(":emotionfeature", tr("0.12,0.40,0.48"));
+        query.bindValue(":perceptionfeature", tr("0.35,0.2,0.2,0.25"));
+        query.bindValue(":knowledgebasis", 7.5);
+        query.bindValue(":sid", myUser.getSid());
+        if(!query.exec())
+        {
+           qcout << query.lastError();
+        }
+        else
+        {
+            qcout << "Sql executes sucessfully!";
+        }
+    }
+    else if(i % 5 == 4)
+    {
+        //更新用户信息
+        query.prepare("update student set cogApproach=:cogApproach, cogStrategy=:cogStrategy, cogExperience=:cogExperience, "
+                      "metaCogAbility=:metaCogAbility, interactfeature=:interactfeature, emotionfeature=:emotionfeature, "
+                      "perceptionfeature=:perceptionfeature, knowledgebasis=:knowledgebasis  where sid=:sid");
+        query.bindValue(":cogApproach", tr("序列型"));
+        query.bindValue(":cogStrategy", QString(myUser.getModel().getCogStrategy().data()));
+        query.bindValue(":cogExperience", tr("[1,1,84.32,0.57],[2,0.75,74.55,0.65],[3,0.75,74,0.65]"));
+        query.bindValue(":metaCogAbility", tr("[1,1,86,0.6],[2,1,75,0.5],[3,0.75,66,0.5],1"));
+        query.bindValue(":interactfeature", tr("0.30,0.70"));
+        query.bindValue(":emotionfeature", tr("0.12,0.40,0.48"));
+        query.bindValue(":perceptionfeature", tr("0.35,0.2,0.2,0.25"));
+        query.bindValue(":knowledgebasis", 8.5);
+        query.bindValue(":sid", myUser.getSid());
+        if(!query.exec())
+        {
+           qcout << query.lastError();
+        }
+        else
+        {
+            qcout << "Sql executes sucessfully!";
+        }
+    }
+    else
+    {
+        //更新用户信息
+        query.prepare("update student set cogApproach=:cogApproach, cogStrategy=:cogStrategy, cogExperience=:cogExperience, "
+                      "metaCogAbility=:metaCogAbility, interactfeature=:interactfeature, emotionfeature=:emotionfeature, "
+                      "perceptionfeature=:perceptionfeature, knowledgebasis=:knowledgebasis  where sid=:sid");
+        query.bindValue(":cogApproach", tr("序列型"));
+        query.bindValue(":cogStrategy", tr("精加工策略"));
+        query.bindValue(":cogExperience", tr("[1,1,84.32,0.57],[2,1,74.55,0.65],[3,1,79,0.65]"));
+        query.bindValue(":metaCogAbility", tr("[1,1,86,0.6],[2,1,75,0.5],[3,1,78,0.65],1"));
+        query.bindValue(":interactfeature", tr("0.25,0.75"));
+        query.bindValue(":emotionfeature", tr("0.12,0.40,0.48"));
+        query.bindValue(":perceptionfeature", tr("0.35,0.2,0.2,0.25"));
+        query.bindValue(":knowledgebasis", 9.2);
+        query.bindValue(":sid", myUser.getSid());
+        if(!query.exec())
+        {
+           qcout << query.lastError();
+        }
+        else
+        {
+           qcout << "Sql executes sucessfully!";
+        }
+    }
 }

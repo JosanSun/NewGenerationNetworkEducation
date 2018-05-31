@@ -182,6 +182,30 @@ void UserInfoWidget::init()
     learnTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     learnTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
+    if (!haveCogStruct)
+    {
+        //如果当前没有个体认知结构记录表 则new一个
+        cogWidget = new QWidget();
+        cogTableView = new QTableView(cogWidget);
+        cogTableView->setGeometry(8, 8, 521, 271);
+        ui->tabWidget->addTab(cogWidget, tr("个体认知结构"));
+        haveCogStruct = true;
+    }
+    //显示用户学习路径表
+    QSqlQueryModel *cogModel = new QSqlQueryModel;
+    QString sqlString4 = "select cogApproach, cogStrategy, cogExperience, metaCogAbility from student where sid = ";
+    sqlString4 += QString::number(myUser.getSid());
+    qcout << sqlString4;
+
+    cogModel->setQuery(sqlString4, db);
+    cogModel->setHeaderData(0, Qt::Horizontal, tr("认知方式"));
+    cogModel->setHeaderData(1, Qt::Horizontal, tr("认知策略"));
+    cogModel->setHeaderData(2, Qt::Horizontal, tr("认知经验"));
+    cogModel->setHeaderData(3, Qt::Horizontal, tr("元认知能力"));
+    cogTableView->setModel(cogModel);
+    // 使得tableview的单元格的内容可以自适应内容大小
+    cogTableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    cogTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     timer->start(1000);
 }

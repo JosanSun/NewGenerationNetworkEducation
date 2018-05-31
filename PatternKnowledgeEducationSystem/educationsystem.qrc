@@ -12,5 +12,6 @@
         <file>images/myapp.ico</file>
         <file>images/aa.png</file>
         <file>images/lx.png</file>
+        <file>images/splash.png</file>
     </qresource>
 </RCC>

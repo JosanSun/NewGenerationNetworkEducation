@@ -26,7 +26,12 @@ Usecase::Usecase(QWidget *parent)
     initUI();
     init();
 
-    connect(ui->buttonClose, &QPushButton::clicked, this, &Usecase::close);                                 // 点击关闭
+    connect(ui->buttonClose, &QPushButton::clicked,
+            [=]()
+            {
+                updateBehaviorTable();
+                close();
+            });                                 // 点击关闭
     connect(ui->buttonMin, &QPushButton::clicked, this, &Usecase::showMinimized);                           // 点击最小化
     connect(timer, &QTimer::timeout, this, &Usecase::updateTimeSlot);                   // 更新系统时间
 }
@@ -217,6 +222,16 @@ void Usecase::updateTimeSlot()
 //进入测试模块
 void Usecase::on_testButton_clicked()
 {
+    updateBehaviorTable();
+
+    testWindow = new Test();
+    testWindow->show();
+    connect(testWindow, &Test::destroyed, this, &Usecase::close);
+    this->close();
+}
+
+void Usecase::updateBehaviorTable()
+{
     QSqlQuery query(db);
     // 首先记录上次学习的案例的结束时间以及通过情况
     query.prepare("insert into behavior(sid,kid,cid,begin,end,pass,note) values(:sid,:kid,:cid,:begin,:end,:pass,:note)");
@@ -226,7 +241,7 @@ void Usecase::on_testButton_clicked()
     query.bindValue(":begin", startTime.toString("yyyy-MM-dd hh:mm:ss"));
     query.bindValue(":end", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
     query.bindValue(":pass", 0);
-    query.bindValue(":note", tr("学习完教学用例"));
+    query.bindValue(":note", tr("学习教学用例"));
     if(!query.exec())
     {
        qcout << query.lastError();
@@ -235,9 +250,4 @@ void Usecase::on_testButton_clicked()
     {
         qcout << "Sql executes sucessfully!";
     }
-
-    testWindow = new Test();
-    testWindow->show();
-    connect(testWindow, &Test::destroyed, this, &Usecase::close);
-    this->close();
 }
