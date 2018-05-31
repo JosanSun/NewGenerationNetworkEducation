@@ -115,6 +115,26 @@ void Initial::init()
         {
             //用户没有历史学习数据
             ui->lastPointnameLabel->setText(tr("无"));
+            QSqlQuery query1(db);
+            query.prepare("select kid from recpath where sid=:sid and state=0 order by orders");
+            query.bindValue(":sid", myUser.getSid());
+            if(!query1.exec())
+            {
+               qcout << query1.lastError();
+            }
+            else
+            {
+                qcout << "Sql executes sucessfully!";
+                if (query1.next())
+                {
+                    currentKid = query1.value(0).toString();
+                    qcout << currentKid;
+                }
+                else
+                {
+                    QMessageBox::information(this, tr("教学系统"), tr("恭喜你，成功学完所有知识点！"));
+                }
+            }
         }
     }
 
