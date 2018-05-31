@@ -157,16 +157,6 @@ void Teach::init()
             t4 = QTime::currentTime();
             qcout << t3.msecsTo(t4);
 
-//            if (!_descFile.open(QIODevice::ReadOnly | QIODevice::Text))
-//                return;
-//            // QTextStream out(&_descFile);
-//            qcout << out.readAll();
-//            out.seek(0);
-//            while (!out.atEnd())
-//            {
-//                //知识点描述窗口
-//                ui->descriptionTextBrowser->setText(out.readAll());
-//            }
             //领域知识按钮---查找与显示
             //显示当前知识的领域信息  领域信息以,相分隔
             QString _domain = query.value(2).toString();
@@ -213,7 +203,9 @@ void Teach::init()
         query.exec("select * from about where kid='" + currentKid + "'");
         while (query.next())
         {
-            if (query.value(1).toInt() == 0){//前驱
+            if (query.value(1).toInt() == 0)
+            {
+                //前驱
                 QString _about = query.value(2).toString();
                 QString _sep = ",";
                 int inx = 1;
@@ -282,7 +274,8 @@ void Teach::init()
                 aboutKnowButton->setGeometry(110 + 100 * (inx - 1), 310, 80, 23);
             }
             else if (query.value(1).toInt() == 1)
-            {//后继
+            {
+                //后继
                 QString _about = query.value(2).toString();
                 QString _sep = ",";
                 int inx = 1;
@@ -702,12 +695,24 @@ void Teach::openUsecaseSlot(QString casename)
 {
     QSqlQuery query(db);
     currentCid = casename;
-    query.prepare("insert into behavior(sid,kid,cid,begin) values(:sid,:kid,:cid,:begin)");
+    query.prepare("insert into behavior(sid,kid,cid,begin,end,pass,note) "
+                  "values(:sid,:kid,:cid,:begin,:end,:pass,:note)");
     query.bindValue(":sid", myUser.getSid());
     query.bindValue(":kid", currentKid);
     query.bindValue(":cid", currentCid);
     query.bindValue(":begin", QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss"));
-    query.exec();
+    query.bindValue(":end", QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss"));
+    query.bindValue(":pass", 0);
+    query.bindValue(":note", tr("学习教学案例"));
+    if(!query.exec())
+    {
+        qcout << query.lastError();
+    }
+    else
+    {
+        qcout << "Sql executes sucessfully!";
+    }
+
     QString _form = casename.remove(0, 5);
     if (_form == "ppt")
     {
@@ -793,11 +798,35 @@ void Teach::goToTestSlot()
     //首先记录上次学习的案例的结束时间以及通过情况
     query.prepare("update behavior set end=:end,pass=0,note=:note where sid=:sid and kid=:kid and cid=:cid");
     query.bindValue(":end", QDateTime::currentDateTime().toString("yy-MM-dd hh:mm:ss"));
-    query.bindValue(":note", note);
+    query.bindValue(":note", tr("学完教学案例"));
     query.bindValue(":sid", myUser.getSid());
     query.bindValue(":kid", currentKid);
     query.bindValue(":cid", currentCid);
-    query.exec();
+    if(!query.exec())
+    {
+       qcout << query.lastError();
+    }
+    else
+    {
+        qcout << "Sql executes sucessfully!";
+    }
+
+    query.prepare("insert into behavior(sid,kid,cid,begin,end,pass,note) values(:sid,:kid,:cid,:begin,:end,:pass,:note)");
+    query.bindValue(":sid", myUser.getSid());
+    query.bindValue(":kid", currentKid);
+    query.bindValue(":cid", currentCid);
+    query.bindValue(":begin", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
+    query.bindValue(":end", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
+    query.bindValue(":pass", 0);
+    query.bindValue(":note", tr("进行测试"));
+    if(!query.exec())
+    {
+       qcout << query.lastError();
+    }
+    else
+    {
+        qcout << "Sql executes sucessfully!";
+    }
 
     //进入测试
     testWindow = new Test();

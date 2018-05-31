@@ -193,18 +193,7 @@ void Test::restTimeUpdateSlot()
         --restMinuteTime;
         restSecondTime = 60 - secT;
     }
-
     restMinuteTime -= minT;
-
-    //    int alreadyMinute = QDateTime::currentDateTime().time().minute() - startTestTime.time().minute();
-    //    int alreadySecond = QDateTime::currentDateTime().time().second() - startTestTime.time().hour();
-    //    if (alreadyMinute < 0)
-    //    {
-    //        alreadyMinute += 60;
-    //        alreadyHour -= 1;
-    //    }
-    //    int restHour = ui->testHourLabel->text().toInt() - alreadyHour;
-    //    int restMinute = ui->testMinuteLabel->text().toInt() - alreadyMinute;
 
     ui->restMinuteLabel->setText(QString::number(restMinuteTime));
     ui->restSecondLabel->setText(QString::number(restSecondTime));
@@ -328,7 +317,6 @@ void Test::startTestSlot()
     ui->scrollArea->setWidget(allWidget);
 }
 
-
 //提交测试结果
 void Test::submitTestSlot()
 {
@@ -391,13 +379,58 @@ void Test::submitTestSlot()
     }
 
     QSqlQuery query(db);
-    //在测试结果表中插入用户测试记录
-    query.prepare("insert into testresult(sid,kid,tid,score) values(:sid,:kid,:tid,:score)");
+    query.prepare("select score from testresult where sid=:sid and kid=:kid and tid=:tid");
     query.bindValue(":sid", myUser.getSid());
     query.bindValue(":kid", currentKid);
     query.bindValue(":tid", currentTid);
-    query.bindValue(":score", score);
-    query.exec();
+    if(!query.exec())
+    {
+       qcout << query.lastError();
+    }
+    else
+    {
+        qcout << "Sql executes sucessfully!";
+        // 之前测试，存在测试结果记录，更新最新分数
+        if(query.next())
+        {
+            QSqlQuery query1(db);
+            query1.prepare("update testresult set score=:score where sid=:sid and kid=:kid and tid=:tid");
+            query1.bindValue(":score", score);
+            query1.bindValue(":sid", myUser.getSid());
+            query1.bindValue(":kid", currentKid);
+            query1.bindValue(":tid", currentTid);
+            if(!query1.exec())
+            {
+               qcout << query1.lastError();
+            }
+            else
+            {
+                qcout << "Sql executes sucessfully!";
+            }
+
+        }
+        // 没有测试过，插入最新测试结果
+        else
+        {
+            //在测试结果表中插入用户测试记录
+            QSqlQuery query1(db);
+            query1.prepare("insert into testresult(sid,kid,tid,score) values(:sid,:kid,:tid,:score)");
+            query1.bindValue(":sid", myUser.getSid());
+            query1.bindValue(":kid", currentKid);
+            query1.bindValue(":tid", currentTid);
+            query1.bindValue(":score", score);
+            if(!query1.exec())
+            {
+               qcout << query1.lastError();
+            }
+            else
+            {
+                qcout << "Sql executes sucessfully!";
+            }
+        }
+    }
+
+
 
     //    //更新学习行为记录表中当前用户的最后一条学习记录，修改通过情况
     //    QString beginTime;
@@ -419,7 +452,14 @@ void Test::submitTestSlot()
         query.prepare("update recpath set state=1 where sid=:sid and kid=:kid");
         query.bindValue(":sid", myUser.getSid());
         query.bindValue(":kid", currentKid);
-        query.exec();
+        if(!query.exec())
+        {
+           qcout << query.lastError();
+        }
+        else
+        {
+            qcout << "Sql executes sucessfully!";
+        }
 
         qcout << myUser.getSid();
         qcout << currentKid;
@@ -429,11 +469,18 @@ void Test::submitTestSlot()
         query.bindValue(":sid", myUser.getSid());
         query.bindValue(":kid", currentKid);
         query.bindValue(":cid", currentCid);
-        query.bindValue(":begin", startTestTime.toString());
-        query.bindValue(":end", QDateTime::currentDateTime().toString());
+        query.bindValue(":begin", startTestTime.toString("yyyy-MM-dd hh:mm:ss"));
+        query.bindValue(":end", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
         query.bindValue(":pass", 1);
         query.bindValue(":note", tr("学习并通过测试用例"));
-        query.exec();
+        if(!query.exec())
+        {
+           qcout << query.lastError();
+        }
+        else
+        {
+            qcout << "Sql executes sucessfully!";
+        }
         //        query.prepare("update behavior set pass=1 where sid=:sid and kid=:kid and begin=:begin");
         //        query.bindValue(":sid", myUser.getSid());
         //        query.bindValue(":kid", currentKid);
@@ -445,9 +492,16 @@ void Test::submitTestSlot()
         query.bindValue(":sid", myUser.getSid());
         query.bindValue(":domain", currentDomain);
         query.bindValue(":kid", currentKid);
-        query.bindValue(":begintime", startTestTime.toString());
+        query.bindValue(":begintime", startTestTime.toString("yyyy-MM-dd hh:mm:ss"));
         query.bindValue(":score", score);
-        query.exec();
+        if(!query.exec())
+        {
+           qcout << query.lastError();
+        }
+        else
+        {
+            qcout << "Sql executes sucessfully!";
+        }
     }
     else
     {
@@ -478,8 +532,8 @@ void Test::submitTestSlot()
         query.bindValue(":sid", myUser.getSid());
         query.bindValue(":kid", currentKid);
         query.bindValue(":cid", currentCid);
-        query.bindValue(":begin", startTestTime.toString());
-        query.bindValue(":end", QDateTime::currentDateTime().toString());
+        query.bindValue(":begin", startTestTime.toString("yyyy-MM-dd hh:mm:ss"));
+        query.bindValue(":end", QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"));
         query.bindValue(":pass", 1);
         query.bindValue(":note", tr("正在学习知识点"));
     }
@@ -578,20 +632,31 @@ void Test::nextKnowledgeSlot()
     QSqlQuery query(db);
     query.prepare("select kid from recpath where sid=:sid and state=0 order by orders");
     query.bindValue(":sid", myUser.getSid());
-    query.exec();
-    while (query.next())
+    if(!query.exec())
     {
-        currentKid = query.value(0).toString();
-        qcout << currentKid;
-        break;
+       qcout << query.lastError();
     }
-    if (_first=="P")
+    else
     {
-        query.prepare("update recpath set state=0 where sid=:sid and kid=:kid");
-        query.bindValue(":sid", myUser.getSid());
-        query.bindValue(":kid", beforeKid);
-        query.exec();
+        qcout << "Sql executes sucessfully!";
+        if (query.next())
+        {
+            currentKid = query.value(0).toString();
+            qcout << currentKid;
+        }
+        else
+        {
+            QMessageBox::information(this, tr("教学系统"), tr("恭喜你，成功学完所有知识点！"));
+        }
     }
+
+//    if (_first=="P")
+//    {
+//        query.prepare("update recpath set state=0 where sid=:sid and kid=:kid");
+//        query.bindValue(":sid", myUser.getSid());
+//        query.bindValue(":kid", beforeKid);
+//        query.exec();
+//    }
     this->close();
 }
 

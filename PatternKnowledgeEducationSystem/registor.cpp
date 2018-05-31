@@ -158,3 +158,5 @@ void Registor::on_registerButton_clicked()
 {
     emit registerUser();
 }
+
+

@@ -7,6 +7,7 @@
 #include "initial.h"
 #include "ui_initial.h"
 #include "helper/user.h"
+#include "helper/myheaders.h"
 
 extern User myUser;
 QString currentKid;
@@ -77,37 +78,46 @@ void Initial::init()
 //    }
     query.prepare("select * from behavior where sid=:sid order by end desc");
     query.bindValue(":sid", myUser.getSid());
-    query.exec();
-    if (query.first())
+    if(!query.exec())
     {
-        //用户在系统中有历史学习数据
-        QString _kid = query.value(1).toString();
-        currentKid = _kid;
-        QString _first = _kid.left(1);
-        // 如果知识是显性知识
-        if (_first == "B")
-        {
-            query.exec("select title from bk where bid='" + _kid + "'");
-            while (query.next())
-            {
-                ui->lastPointnameLabel->setText(query.value(0).toString());
-            }
-        }
-        // 如果知识是隐性知识
-        else if (_first == "P")
-        {
-            query.exec("select title from pk where pid='" + _kid + "'");
-            while (query.next())
-            {
-                ui->lastPointnameLabel->setText(query.value(0).toString());
-            }
-        }
+       qcout << query.lastError();
     }
     else
     {
-        //用户没有历史学习数据
-        ui->lastPointnameLabel->setText(tr("无"));
+        qcout << "Sql executes sucessfully!";
+        if (query.first())
+        {
+            //用户在系统中有历史学习数据
+            QString _kid = query.value(1).toString();
+            currentKid = _kid;
+            qcout << _kid;
+            QString _first = _kid.left(1);
+            // 如果知识是显性知识
+            if (_first == "B")
+            {
+                query.exec("select title from bk where bid='" + _kid + "'");
+                while (query.next())
+                {
+                    ui->lastPointnameLabel->setText(query.value(0).toString());
+                }
+            }
+            // 如果知识是隐性知识
+            else if (_first == "P")
+            {
+                query.exec("select title from pk where pid='" + _kid + "'");
+                while (query.next())
+                {
+                    ui->lastPointnameLabel->setText(query.value(0).toString());
+                }
+            }
+        }
+        else
+        {
+            //用户没有历史学习数据
+            ui->lastPointnameLabel->setText(tr("无"));
+        }
     }
+
 }
 
 
@@ -151,12 +161,12 @@ void Initial::openDatabase()
     bool ok = db.open();
     if (!ok)
     {
-        qDebug() << "Failed to connect database login!";
+        qcout << "Failed to connect database login!";
         QMessageBox::critical(this, tr("严重错误"), tr("系统数据库初始化失败！"));
     }
     else
     {
-        qDebug() << "Success!";
+        qcout << "Success!";
     }
 }
 
@@ -169,7 +179,7 @@ void Initial::showFirstKnowledge()
     while (query.next())
     {
         currentKid = query.value(0).toString();
-        qDebug() << currentKid;
+        qcout << currentKid;
         break;
     }
 }
@@ -223,7 +233,7 @@ void Initial::goToTeachWindowSlot()
         {
             query.last();
             int _pass = query.value(0).toInt();
-            qDebug() << _pass;
+            qcout << _pass;
             if (_pass)
             {
                 query.prepare("select kid from recpath where sid=:sid and state=0 order by orders");
